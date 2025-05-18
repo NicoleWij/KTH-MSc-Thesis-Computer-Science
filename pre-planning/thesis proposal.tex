@@ -1,0 +1,94 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+
+% Title formatting
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+
+\begin{document}
+
+\begin{center}
+    {\Large MSc Degree Project Proposal}\\[1em]
+    {\large Computer Science}\\[2em]
+    Name: \textit{Nicole Wijkman} \\
+    Email: \textit{nwijkman@kth.se} \\
+    Date: \textit{2025-02-02}\\[2em]
+\end{center}
+
+\section{Thesis Title}
+\textbf{Optimizing Backend Architectures for Real-Time API-Dependent Applications: A Comparative Study}
+
+\section{Background}
+This degree project is conducted in collaboration with \textbf{Klimra}, a company focused on simplifying compensation processes for train delays. Klimra provides a modern tech solution that automates the compensation process, ensuring that users receive their compensation quickly and without hassle. Their platform is designed to improve the experience of commuters who face train delays, making it easier for them to claim compensation and stay informed about delays in real-time.
+
+\subsection{Research Area}
+This project will focus on evaluating the efficiency, scalability, and cost-effectiveness of different backend architectures for \textbf{real-time API-dependent applications}, such as Klimra’s platform, which relies on external transit APIs. The study will compare different \textbf{data ingestion and storage techniques} to determine which backend approach offers the best performance for handling real-time train tracking data.
+
+\subsection{Current Research and Development}
+Current research explores backend solutions for real-time data ingestion and storage, but few studies have directly compared their effectiveness for applications that depend on external APIs with rate limits, network latency, and possible data loss. Given Klimra’s reliance on public transit APIs, optimizing data retrieval and storage strategies is crucial for delivering a reliable service.
+
+\subsection{Interest and Relevance of the Project}
+\begin{itemize}
+    \item \textbf{To Klimra}: This project will help Klimra identify the most \textbf{scalable, low-latency, and cost-efficient backend architecture} for handling real-time and historical train data.
+    \item \textbf{To Backend Development}: This study will contribute to the field of backend engineering by comparing \textbf{event-driven architectures, streaming solutions, and different storage models} for real-time applications.
+\end{itemize}
+
+\section{Research Question}
+Which backend architecture provides the best performance for real-time train tracking applications dependent on external APIs, in terms of update latency, database performance, and system scalability?
+
+\section{Hypothesis}
+\begin{itemize}
+    \item Event-driven ingestion methods will provide lower latency than traditional polling for real-time data.
+    \item Time-series databases will perform better for historical data queries than relational databases.
+    \item Cloud-based analytics platforms may offer cost benefits but with trade-offs in latency.
+\end{itemize}
+
+\section{Research Method}
+This project follows a design-science and empirical evaluation approach:
+
+\subsection*{1. Requirements Gathering \& Literature Review}
+Conduct a literature review on real-time backend architectures, data ingestion pipelines, and database storage strategies. Identify Klimra’s current API dependencies, scalability concerns, and data retrieval needs.
+
+\subsection*{2. Platform Development}
+Develop a minimal real-time train delay tracking application to serve as a controlled environment for backend evaluation. The application logic will remain constant across versions, while backend components such as ingestion method and storage type are varied.
+
+\subsection*{3. Controlled Experiments}
+Feed the application with publicly available real-time train data under repeatable, controlled conditions. Measure performance using key metrics such as latency, ingestion delay, system load, and query performance.
+
+\subsection*{4. Analysis}
+Compare results across implementations to evaluate the impact of different backend architectures on performance and scalability. The goal is to isolate the effects of each architectural decision in a practical, well-defined use case.
+
+\newpage
+\section{Background of the Student}
+I am currently pursuing a Master of Science in Computer Science at KTH Royal Institute of Technology, building on my Bachelor's degree in Computer Engineering from the same institution. My coursework in Distributed Systems, Web Development, and Databases has given me a strong theoretical foundation in backend development.
+
+On the practical side, I have worked on projects involving real-time data streaming, API integrations, and performance optimization. My experience includes building scalable microservices with Node.js and SQL/NoSQL databases. I am particularly interested in designing backend solutions that can handle high-load real-time data efficiently, which aligns well with this project.
+
+\section{Supervision at the Company/External Organization}
+This degree project will be conducted in collaboration with Klimra, a company focused on simplifying compensation processes for train delays. I will be supervised by Casper Kristiansson, CTO of Klimra, who has extensive experience in backend development, cloud infrastructure, and large-scale data management. Klimra will provide access to real-world train data APIs and infrastructure resources for testing.
+
+\section{Resources}
+Klimra’s existing platform and real-time train data will serve as the primary data sources for this project. I will also use:
+\begin{itemize}
+    \item A backend framework (e.g., Node.js or Python-based)
+    \item A few representative ingestion methods (e.g., polling and event-driven)
+    \item Different types of databases (relational, time-series, cloud-based)
+    \item Tools for load testing and performance measurement
+\end{itemize}
+
+
+\section{Eligibility}
+I have verified that I meet the requirements to start my degree project and that all relevant courses have been completed.
+
+\section{Study Planning}
+In parallel to the Master Thesis, I will be enrolled in the Program Integrating Course in Computer Science (DD2300).
+
+\end{document}
