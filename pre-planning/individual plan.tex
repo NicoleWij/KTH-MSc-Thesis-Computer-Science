@@ -1,8 +1,14 @@
 \documentclass[11pt]{article}
-\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage[a4paper, margin=2.0cm]{geometry}
 \usepackage{titlesec}
 \usepackage{enumitem}
+\usepackage[numbers]{natbib}
 \usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{xurl}
+\hypersetup{breaklinks=true}
 
 \title{Individual Plan}
 \author{}
@@ -12,66 +18,216 @@
 
 \maketitle
 
-\noindent\textbf{Comment to the student:} the individual plan needs to be prepared within a few weeks after project start, and has to be accepted by the examiner. The document should be 3--4 pages long.
+%\noindent\textbf{Comment to the student:} the individual plan needs to be prepared within a few weeks after project start, and has to be accepted by the examiner. The document should be 3--4 pages long.
+
+%\vspace{1em}
+
+\noindent\textbf{Nicole Wijkman\\nwijkman@kth.se}
 
 \vspace{1em}
 \section*{PROJECT INFORMATION}
 
 \begin{itemize}[leftmargin=*, label={}]
-  \item Preliminary title, that indicates what the degree project will be about.
-  \item The name and e-mail address of the student
-  \item The name of the examiner at KTH
-  \item The name of the supervisor at KTH
-  \item The name and e-mail address of the supervisor, if the thesis is performed outside KTH
-  \item Current date
-  \item Keywords
+  \item \textbf{Title:} Evaluating Backend Architectures for Real-Time API-Dependent Applications: A Comparative Study
+  \item \textbf{Email:} nwijkman@kth.se
+  \item \textbf{Examiner:} Cyrille Artho
+  \item \textbf{Supervisor at KTH:} Ioana Bercea
+  \item \textbf{External Supervisor:} Casper Kristiansson, casper@klimra.com
+  \item \textbf{Date:} 2025-05-10
+  \item \textbf{Keywords:} Real-time systems, Backend architecture, External APIs, Event-driven, Polling, Time-series databases, NoSQL, AWS, Scalability, Latency, Train data, Performance evaluation
 \end{itemize}
 
 \section*{BACKGROUND \& OBJECTIVE}
 
 \begin{itemize}[leftmargin=*, label={}]
-  \item Description of the area within which the degree project is being carried out with connection to scientific and/or societal interest.
-  \item Description of the interest of the organization or company who provided the assignment.
-  \item The high level objective of the project, the desired outcome from the perspective of the assignment provider.
-  \item The background knowledge required to carry out the project.
+  \item %Description of the area within which the degree project is being carried out with connection to scientific and/or societal interest.
+    \textbf{Scientific \& Societal Context:} The project is carried out with \emph{Klimra}, a company whose digital platform automates train‑delay compensation using real‑time public‑transit APIs. Real‑time information services improve commuter experience, transparency, and accessibility.
+  
+  \item %Description of the interest of the organization or company who provided the assignment.
+    \textbf{Company Interest:} From a societal perspective, real-time services like Klimra’s improve user experience, accessibility, and transparency. Scientifically, the project contributes to the field of backend system design by evaluating how architecture choices affect latency, scalability, cost, and energy efficiency in API-dependent environments.
+  
+  \item %The high level objective of the project, the desired outcome from the perspective of the assignment provider.
+    \textbf{Research Gap:} A review of 2020--2025 research and practitioner literature shows that no publicly reproducible comparison combines both ingestion strategy (polling vs.\ event-driven) \emph{and} storage choice (relational vs.\ time-series vs.\ NoSQL) under identical, rate-limited external-API conditions \cite{Laigner2024Microservices,Shah2022TimeSeriesDB,Tallberg2020IngestOnly}.  While ingestion-focused experiments (e.g.\ Tallberg~\cite{Tallberg2020IngestOnly}) and storage-focused benchmarks (e.g.\ Shah~\cite{Shah2022TimeSeriesDB}) address one side of the problem, no study measures how different storage engines behave when ingest workloads are held constant across architectures \cite{Marcu2022PushPull,AWSTimestreamRDSMigrate2023}.
+
+  \item %The background knowledge required to carry out the project.
+    \textbf{Required Background:} The student has prior knowledge in distributed systems, API integration, and backend development, and has experience with both SQL and NoSQL databases, which is essential for the scope of the project.
 \end{itemize}
 
 \section*{RESEARCH QUESTION \& METHOD}
 
 \begin{itemize}[leftmargin=*, label={}]
-  \item \textbf{QUESTION:} State the question that will be examined. Formulate is as an explicit and evaluable question. State your hypothesis.
-  \item \textbf{Objectives:} Break down the research questions to measurable objectives.
-  \item \textbf{Tasks:} Describe the tasks that are necessary to reach the objectives. For each task, describe the challenges it involves.
-  \item \textbf{Method:} Describe the method/s that will be followed. Explain why they are appropriate for the project or for the specific tasks.
-  \item \textbf{Ethics and Sustainability:} Does the project address questions of ethics or sustainability? Does the project raise ethical or sustainability questions? If yes, how could these be handled?
-  \item \textbf{Limitations:} Define the limitations on what is to be done (so that it is clear what is not included in the degree project).
-  \item \textbf{Risks:} Explain what can go wrong and delay or make the project impossible to conclude. Explain how you will deal with these problems.
+  %\item \textbf{QUESTION:} State the question that will be examined. Formulate it as an explicit and evaluable question. State your hypothesis.
+  \item \textbf{QUESTION:} Which backend architecture provides the best performance for real-time train tracking applications dependent on external APIs, in terms of update latency, database performance, and system scalability?
+
+  \item \textbf{Hypothesis:}
+        \begin{itemize}
+            \item Event‑driven ingestion will reduce end‑to‑end latency compared with scheduled polling.
+            \item Time‑series databases will outperform relational stores for time‑range queries.
+            \item Cloud‑native NoSQL services (such as DynamoDB) will scale horizontally with lower operational overhead but may incur higher single‑query latency.
+        \end{itemize}
+
+  
+  %\item \textbf{Objectives:} Break down the research questions to measurable objectives.
+  \item \textbf{Objectives:}
+        \begin{itemize}
+            \item Implement and compare polling and event‑driven ingestion pipelines.
+            \item Evaluate three AWS databases: RDS PostgreSQL, Amazon Timestream, and DynamoDB.
+            \item Quantify performance—latency, throughput, and resource usage (CPU, memory, network I/O).
+            \item Provide architecture recommendations tailored to Klimra’s workload.
+        \end{itemize}
+  
+  %\item \textbf{Tasks:} Describe the tasks that are necessary to reach the objectives. For each task, describe the challenges it involves.
+
+  \item \textbf{Tasks:}
+        \begin{itemize}
+            \item Literature review and requirements analysis.
+            \item Develop a real‑time train‑tracking platform: shared React frontend, interchangeable backend services.
+            \item Instrument ingestion pipelines and databases with unified metrics.
+            \item Run repeatable experiments under controlled API rate limits.
+            \item Analyse results and document findings.
+        \end{itemize}
+  
+  %\item \textbf{Method:} Describe the method/s that will be followed. Explain why they are appropriate for the project or for the specific tasks.
+
+    \item \textbf{Method:}  
+      The study follows a \emph{design-science} loop:
+
+      \begin{enumerate}[label=\arabic*.]
+        \item Implement six backend variants that differ only in ingestion strategy (polling / event-driven) and storage engine (PostgreSQL, Timestream, DynamoDB).
+        \item Run controlled benchmarks against Trafikverket’s train-position data-cache API at an identical request rate, using k6 \cite{k6Docs2025} for load generation; collect system metrics via AWS CloudWatch by using RDS Enhanced Monitoring for PostgreSQL, built-in namespaces for Timestream and DynamoDB, and the CloudWatch Agent on ingestion containers \cite{AWSCloudWatch2025}.
+        \item Record average latency, 95\textsuperscript{th}-percentile latency, throughput, memory footprint, and disk / network I/O throughput for every run.
+        \item Perform statistical analysis: Shapiro--Wilk (checks normality); one-way ANOVA \cite{StatsDirectANOVA2023} for metrics that meet normality, or Kruskal--Wallis \cite{StatsDirectKW2023} otherwise; Holm post-hoc tests to identify which pairs of back-end variants differ.
+
+      \end{enumerate}
+
+      This pipeline isolates backend effects while keeping the workload realistic and repeatable.
+
+  
+  %\item \textbf{Ethics and Sustainability:} Does the project address questions of ethics or sustainability? Does the project raise ethical or sustainability questions? If yes, how could these be handled?
+
+  \item \textbf{Ethics and Sustainability:} The study processes only publicly available data, with no personal information. Sustainability considerations are noted qualitatively but are not the primary focus.
+  
+  %\item \textbf{Limitations:} Define the limitations on what is to be done (so that it is clear what is not included in the degree project).
+
+    \item \textbf{Limitations:} UI/UX design, mobile clients, and production deployment are out of scope. Only AWS services are compared.
+  
+  %\item \textbf{Risks:} Explain what can go wrong and delay or make the project impossible to conclude. Explain how you will deal with these problems.
+  \newpage
+
+  \item \textbf{Risks:}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.5cm}p{4cm}p{5cm}@{}}
+\toprule
+\textbf{Risk} & \textbf{Impact} & \textbf{Mitigation} \\
+\midrule
+API outage or new rate limits &
+Benchmark schedule slips; missing data &
+Cache 24 h feed snapshots; fall back to synthetic dataset; stagger runs off-peak. \\
+
+Unexpected AWS cost spike &
+Budget over-run; throttled resources &
+Track daily spend; enable AWS Budget alerts; limit test cluster size. \\
+
+Instrumentation bug or data loss &
+Skewed or invalid results &
+Unit-test metric collectors; dry-run with synthetic load; peer code review. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+
 \end{itemize}
 
 \section*{EVALUATION \& NEWS VALUE}
 
 \begin{itemize}[leftmargin=*, label={}]
-  \item \textbf{Evaluation:} How is it determined if the objectives of the degree project have been fulfilled and if the research question has been adequately answered? What kind of qualitative or quantitative measures can be defined and evaluated?
-  \item \textbf{Expected scientific results:} How is the work scientifically relevant?
-  \item \textbf{The work's innovation/news value:} Why does someone want to read the finished work? And who are these people?
+  \item %\textbf{Evaluation:} How is it determined if the objectives of the degree project have been fulfilled and if the research question has been adequately answered? What kind of qualitative or quantitative measures can be defined and evaluated?
+    \textbf{Evaluation:} Success is determined by statistically significant performance comparisons across configurations. Key metrics: ingestion latency, query latency, throughput, and CPU/memory per request.
+
+  
+  \item %\textbf{Expected scientific results:} How is the work scientifically relevant?
+    \textbf{Expected Scientific Results:} A reproducible benchmark and decision framework for backend selection in rate‑limited, real‑time API scenarios.
+
+  
+  \item %\textbf{The work's innovation/news value:} Why does someone want to read the finished work? And who are these people?
+    \textbf{Innovation/News Value:} Backend engineers in transport, IoT, and other sectors can apply the benchmark results to reduce latency and cost; researchers gain a baseline for future studies.
+
 \end{itemize}
 
 \section*{PRE-STUDY}
 
 \begin{itemize}[leftmargin=*, label={}]
-  \item Description of the literature studies. What areas will the literature study focus on? How shall the necessary knowledge on background and state-of-the-art be obtained? What preliminarily important references have been identified?
+  %\item Description of the literature studies. What areas will the literature study focus on? How shall the necessary knowledge on background and state-of-the-art be obtained? What preliminarily important references have been identified?
+  \item \textbf{Literature Focus:}
+        \begin{itemize}
+            \item Event‑driven vs.~polling architectures.
+            \item Time‑series vs.~relational vs.~NoSQL database performance.
+            \item Benchmarking methodologies for real‑time systems.
+        \end{itemize}
+  \item \textbf{Initial References.} See the \emph{References} section.
 \end{itemize}
 
 \section*{CONDITIONS \& SCHEDULE}
 
 \begin{itemize}[leftmargin=*, label={}]
-  \item List of the resources are needed to solve the problem. This can be technical equipment, software, or data, but also experiment and interview subjects.
-  \item Describe the way the external supervisor will be involved in the project.
-  \item Provide a project timeline, specifying the main tasks and the time allocated for them, milestones (time of achievement of intermediate goals)
+  \item %List of the resources are needed to solve the problem. This can be technical equipment, software, or data, but also experiment and interview subjects.
+  \textbf{Resources:}
+    \begin{itemize}
+            \item Public train-position data via Trafikverket data-cache API.
+            \item k6 and Locust for load-testing \cite{k6Docs2025,LocustDoc2023}; Grafana dashboards.
+            \item AWS services: RDS (PostgreSQL) with Enhanced Monitoring, Amazon Timestream, DynamoDB, Lambda/SQS; CloudWatch + CloudWatch Agent for CPU, memory, and I/O metrics \cite{AWSCloudWatch2025}.
+        \end{itemize}
+  
+  \item %Describe the way the external supervisor will be involved in the project.
+  \textbf{Supervision:} Weekly check-ins with the external supervisor at Klimra. Periodic meetings with KTH supervisor for progress review and academic feedback.
+  
+  \item %Provide a project timeline, specifying the main tasks and the time allocated for them, milestones (time of achievement of intermediate goals)
+  \newpage
+  \textbf{Timeline:}
+    \begin{center}
+\small
+\begin{tabular}{@{}llcc@{}}
+\toprule
+\textbf{Phase} & \textbf{Task} & \textbf{Start} & \textbf{End} \\
+\midrule
+\multicolumn{4}{l}{\textit{Pre}}\\
+ & Kick-off \& detailed schedule                & 2025-05-05 & 2025-05-11 \\
+ & Literature survey \& related work            & 2025-05-05 & 2025-05-25 \\
+ & Refine research question \& metrics          & 2025-05-12 & 2025-05-18 \\
+ & Requirements \& platform design              & 2025-05-19 & 2025-05-25 \\
+ & Dataset access (Trafikverket) \& API quota   & 2025-05-26 & 2025-06-01 \\
+ & Draft Introduction \& Background             & 2025-05-26 & 2025-06-08 \\
+ & Consolidate pre-study package for supervisor & 2025-06-02 & 2025-06-08 \\
+\addlinespace
+\multicolumn{4}{l}{\textit{Main}}\\
+ & Prototype platform (React + baseline backend)        & 2025-06-12 & 2025-06-29 \\
+ & Implement ingestion methods (polling / event-driven) & 2025-06-18 & 2025-06-29 \\
+ & Integrate databases (RDS PG, Timestream, DynamoDB)   & 2025-06-30 & 2025-07-06 \\
+ & Benchmark harness \& instrumentation                 & 2025-06-30 & 2025-07-06 \\
+ & Controlled experiments (+ data collection)           & 2025-07-07 & 2025-07-20 \\
+ & Initial results analysis \& visualisation            & 2025-07-21 & 2025-07-27 \\
+\addlinespace
+\multicolumn{4}{l}{\textit{Wrap-up}}\\
+ & Statistical analysis \& plots polish        & 2025-07-28 & 2025-08-08 \\
+ & Draft results \& discussion section         & 2025-08-04 & 2025-08-10 \\
+ & Complete thesis write-up (all chapters)     & 2025-08-11 & 2025-09-07 \\
+ & Internal review \& supervisor feedback      & 2025-09-01 & 2025-09-05 \\
+ & Final formatting \& proofreading            & 2025-09-08 & 2025-09-12 \\
+ & Presentation \& opposition prep             & 2025-09-08 & 2025-09-21 \\
+\bottomrule
+\end{tabular}
+\end{center}
 \end{itemize}
 
-\section*{REFERENCES}
 
-List references, including information Authors, Title, Journal/Book/Conference/Website, Publication date.
+%List references, including information Authors, Title, Journal/Book/Conference/Website, Publication date.
+
+\begingroup
+\small
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\endgroup
 
 \end{document}
