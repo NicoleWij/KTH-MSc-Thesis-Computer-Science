@@ -69,18 +69,30 @@ Modern data-intensive applications (e.g. IoT sensor networks, financial tick fee
     \begin{itemize}
         \item[] A Swedish master’s thesis compared a relational time-series extension (TimescaleDB on PostgreSQL) with a NoSQL document store (MongoDB) featuring its native time-series collections. The case study used a weather sensor dataset (millions of readings across many stations) and measured query response times for typical analytics (e.g. retrieving all data in a given time interval vs. fetching data from specific sensors). Result: The two systems exhibited complementary strengths. TimescaleDB handled complex, large-range interval queries more efficiently – e.g. pulling all readings over a time window across many sensors was faster with Timescale’s partitioned hypertables. MongoDB, however, outperformed Timescale for targeted lookups involving a subset of sensors (e.g. querying a single weather station’s data). This suggests that a document-oriented NoSQL DB, with flexible JSON schema, can be advantageous when queries are highly selective on tags (like sensor ID), whereas a time-series relational DB excels at bulk time-range scans. The thesis methodology logged wall-clock timings for each query type, repeating trials to account for variability. The authors conclude that neither system is universally better – the “optimal” choice depends on whether the workload is broad-scale analysis or narrow, per-sensor retrieval in this time-series context
     \end{itemize}
-    \item[] \textbf{} 
+    \item[] \textbf{Comparative Analysis of AWS Cloud Data Storage System Architectures} 
+    \begin{itemize}
+        \item[]  This University of Helsinki master’s thesis (2025) focuses on AWS-managed database services for time-series IoT data, comparing Amazon Timestream (a serverless TSDB), Amazon DynamoDB (NoSQL key-value store), and an AWS data lake approach (e.g. storing time-series in S3 or similar) for ingesting and querying high-frequency sensor streams. The thesis designed an end-to-end IoT data pipeline (using AWS IoT Core and Lambda) to feed each storage solution, then evaluated query performance under different access patterns (e.g. retrieving recent vs. entire history of the data) and ingestion throughput. Finding: Amazon Timestream was found to underperform significantly in certain scenarios – in particular, it showed “significantly poorer performance” when retrieving full data items (i.e. full dataset scans or large result sets) compared to the other solutions. This indicates that while Timestream is optimized for time-series, it may struggle with large ad-hoc queries, potentially due to internal storage layouts or query engine trade-offs. DynamoDB and the data lake approach likely handled such full-data queries more efficiently in the study’s tests (e.g. Dynamo’s key-value access was faster for bulk retrieval in this case). The thesis underscores the importance of evaluating cloud database services under realistic workload scenarios – a system like DynamoDB might offer better consistency for high-concurrency writes, whereas Timestream’s performance benefits appear only under certain query patterns and not for exhaustive scans. The overall methodology and results provide guidance on architecting IoT data platforms on AWS, balancing factors like query latency, data volume, and cost.
+    \end{itemize}
 \end{itemize}
+
+\section*{Benchmarking Backend Performance in Cloud Environments (Methodological Studies)}
+
+\subsection*{Background and Context}
+To evaluate backend services under realistic cloud workloads, recent research emphasizes rigorous benchmarking methods, careful metric collection, and reliable experimental design. Below are peer-reviewed studies and theses that focus on methodologies for benchmarking cloud-based backends (APIs, databases, data pipelines), highlighting how they ensure accurate measurement of latency, throughput, resource usage, and I/O under realistic conditions:
+
+\begin{itemize}
+    \item[] \textbf{Performance evaluation metrics for cloud, fog and edge computing: A review, taxonomy, benchmarks and standards for future research}
+    \begin{itemize}
+        \item[] This study provide a comprehensive survey of performance metrics and benchmarking standards for distributed cloud environments. This work defines key metrics (e.g. response latency, throughput, CPU/memory usage) and categorizes benchmark tools, offering a taxonomy of real-world metrics relevant to cloud and edge computing. By identifying which metrics are most useful for evaluating cloud services and how to measure them, this review establishes a foundation for methodologically sound performance evaluations of backend systems. It underscores the importance of using diverse metrics and standardized benchmarks to ensure accurate and comparable results when testing cloud-based backends.
+    \end{itemize}
+\end{itemize}
+
+
 
 
 \section*{Questions}
 \begin{itemize}
-  \item …
-\end{itemize}
-
-\section*{Next Steps}
-\begin{itemize}
-  \item …
+  \item[]
 \end{itemize}
 
 \end{document}
