@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{geometry}
 \usepackage[hidelinks]{hyperref}
-\geometry{margin=1in}
+\geometry{margin=0.8in}
 
 % Nicely-formatted bullet lists
 \usepackage{enumitem}
@@ -49,6 +49,7 @@ study}
   \end{itemize}
 \end{itemize}
 
+\newpage
 \section*{Performance of Time-Series vs Relational vs NoSQL Databases Under High-Ingestion Workloads}
 \subsection*{Background and Context}
 Modern data-intensive applications (e.g. IoT sensor networks, financial tick feeds, telemetry) generate time-series data at high velocity. Choosing the right database system is critical for real-time ingestion and querying of this data. Traditional relational databases (SQL/RDBMS) can struggle with the volume and sequential nature of time-stamped data, while specialized time-series databases (TSDBs) and NoSQL databases promise optimizations for high ingestion rates and scalable query performance. Recent research has empirically compared these systems under heavy write loads and real-time query scenarios, often using IoT or sensor data as benchmarks. Below, we summarize several peer-reviewed studies and academic theses that benchmark time-series vs. relational vs. NoSQL databases (including AWS services like Amazon Timestream, DynamoDB, and RDS PostgreSQL) under high-ingestion or real-time workloads. We highlight both performance results and methodology (datasets, queries, and metrics) from each source, to inform database selection for such use cases.
@@ -75,6 +76,7 @@ Modern data-intensive applications (e.g. IoT sensor networks, financial tick fee
     \end{itemize}
 \end{itemize}
 
+\newpage
 \section*{Benchmarking Backend Performance in Cloud Environments (Methodological Studies)}
 
 \subsection*{Background and Context}
@@ -85,14 +87,27 @@ To evaluate backend services under realistic cloud workloads, recent research em
     \begin{itemize}
         \item[] This study provide a comprehensive survey of performance metrics and benchmarking standards for distributed cloud environments. This work defines key metrics (e.g. response latency, throughput, CPU/memory usage) and categorizes benchmark tools, offering a taxonomy of real-world metrics relevant to cloud and edge computing. By identifying which metrics are most useful for evaluating cloud services and how to measure them, this review establishes a foundation for methodologically sound performance evaluations of backend systems. It underscores the importance of using diverse metrics and standardized benchmarks to ensure accurate and comparable results when testing cloud-based backends.
     \end{itemize}
-\end{itemize}
-
-
-
-
-\section*{Questions}
-\begin{itemize}
-  \item[]
+    \item[] \textbf{Microservices: A Performance Tester’s Dream or Nightmare?}
+    \begin{itemize}
+        \item[] This study studies the challenges of performance testing microservice-based applications in cloud environments. They find that cloud-based microservices exhibit high variability in response times across repeated test runs, even when CPU utilization remains stable. The paper highlights that statistically significant differences in response latency can occur due to deployment nondeterminism, complicating result analysis. To obtain reliable insights, the authors emphasize executing enough repetitions of tests to account for environmental variance. They conclude that performance benchmarking for microservices in the cloud is not straightforward, requiring extra care (e.g. automation, statistical analysis) to detect regressions and achieve consistent results. This study underscores methodological best practices like repeated experiments, controlled environments, and careful result interpretation for cloud API performance.
+    \end{itemize}
+    \item[] \textbf{Benchmarking microservice platforms and applications in the cloud}
+    \begin{itemize}
+        \item[] This study addresses systematic methods to benchmark microservice architectures in cloud settings. The thesis notes that performance variability in public clouds makes it difficult to precisely measure and reproduce backend performance metrics. It points out a fundamental trade-off between accuracy and effort: running longer or more frequent benchmark tests improves the precision of metrics (e.g. latency, throughput) but is costly and time-consuming. Grambow proposes automating and optimizing the benchmarking process – for example, by adapting workload patterns whenever a service’s API changes and integrating smaller micro-benchmarks into CI/CD pipelines – to balance thoroughness with practicality. These contributions are methodologically significant: they enable continuous and reliable performance evaluation of cloud-native backends despite rapid code changes, while accounting for cloud-induced variability in results. This work is directly relevant to benchmarking API-driven architectures, as it improves how experiments are designed and repeated for accuracy.
+    \end{itemize}
+    \newpage
+    \item[] \textbf{Benchmarking Microservice Performance: A Pattern-Based Approach}
+    \begin{itemize}
+        \item[] This study introduce a novel approach to reduce the effort of benchmarking RESTful backend services while preserving realistic workload complexity. They observe that each microservice may require a custom benchmark (due to differing APIs), which is costly to implement and update as the service evolves. To address this, the authors propose modeling reusable interaction patterns based on an abstract description of the service’s REST API (e.g. using OpenAPI definitions). Their framework automatically generates and executes a suite of operations (with proper data dependencies resolved at runtime) that emulate real client behavior across the API. This pattern-based method ensures that complex, stateful API interactions (typical of modern microservices) are included in the benchmark with minimal manual effort. By enabling developers to quickly craft representative workloads for any REST API, the study contributes a cloud-native benchmarking technique that keeps pace with evolving backend services and yields meaningful performance metrics under realistic usage patterns.
+    \end{itemize}
+    \item[] \textbf{Benchmarking scalability of stream processing frameworks deployed as microservices in the cloud}
+    \begin{itemize}
+        \item[] Henning & Hasselbring conduct an extensive empirical study of data ingestion pipeline performance in cloud environments. They use a systematic, cloud-native benchmark to compare five modern stream processing frameworks (e.g. Apache Flink, Kafka Streams), deploying them as microservice instances on Kubernetes clusters. Over 740 hours of experiments in Google’s cloud (and a private cloud), the authors measure how each framework’s throughput scales with increasing load by monitoring message processing rates (up to 1 million msg/s) and resource consumption as the number of microservice instances grows. The results, achieved under realistic distributed workloads, show approximately linear scalability for all frameworks given sufficient resources, but also reveal differences in resource efficiency and scaling behavior between technologies. This study’s rigorous design – long-running tests, multiple cloud environments, and varied scale-out patterns – exemplifies proper benchmarking technique for backend data-processing services. It demonstrates how to interpret throughput and resource metrics to identify bottlenecks and efficiency trade-offs in cloud-based streaming architectures, guiding practitioners in evaluating ingestion pipeline performance under real-world loads.
+    \end{itemize}
+    \item[] \textbf{Microservices vs Monolithic Architecture: Load Testing in AWS on ReactJS Web Application for Performance}
+    \begin{itemize}
+        \item[] Salunkhe provides a practical evaluation of backend architecture performance on Amazon Web Services, illustrating sound benchmarking methodology with industry-relevant tools. In this thesis, a monolithic Node.js backend on EC2 and an equivalent microservices deployment on Amazon EKS are subjected to identical API load tests. The author uses Locust (an open-source load generator) to simulate realistic user traffic to the services and employs AWS CloudWatch to monitor system metrics like CPU utilization and resource usage during tests. By replaying typical API requests at controlled rates and volumes, the study captures detailed performance data (e.g. response time under increasing concurrent users) for each architecture. The combination of CloudWatch’s granular monitoring with Locust’s workload simulation allows identification of performance bottlenecks and scaling limits in a cloud setting. The thesis reports that under low load the monolith exhibited lower latency, but under high concurrency the microservices architecture maintained more stable, lower response times. These findings, derived from a methodologically careful A/B comparison, highlight how cloud-native tools and load-testing frameworks can be used to benchmark backend APIs reliably. The work underscores best practices such as using realistic workloads, cloud monitoring instrumentation, and scenario-based testing to evaluate different backend designs on AWS, yielding actionable insights into their latency-throughput profiles.
+    \end{itemize}
 \end{itemize}
 
 \end{document}
