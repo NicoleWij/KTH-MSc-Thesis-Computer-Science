@@ -2,30 +2,45 @@
 %%% mode: latex
 %%% TeX-master: t
 %%% End:
-% The following command is used with glossaries-extra
+
+% ----------------------------------------------------------------------------- 
+% Glossaries-extra: use "long-short" style for acronyms
 \setabbreviationstyle[acronym]{long-short}
-% The form of the entries in this file is \newacronym{label}{acronym}{phrase}
-%                                      or \newacronym[options]{label}{acronym}{phrase}
-% see "User Manual for glossaries.sty" for the  details about the options, one example is shown below
-% note the specification of the long form plural in the line below
-\newacronym[longplural={Debugging Information Entities}]{DIE}{DIE}{Debugging Information Entity}
-%
-% The following example also uses options
-\newacronym[shortplural={OSes}, firstplural={operating systems (OSes)}]{OS}{OS}{operating system}
 
-% note the use of a non-breaking dash in long text for the following acronym
-\newacronym{IQL}{IQL}{Independent Q‑Learning}
-
-% example of putting in a trademark on first expansion
-\newacronym[first={NVIDIA OpenSHMEM Library (NVSHMEM\texttrademark)}]{NVSHMEM}{NVSHMEM}{NVIDIA OpenSHMEM Library}
-
+% 1.  Institutions & Organisations
 \newacronym{KTH}{KTH}{KTH Royal Institute of Technology}
-
-\newacronym{LAN}{LAN}{Local Area Network}
-\newacronym{VM}{VM}{virtual machine}
-% note the use of a non-breaking dash in the following acronym
-\newacronym{WiFi}{Wi‑Fi}{Wireless Fidelity}
-
-\newacronym{WLAN}{WLAN}{Wireless Local Area Network}
 \newacronym{UN}{UN}{United Nations}
 \newacronym{SDG}{SDG}{Sustainable Development Goal}
+
+% 2.  Networking & Computing Terminology
+\newacronym{LAN}{LAN}{Local Area Network}
+\newacronym{WLAN}{WLAN}{Wireless Local Area Network}
+\newacronym{WiFi}{Wi-Fi}{Wireless Fidelity}
+\newacronym{VM}{VM}{virtual machine}
+
+% 3.  Software & Library Acronyms (research examples)
+\newacronym[longplural={Debugging Information Entities}]{DIE}{DIE}{Debugging Information Entity}
+\newacronym[shortplural={OSes}, firstplural={operating systems (OSes)}]{OS}{OS}{operating system}
+\newacronym{IQL}{IQL}{Independent Q-Learning}
+\newacronym[first={NVIDIA OpenSHMEM Library (NVSHMEM\texttrademark)}]{NVSHMEM}{NVSHMEM}{NVIDIA OpenSHMEM Library}
+
+% 4.  Cloud & API-Related
+\newacronym{API}{API}{Application Programming Interface}
+\newacronym{AWS}{AWS}{Amazon Web Services}
+\newacronym{RDS}{RDS}{Relational Database Service}
+
+
+% 5.  Database Paradigms & Data Formats
+\newacronym{TSDB}{TSDB}{Time-Series Database}
+\newacronym{NoSQL}{NoSQL}{Not Only SQL database}
+\newacronym{GTFSRT}{GTFS-RT}{General Transit Feed Specification Realtime}
+
+
+% 6.  Performance / Resource Metrics
+\newacronym{CPU}{CPU}{Central Processing Unit}
+\newacronym{RAM}{RAM}{Random-Access Memory}
+\newacronym{IOPS}{IOPS}{Input/Output Operations per Second}
+
+
+% 7.  Benchmarking & Load-Testing Tools
+\newacronym{kSix}{k6}{Grafana k6 load-testing tool}

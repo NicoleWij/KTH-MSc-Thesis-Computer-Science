@@ -30,7 +30,7 @@
 \disablepackage{transparent}{}
 \fi
 
-\documentclass[nomenclature, english, bibtex]{kththesis}
+\documentclass[nomenclature, english, biblatex]{kththesis}
 
 \newcommand*{\generalExpl}[1]{\todo[inline]{#1}}                
 
@@ -39,14 +39,14 @@
 
 \newcommand*{\warningExpl}[1]{\todo[inline, backgroundcolor=kth-lightred40]{#1}}
 
-\usepackage[style=numeric,sorting=none,backend=biber]{biblatex}
-\ifbiblatex
-    
-    \usepackage[style=ieee,citestyle=numeric-comp]{biblatex}
-    \addbibresource{references.bib}
-\else
-    \bibliographystyle{bibstyle/myIEEEtran}
-\fi
+
+\usepackage[
+    backend=biber,
+    style=ieee,
+    citestyle=numeric-comp,
+    sorting=none
+]{biblatex}
+\addbibresource{references.bib}
 
 \input{lib/includes}
 \input{lib/kthcolors}
@@ -292,28 +292,17 @@ nopostdot]{glossaries}
 \clearpage\thispagestyle{empty}\mbox{}
 \titlepage
 
-% If you do not want to have a bookinfo page, comment out the line saying \bookinfopage and add a \cleardoublepage
-% If you want a bookinfo page: you will get a copyright notice, unless you have used the doclicense package in which case you will get a Creative Commons license. To include the doclicense package, uncomment the configuration of this package above and configure it with your choice of license.
-%\bookinfopage
-\cleardoublepage
+\bookinfopage
+
 \frontmatter
 \setcounter{page}{1}
 \begin{abstract}
-% The first abstract should be in the language of the thesis.
 \markboth{\abstractname}{}
 \begin{scontents}[store-env=lang]
 eng
 \end{scontents}
-%%% The contents of the abstract (between the begin and end of scontents) will be saved in LaTeX format
-%%% and output on the page(s) at the end of the thesis with information for DiVA facilitating the correct
-%%% entry of the meta data for your thesis.
-%%% These page(s) will be removed before the thesis is inserted into DiVA.
-\engExpl{All theses at KTH are \textbf{required} to have an abstract in both \textit{English} and \textit{Swedish}.}
 
-\engExpl{Exchange students may want to include one or more abstracts in the language(s) used in their home institutions to avoid the need to write another thesis when returning to their home institution.}
 
-\generalExpl{Keep in mind that most of your potential readers are only going to read your \texttt{title} and \texttt{abstract}. This is why the abstract must give them enough information so that they can decide if this document is relevant to them or not. Otherwise, the likely default choice is to ignore the rest of your document.\\
-An abstract should stand on its own, \ie no citations, cross-references to the body of the document, acronyms must be spelled out, \ldots .\\Write this early and revise as necessary. This will help keep you focused on what you are trying to do.}
 
 \begin{scontents}[store-env=abstracts,print-env=true]
 \generalExpl{Enter your abstract here!}
@@ -377,25 +366,11 @@ Since you should have both English and Swedish keywords - you might think of ord
 \begin{scontents}[store-env=lang]
 swe
 \end{scontents}
-\warningExpl{Inside the following scontents environment, you cannot use a \textbackslash include{filename} as the command rather than the file contents will end up in the for DiVA information. Additionally, you should not use a straight double quote character in the abstracts or keywords, use two single quote characters instead.}
-\begin{scontents}[store-env=abstracts,print-env=true]
-\generalExpl{Enter your Swedish abstract or summary here!}
-\sweExpl{Alla avhandlingar vid KTH \textbf{måste ha} ett abstrakt på både \textit{engelska} och \textit{svenska}.\\
-Om du skriver din avhandling på svenska ska detta göras först (och placera det som det första abstraktet) - och du bör revidera det vid behov.}
 
-\engExpl{If you are writing your thesis in English, you can leave this until the draft version that goes to your opponent for the written opposition. In this way, you can provide the English and Swedish abstract/summary information that can be used in the announcement for your oral presentation.\\If you are writing your thesis in English, then this section can be a summary targeted at a more general reader. However, if you are writing your thesis in Swedish, then the reverse is true – your abstract should be for your target audience, while an English summary can be written targeted at a more general audience.\\This means that the English abstract and Swedish sammnfattning  
-or Swedish abstract and English summary need not be literal translations of each other.}
-
-\warningExpl{Do not use the \textbackslash glspl\{\} command in an abstract that is not in English, as my programs do not know how to generate plurals in other languages. Instead, you will need to spell these terms out or give the proper plural form. In fact, it is a good idea not to use the glossary commands at all in an abstract/summary in a language other than the language used in the \texttt{acronyms.tex file} - since the glossary package does \textbf{not} support use of more than one language.}
-
-\engExpl{The abstract in the language used for the thesis should be the first abstract, while the Summary/Sammanfattning in the other language can follow}
-\end{scontents}
 \subsection*{Nyckelord}
 \begin{scontents}[store-env=keywords,print-env=true]
-% SwedishKeywords were set earlier, hence we can use alternative 2
 \InsertKeywords{swedish}
 \end{scontents}
-\sweExpl{Nyckelord som beskriver innehållet i uppsatsen eller rapporten}
 \end{abstract}
 \babelpolyLangStop{swedish}
 
@@ -405,25 +380,7 @@ or Swedish abstract and English summary need not be literal translations of each
 \markboth{Acknowledgments}{}
 \sweExpl{Författarnas tack}
 
-\engExpl{It is nice to acknowledge the people that have helped you. It is
-  also necessary to acknowledge any special permissions that you have gotten –
-  for example, getting permission from the copyright owner to reproduce a
-  figure. In this case, you should acknowledge them and this permission here
-  and in the figure’s caption. \\
-  Note: If you do \textbf{not} have the copyright owner’s permission, then you \textbf{cannot} use any copyrighted figures/tables/\ldots . Unless stated otherwise all figures/tables/\ldots are generally copyrighted.
-}
-\sweExpl{I detta kapitel kan du ev nämna något om
-  din bakgrund om det påverkar rapporten på något sätt. Har du t ex inte
-  möjlighet att skriva perfekt svenska för att du är nyanländ till landet kan
-  det vara på sin plats att nämna detta här. OBS, detta får dock inte vara en
-  ursäkt för att lämna in en rapport med undermåligt språk, undermålig grammatik och
-  stavning (t ex får fel som en automatisk stavningskontroll och
-  grammatikkontroll kan upptäcka inte förekomma)\\
-En dualism som måste hanteras i hela rapporten och projektet
-}
-
-I would like to thank xxxx for having yyyy. Or in the case of two authors:\\
-We would like to thank xxxx for having yyyy.
+I would like to thank xxxx for having yyyy.
 
 \acknowlegmentssignature
 
@@ -472,39 +429,16 @@ We would like to thank xxxx for having yyyy.
 \glsresetall
 \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
 \selectlanguage{english}
+
+
+
+
+
 \chapter{Introduction}
 \label{ch:introduction}
-\sweExpl{svensk: Introduktion}
-
-
-\sweExpl{Ofta kommer problemet och problemägaren från industrin där man önskar en specifik lösning på ett specifikt problem. Detta är ofta ”för smalt” definierat och ger ofta en ”för smal” lösning för att resultatet skall vara intressant ur ett mer allmänt ingenjörsperspektiv och med ”nya” erfarenheter som resultat. Fundera tillsammans med projektets intressenter (student, problemägare och akademi) hur man skulle kunna använda det aktuella problemet/förslaget för att undersöka någon ingenjörsaspekt och vars resultat kan ge ny eller kompletterande erfarenhet till ingenjörssamfundet och vetenskapen.\\slöser man en del eller hela delen av det ursprungliga problemet.\\Erfarenheten kommer ur en frågeställning som man i examensarbetet försöker besvara med tidigare och andras erfarenhet, egna eller modifierade metoder som ger ett resultat vilket kan användas för att diskutera ett svar på undersökningsfrågan.\\Detta stycke skall alltså, förutom det ursprungliga ”smala” problemet, innehålla  vad som skall undersökas för att skapa ny ingenjörserfarenhet och/eller vetenskap.}
-
-\engExpl{The first paragraph after a heading is not indented, all of the
-  subsequent paragraphs have their first line indented.}
-  
-This chapter describes the specific problem that this thesis addresses, the context of the problem, the
-goals of this thesis project, and outlines the structure of the thesis.\\
-
-\generalExpl{Give a general introduction to the area. (Remember to use appropriate references in this and all other sections.)}
-
-% One can use either biblatex or bibtex - set as the option for the document at the top of this file
-\ifbiblatex
-\engExpl{We use the \emph{biblatex} package to handle our references.  We
-use the command \texttt{parencite} to get a reference in parenthesis, like
-this \textbackslash parencite\{heisenberg2015\} resulting in \parencite{heisenberg2015}.  It is also possible to include the author as part of the sentence using \texttt{textcite}, like talking about the work of \textbackslash textcite\{einstein2016\} resulting in \textcite{einstein2016}.\\
-This also means that you have to change the include files to include biblatex and change the way that the \texttt{reference.bib} file is included.}
-\else
-\engExpl{We use the \emph{bibtex} package to handle our references.  We, therefore,
-use the command \textbackslash cite\{farshin\_make\_2019\}. For example, Farshin, \etal described how to improve LLC
-cache performance in \cite{farshin_make_2019} in the context of links running
-at \qty{200}{Gbps}.}
-\fi
-
-\engExpl{Use the glossaries package to help yourself and your readers.
-Add the acronyms and abbreviations to lib/acronyms.tex. Some examples are shown below:}
-In this thesis, we will examine the use of \glspl{LAN}. In this thesis, we will
-assume that \glspl{LAN} include \glspl{WLAN}, such as \gls{WiFi}.
-
+Live digital services, from train-delay trackers to home-energy dashboards, depend on streams of fresh data delivered through public \glspl{API}. Behind the scenes, two technical decisions dominate how fast and cheaply those streams reach end-users: \emph{(i)} whether the back-end pulls updates at fixed intervals (polling) or reacts to push events (event driven), and \emph{(ii)} which kind of database stores the incoming records; relational, specialised time-series, or cloud \glspl{NoSQL}. Prior work shows that each option shifts the balance between latency, throughput, and resource cost \cite{Trindade2021EDAImpact,Heldt2021SciTS}.  
+This thesis benchmarks the six most common combinations of ingestion strategy and storage engine under realistic rate limits, aiming to give engineers a data-driven recipe for choosing the right stack.  
+The remainder of the chapter states the background (Section 1.1), the problem (Section 1.2), defines the purpose and goals (Sections 1.3–1.4), sketches the method (Section 1.5), lists delimitations (Section 1.6), and outlines the structure of the thesis (Section 1.7).
 
 \section{Background}
 \label{sec:background}
