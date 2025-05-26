@@ -124,6 +124,7 @@ morekeywords={begin, todo, textbf, textit, texttt}
 nopostdot]{glossaries}
 \setlength{\glsdescwidth}{0.75\textwidth}
 \usepackage[]{glossaries-extra}
+\usepackage{dirtytalk}
 \ifinswedish
     %\usepackage{glossaries-swedish}
 \fi
@@ -436,43 +437,72 @@ I would like to thank xxxx for having yyyy.
 
 \chapter{Introduction}
 \label{ch:introduction}
-Live digital services, from train-delay trackers to home-energy dashboards, depend on streams of fresh data delivered through public \glspl{API}. Behind the scenes, two technical decisions dominate how fast and cheaply those streams reach end-users: \emph{(i)} whether the back-end pulls updates at fixed intervals (polling) or reacts to push events (event driven), and \emph{(ii)} which kind of database stores the incoming records; relational, specialised time-series, or cloud \glspl{NoSQL}. Prior work shows that each option shifts the balance between latency, throughput, and resource cost \cite{Trindade2021EDAImpact,Heldt2021SciTS}.  
+Live digital services, from train-delay trackers to home-energy dashboards, depend on streams of fresh data delivered through public \glspl{API}. Behind the scenes, two technical decisions dominate how quickly those streams reach end-users and how much computing effort they consume: \emph{(i)} whether the back-end pulls updates at fixed intervals (polling) or reacts to push events (event driven), and \emph{(ii)} which type of database stores the incoming records; relational, specialised time-series, or cloud NoSQL. Prior work shows that each option shifts the balance between latency, throughput, and resource utilisation \cite{Trindade2021EDAImpact,Heldt2021SciTS}.
 This thesis benchmarks the six most common combinations of ingestion strategy and storage engine under realistic rate limits, aiming to give engineers a data-driven recipe for choosing the right stack.  
-The remainder of the chapter states the background (Section 1.1), the problem (Section 1.2), defines the purpose and goals (Sections 1.3–1.4), sketches the method (Section 1.5), lists delimitations (Section 1.6), and outlines the structure of the thesis (Section 1.7).
+The remainder of the chapter states the background (Section \ref{sec:background}), defines the problem (Section \ref{sec:problem}), describes the purpose and goals (Sections \ref{sec:purpose}–\ref{sec:goals}), sketches the method (Section \ref{sec:method}), lists delimitations (Section \ref{sec:delimitations}), and outlines the structure of the thesis (Section \ref{sec:structure}).
+
+
+
 
 \section{Background}
 \label{sec:background}
-\sweExpl{svensk: Bakgrund}
 
-\generalExpl{Present the background for the area. Set the context for your project – so that your reader can understand both your project and this thesis. (Give detailed background information in Chapter 2 - together with related work.)
-Sometimes it is useful to insert a system diagram here so that the reader
-knows what are the different elements and their relationship to each
-other. This also introduces the names/terms/… that you are going to use
-throughout your thesis (be consistent). This figure will also help you later
-delimit what you are going to do and what others have done or will do.}
+Many online services rely on a steady flow of information coming from other websites.
+To keep that information useful, the back-end has to fetch it fast enough so it isn’t already out of date when people see it. In a cloud system, two main design choices largely determine how fresh the data stays:
 
-As one can find in RFC 1235\,\cite{ioannidis_coherent_1991} multicast is useful for xxxx. A number of different \glspl{OS} have been used in this work, such as the following \glspl{OS}: UNIX, Linux, Windows, etc. The main focus will be on one \gls{OS}, namely Linux.
+Live online services increasingly draw on a steady stream of data from other platforms. The back-end must pull this information from public or partner APIs fast enough that it is still relevant when users receive it. In a cloud environment, two key architectural choices—how updates are fetched and where they are stored—largely decide how fresh the data stays:
+
+Live digital services increasingly rely on a continuous integration of external data streams.  
+Any application that depends on real-time updates must ingest public or partner \glspl{API} quickly enough for the information to remain actionable by the time it reaches end-users. In a cloud back-end, two architectural decisions dominate that end-to-end freshness:
+
+\begin{enumerate}
+    \item \textbf{Ingestion strategy:} fixed-interval polling versus event-driven push pipelines
+    \item \textbf{Storage engine:} general-purpose relational stores, specialised time-series engines, or cloud-native NoSQL.
+\end{enumerate}
+
+Prior empirical work shows that each choice shifts the balance between latency, throughput, and scalability.  
+For example, Trindade \etal\ quantify how event-driven micro-services trim tail-latency compared with CRON-based pollers under the same load profile\cite{Trindade2021EDAImpact}, while Heldt \etal\ observe that purpose-built time-series databases sustain 2-3 times higher range-query throughput than row-oriented stores on identical hardware\cite{Heldt2021SciTS}. Yet those studies are evaluated in isolation, either ingestion or storage, and seldom under the hard rate limits that public APIs impose.
+
+\subsection{Why ingestion strategy still matters}  
+Polling remains attractive because it is simple, firewall-friendly, and easy to parallelise, but it also wastes network budget when nothing has changed.  
+Event-driven designs—built on webhooks, message queues, or CDC streams—push updates only when required, reducing duplicate traffic and smoothing burst loads\cite{Silva2022EDAMicroservices}.  
+Energy-constrained IoT deployments show power savings above 30 \% when moving from timer-based fetches to publish/subscribe patterns\cite{Makarovi2022EnergyEfficientIoT}.  
+The open question is whether those latency and efficiency gains persist once the pipeline is coupled to different classes of databases.
+
+\subsection{Storage engines for real-time feeds}  
+Relational systems such as PostgreSQL offer mature SQL semantics and transactional guarantees, but their B-tree layouts become write-amplified under high-frequency inserts.  
+Time-series engines—e.g.\ TimescaleDB, InfluxDB, or Amazon Timestream—append data in chunked, column-oriented blocks and co-locate recent chunks in memory caches, yielding order-of-magnitude faster window queries\cite{Grzesik2020EdgeIoTBenchmark, Vergara2021PerformanceTSDB}.  
+Cloud NoSQL services like DynamoDB trade single-query latency for \say{dial-a-throughput} scalability; Johansson’s evaluation of high-frequency sensor streams in AWS shows linear write scaling well past ten million rows per minute, at the cost of ~2 × longer median read latency compared with RDS-PostgreSQL\cite{Johansson2022AWSCloudData}.  
+
+\subsection{Need for a holistic comparison}  
+Although benchmarks exist for isolated components, no prior study controls both ingestion style and storage engine under the same API-rate constraints.  
+Consequently, engineers still rely on tribal knowledge when choosing architectures for real-time, API-dependent workloads, and researchers lack a reproducible baseline for follow-up optimisation studies.  
+
+To fill this gap, the present thesis will (i) implement matched polling and event-driven pipelines, (ii) deploy them with PostgreSQL, Timestream, and DynamoDB, and (iii) measure end-to-end update latency, query performance, and resource usage. 
+
+The results aim to give practitioners a data-driven recipe for picking the right stack and to provide the research community with a public, reproducible benchmark.
+
+
+
 
 \section{Problem}
 \label{sec:problem}
-\sweExpl{svensk: Problemdefinition eller Frågeställning\\
-Lyft fram det ursprungliga problemet om det finns något och definiera därefter
-den ingenjörsmässiga erfarenheten eller/och vetenskapen som kan komma ur
-projektet. }
 
-Longer problem statement\\
-If possible, end this section with a question as a problem statement.
 
-% Research Question
+
+
+
 \subsection{Original problem and definition}
 \label{sec:researchQuestion}
-\sweExpl{Ursprungligt problem och definition}
-Some text
 
-\subsection{Scientific and engineering issues}\sweExpl{Vetenskaplig och ingenjörsmässig frågeställning}
-some text
+
+\subsection{Scientific and engineering issues}
+\label{sec:issues}
+
+
 
 \section{Purpose}
+\label{sec:purpose}
 \sweExpl{Syfte}
 \sweExpl{Skilj på syfte och mål! Syfte är att förändra något till det bättre. I examensarbetet finns ofta två aspekter på detta. Dels vill problemägaren (företaget) få sitt problem löst till det bättre men akademin och ingenjörssamfundet vill också få nya erfarenheter och vetskap. Beskriv ett syfte som tillfredställer båda dessa aspekter.\\
 Det finns även ett syfte till som kan vara värt att beakta och det är att du som student skall ta examen och att du måste bevisa, i ditt examensarbete, att du uppfyller examensmålen. Dessa mål sammanfaller med kursmålen för examensarbetskursen. 
@@ -483,6 +513,7 @@ Describe who benefits and how they benefit if you achieve your goals. Include an
 
 
 \section{Goals}
+\label{sec:goals}
 \sweExpl{Mål}
 \sweExpl{Skilj på syfte och mål. Syftet är att åstakomma en förändring i något. Målen är vad som konkret skall göras för att om möjligt uppnå den önskade förändringen (syfte). }
 
@@ -497,16 +528,22 @@ The goal of this project is XXX. This has been divided into the following three 
 
 \generalExpl{In addition to presenting the goal(s), you might also state what the deliverables and results of the project are.}
 
-\section{Research Methodology}\sweExpl{Undersökningsmetod}
+\section{Research Methodology}
+\label{sec:method}
+\sweExpl{Undersökningsmetod}
 \sweExpl{Här anger du vilken vilken övergripande undersökningsstrategi eller metod du skall använda för att försöka besvara den akademiska frågeställning och samtidigt lösa det e v ursprungliga problemet. Ofta kan man använda ”lösandet av ursprungsproblemet” som en fallstudie kring en akademisk frågeställning. Du undersöker någon intressant fråga i ”skarpt” läge och samlar resultat och erfarenhet ur detta.\\
 Tänk på att företaget ibland måste stå tillbaka i sin önskan och förväntan på projektets resultat till förmån för ny eller kompletterande ingenjörserfarenhet och vetenskap (ditt examensarbete). Det är du som student som bestämmer och löser fördelningen mellan dessa två intressen men se till att alla är informerade. }
 \generalExpl{Introduce your choice of methodology/methodologies and method/methods – and the reason why you chose them. Contrast them with and explain why you did not choose other methodologies or methods. (The details of the actual methodology and method you have chosen will be given in Chapter~\ref{ch:methods}. Note that in Chapter~\ref{ch:methods}, the focus could be research strategies, data collection, data analysis, and quality assurance.)\\
 In this section you should present your philosophical assumption(s), research method(s), and research approach(es).}
 
-\section{Delimitations}\sweExpl{Avgränsningar}
+\section{Delimitations}
+\label{sec:delimitations}
+\sweExpl{Avgränsningar}
 \generalExpl{Describe the boundary/limits of your thesis project and what you are explicitly not going to do. This will help you bound your efforts – as you have clearly defined what is out of the scope of this thesis project. Explain the delimitations. These are all the things that could affect the study if they were examined and included in the degree project.}
 
-\section{Structure of the thesis}\sweExpl{ Rapportens disposition}
+\section{Structure of the thesis}
+\label{sec:structure}
+\sweExpl{ Rapportens disposition}
 Chapter~\ref{ch:background} presents relevant background information about xxx.  Chapter~\ref{ch:methods} presents the methodology and method used to solve the problem. …
 
 \cleardoublepage
