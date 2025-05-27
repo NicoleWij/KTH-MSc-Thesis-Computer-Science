@@ -437,7 +437,12 @@ I would like to thank xxxx for having yyyy.
 
 \chapter{Introduction}
 \label{ch:introduction}
-Live digital services, from train-delay trackers to home-energy dashboards, depend on streams of fresh data delivered through public \glspl{API}. Behind the scenes, two technical decisions dominate how quickly those streams reach end-users and how much computing effort they consume: \emph{(i)} whether the back-end pulls updates at fixed intervals (polling) or reacts to push events (event driven), and \emph{(ii)} which type of database stores the incoming records; relational, specialised time-series, or cloud NoSQL. Prior work shows that each option shifts the balance between latency, throughput, and resource utilisation \cite{Trindade2021EDAImpact,Heldt2021SciTS}.
+Live digital services, from train-delay trackers to home-energy dashboards, depend on streams of fresh data delivered through public \glspl{API}. Behind the scenes, two technical decisions dominate how quickly those streams reach end-users and how much computing effort they consume: \emph{(i)} whether the back-end pulls updates at fixed intervals (polling) or reacts to push events (event driven), and \emph{(ii)} which type of database stores the incoming records; relational, specialised time-series, or cloud NoSQL.
+
+Prior studies paint a consistent picture.  Moving from fixed-interval polling to an event-driven pipeline shortens both average and tail response times, but it also injects more messages into the system and can push CPU usage to brief spikes \cite{Trindade2021EDAImpact}.  
+Side-by-side database tests tell a similar \say{give-and-take} story: relational engines remain versatile, time-series stores (e.g.\ TimescaleDB, InfluxDB) excel at range queries and fast inserts, and cloud NoSQL services scale reads smoothly. However, each benefit comes with extra memory, disk, or replica overheads \cite{Heldt2021SciTS}.  
+Smaller IoT benchmarks echo these results: time-series databases outpace general SQL for sliding-window queries, while NoSQL keeps pace only after adding replicas, which raises resource consumption \cite{Grzesik2020EdgeIoTBenchmark,Vergara2021PerformanceTSDB}.
+
 This thesis benchmarks the six most common combinations of ingestion strategy and storage engine under realistic rate limits, aiming to give engineers a data-driven recipe for choosing the right stack.  
 The remainder of the chapter states the background (Section \ref{sec:background}), defines the problem (Section \ref{sec:problem}), describes the purpose and goals (Sections \ref{sec:purpose}–\ref{sec:goals}), sketches the method (Section \ref{sec:method}), lists delimitations (Section \ref{sec:delimitations}), and outlines the structure of the thesis (Section \ref{sec:structure}).
 
@@ -446,9 +451,6 @@ The remainder of the chapter states the background (Section \ref{sec:background}
 
 \section{Background}
 \label{sec:background}
-
-Many online services rely on a steady flow of information coming from other websites.
-To keep that information useful, the back-end has to fetch it fast enough so it isn’t already out of date when people see it. In a cloud system, two main design choices largely determine how fresh the data stays:
 
 Live online services increasingly draw on a steady stream of data from other platforms. The back-end must pull this information from public or partner APIs fast enough that it is still relevant when users receive it. In a cloud environment, two key architectural choices—how updates are fetched and where they are stored—largely decide how fresh the data stays:
 
