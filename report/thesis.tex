@@ -437,7 +437,7 @@ I would like to thank xxxx for having yyyy.
 
 \chapter{Introduction}
 \label{ch:introduction}
-Live digital services, from train-delay trackers to home-energy dashboards, depend on streams of fresh data delivered through public \glspl{API}. Behind the scenes, two technical decisions dominate how quickly those streams reach end-users and how much computing effort they consume: \emph{(i)} whether the back-end pulls updates at fixed intervals (polling) or reacts to push events (event driven), and \emph{(ii)} which type of database stores the incoming records; relational, specialised time-series, or cloud NoSQL.
+Live digital services, from train-delay trackers to home-energy dashboards, depend on streams of fresh data delivered through public \glspl{API}. This study is conducted in collaboration with \textit{Klimra}, whose platform automates train-delay compensation and therefore lives or dies by how fast those external updates reach its users. Behind the scenes, two technical decisions dominate how quickly those streams reach end-users and how much computing effort they consume: \emph{(i)} whether the back-end pulls updates at fixed intervals (polling) or reacts to push events (event driven), and \emph{(ii)} which type of database stores the incoming records; relational, specialised time-series, or cloud NoSQL.
 
 Prior studies paint a consistent picture.  Moving from fixed-interval polling to an event-driven pipeline shortens both average and tail response times, but it also injects more messages into the system and can push CPU usage to brief spikes \cite{Trindade2021EDAImpact}.  
 Side-by-side database tests tell a similar \say{give-and-take} story: relational engines remain versatile, time-series stores (e.g.\ TimescaleDB, InfluxDB) excel at range queries and fast inserts, and cloud NoSQL services scale reads smoothly. However, each benefit comes with extra memory, disk, or replica overheads \cite{Heldt2021SciTS}.  
@@ -486,19 +486,16 @@ Recent surveys at the edge demonstrate that schema-flexible NoSQL engines can ma
 \label{sec:problem}
 Real-time services that rely on rate-limited public APIs, such as Klimra's train-delay platform, must choose both an ingestion style and a database. Prior work compares polling with event-driven pipelines on a single datastore or contrasts databases under synthetic, unconstrained loads, leaving engineers without data that reflects the full stack they must deploy in the cloud.
 
-This thesis therefore asks: \emph{How do six back-end variants, formed by crossing polling and event-driven ingestion with three AWS storage engines (RDS PostgreSQL, Amazon Timestream, DynamoDB), differ in end-to-end update latency, query speed, and resource use when operating at Trafikverket's real-time train-position rate limit?} A statistically robust answer will give practitioners a concrete decision matrix and provide researchers with a reproducible benchmark for future optimisation studies.
+This thesis therefore asks: \emph{How do six back-end variants, formed by crossing polling and event-driven ingestion with three AWS storage engines (RDS PostgreSQL, Amazon Timestream, DynamoDB), differ in end-to-end update latency, query speed, and resource use when operating at Trafikverket's real-time train-position rate limit?} The goal is to get a statistically robust answer that will give practitioners a concrete decision matrix and provide researchers with a reproducible benchmark for future optimisation studies.
 
 
 
+%\subsection{Original problem and definition}
+%\label{sec:researchQuestion}
 
+%\subsection{Scientific and engineering issues}
+%\label{sec:issues}
 
-
-\subsection{Original problem and definition}
-\label{sec:researchQuestion}
-
-
-\subsection{Scientific and engineering issues}
-\label{sec:issues}
 
 
 
