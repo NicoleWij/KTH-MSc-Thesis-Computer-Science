@@ -467,7 +467,7 @@ Industrial systems provide a clear lesson about how we fetch new data. In one SC
 Large cloud studies report a similar pattern: constant polling wasted about 30\% of CPU, whereas letting services push events cut CPU use in half and made the slowest responses nearly 90\% faster \cite{Lewis2020PowerOfEDA}.  
 Battery-powered IoT devices gain even more. When tested, it was shown that weekly energy use fell roughly \( \sim3000\times \) when they slept until an event arrived instead of waking on a timer \cite{Makarovi2022EnergyEfficientIoT}.  
 
-Event-driven designs are not cost-free, however. They need message brokers and extra processing to decode each event, and in some small-scale tests, a single, tightly integrated program (a monolith) still handled requests faster than a network of event-driven microservices \cite{Trindade2021EDAImpact}.  
+It is, however, important to remember that Event-driven designs are not cost-free. They need message brokers and extra processing to decode each event. In some small-scale tests, a single, tightly integrated program (a monolith) still handled requests faster than a network of event-driven microservices \cite{Trindade2021EDAImpact}.  
 These mixed results frame the first dimension of this thesis: should a real-time backend \emph{poll} for updates or react to \emph{events}?
 
 \subsection{Storage Engine}
@@ -484,6 +484,10 @@ Recent surveys at the edge demonstrate that schema-flexible NoSQL engines can ma
 
 \section{Problem}
 \label{sec:problem}
+Real-time services that rely on rate-limited public APIs, such as Klimra's train-delay platform, must choose both an ingestion style and a database. Prior work compares polling with event-driven pipelines on a single datastore or contrasts databases under synthetic, unconstrained loads, leaving engineers without data that reflects the full stack they must deploy in the cloud.
+
+This thesis therefore asks: \emph{How do six back-end variants, formed by crossing polling and event-driven ingestion with three AWS storage engines (RDS PostgreSQL, Amazon Timestream, DynamoDB), differ in end-to-end update latency, query speed, and resource use when operating at Trafikverket's real-time train-position rate limit?} A statistically robust answer will give practitioners a concrete decision matrix and provide researchers with a reproducible benchmark for future optimisation studies.
+
 
 
 
