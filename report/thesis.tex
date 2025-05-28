@@ -451,38 +451,33 @@ The remainder of the chapter states the background (Section \ref{sec:background}
 
 \section{Background}
 \label{sec:background}
-
-Live online services increasingly draw on a steady stream of data from other platforms. The back-end must pull this information from public or partner APIs fast enough that it is still relevant when users receive it. In a cloud environment, two key architectural choices—how updates are fetched and where they are stored—largely decide how fresh the data stays:
-
-Live digital services increasingly rely on a continuous integration of external data streams.  
-Any application that depends on real-time updates must ingest public or partner \glspl{API} quickly enough for the information to remain actionable by the time it reaches end-users. In a cloud back-end, two architectural decisions dominate that end-to-end freshness:
+Live online services increasingly draw on a steady stream of data from other platforms. Any application that depends on real-time updates must ingest public or partner \glspl{API} quickly enough for the information to remain relevant by the time it reaches end-users. In a cloud environment, two key architectural choices largely decide how fresh the data stays: How updates are fetched and where they are stored.
 
 \begin{enumerate}
     \item \textbf{Ingestion strategy:} fixed-interval polling versus event-driven push pipelines
     \item \textbf{Storage engine:} general-purpose relational stores, specialised time-series engines, or cloud-native NoSQL.
 \end{enumerate}
 
-Prior empirical work shows that each choice shifts the balance between latency, throughput, and scalability.  
-For example, Trindade \etal\ quantify how event-driven micro-services trim tail-latency compared with CRON-based pollers under the same load profile\cite{Trindade2021EDAImpact}, while Heldt \etal\ observe that purpose-built time-series databases sustain 2-3 times higher range-query throughput than row-oriented stores on identical hardware\cite{Heldt2021SciTS}. Yet those studies are evaluated in isolation, either ingestion or storage, and seldom under the hard rate limits that public APIs impose.
+%COMMENT: Too broad - went more into detail in finished sections
+%-----------------------
+%Prior studies confirm that each choice shifts the balance between latency, throughput, and scalability. Trindade \etal\ show that switching from scheduled polling to an event-driven pipeline cuts the slowest response times under the same load profile \cite{Trindade2021EDAImpact}. In another study, Heldt \etal\ report that purpose-built time-series databases answer range queries up to three times faster than a row-oriented traditional SQL engine running on identical hardware \cite{Heldt2021SciTS}. However, those studies are evaluated in isolation, examining ingestion and storage separately, and they rarely account for the strict request limits that public APIs impose.
 
-\subsection{Why ingestion strategy still matters}  
-Polling remains attractive because it is simple, firewall-friendly, and easy to parallelise, but it also wastes network budget when nothing has changed.  
-Event-driven designs—built on webhooks, message queues, or CDC streams—push updates only when required, reducing duplicate traffic and smoothing burst loads\cite{Silva2022EDAMicroservices}.  
-Energy-constrained IoT deployments show power savings above 30 \% when moving from timer-based fetches to publish/subscribe patterns\cite{Makarovi2022EnergyEfficientIoT}.  
-The open question is whether those latency and efficiency gains persist once the pipeline is coupled to different classes of databases.
+\subsection{Ingestion Strategy}
+Industrial systems provide a clear lesson about how we fetch new data. In one SCADA migration, requests sent every few seconds, even when nothing had changed, filled the network with duplicate traffic. This is also known as regular Modbus polls. Switching to push-style updates, where events are sent only when values change, showed to cut both bandwidth and waiting time dramatically \cite{Johansson2021SCADAIaaS}.  
+Large cloud studies report a similar pattern: constant polling wasted about 30\% of CPU, whereas letting services push events cut CPU use in half and made the slowest responses nearly 90\% faster \cite{Lewis2020PowerOfEDA}.  
+Battery-powered IoT devices gain even more. When tested, it was shown that weekly energy use fell roughly \( \sim3000\times \) when they slept until an event arrived instead of waking on a timer \cite{Makarovi2022EnergyEfficientIoT}.  
 
-\subsection{Storage engines for real-time feeds}  
-Relational systems such as PostgreSQL offer mature SQL semantics and transactional guarantees, but their B-tree layouts become write-amplified under high-frequency inserts.  
-Time-series engines—e.g.\ TimescaleDB, InfluxDB, or Amazon Timestream—append data in chunked, column-oriented blocks and co-locate recent chunks in memory caches, yielding order-of-magnitude faster window queries\cite{Grzesik2020EdgeIoTBenchmark, Vergara2021PerformanceTSDB}.  
-Cloud NoSQL services like DynamoDB trade single-query latency for \say{dial-a-throughput} scalability; Johansson’s evaluation of high-frequency sensor streams in AWS shows linear write scaling well past ten million rows per minute, at the cost of ~2 × longer median read latency compared with RDS-PostgreSQL\cite{Johansson2022AWSCloudData}.  
+Event-driven designs are not cost-free, however. They need message brokers and extra processing to decode each event, and in some small-scale tests, a single, tightly integrated program (a monolith) still handled requests faster than a network of event-driven microservices \cite{Trindade2021EDAImpact}.  
+These mixed results frame the first dimension of this thesis: should a real-time backend \emph{poll} for updates or react to \emph{events}?
 
-\subsection{Need for a holistic comparison}  
-Although benchmarks exist for isolated components, no prior study controls both ingestion style and storage engine under the same API-rate constraints.  
-Consequently, engineers still rely on tribal knowledge when choosing architectures for real-time, API-dependent workloads, and researchers lack a reproducible baseline for follow-up optimisation studies.  
+\subsection{Storage Engine}
+On the storage side, purpose-built TSDBs promise high ingest rates and window-query speed-ups by chunking data on time rather than keys.  
+Edge and sensor benchmarks show TimescaleDB and InfluxDB ingesting millions of rows on a Raspberry Pi while answering range queries \(3{\times}\) faster than SQLite~\cite{Grzesik2020EdgeIoTBenchmark}.  
+Larger laboratory workloads confirm the trend: InfluxDB excelled at heavy aggregates, whereas TimescaleDB shone on point look-ups~\cite{Daqouri2023TimeseriesVsSQL,Heldt2021SciTS}.  
+Cloud studies complicate the picture: Amazon Timestream under-performed on full-history queries compared with DynamoDB and an S3 data-lake pattern~\cite{Johansson2022AWSCloudData}, and MongoDB beat TimescaleDB on tag-selective look-ups despite higher range-query cost~\cite{Mohamed2024DBMSComparison}.  
+Recent surveys at the edge demonstrate that schema-flexible NoSQL engines can match TSDB write throughput once they scale replicas—at the price of extra memory and network I/O~\cite{Zhang2023EdgeTSDB,Vergara2021PerformanceTSDB}.
 
-To fill this gap, the present thesis will (i) implement matched polling and event-driven pipelines, (ii) deploy them with PostgreSQL, Timestream, and DynamoDB, and (iii) measure end-to-end update latency, query performance, and resource usage. 
 
-The results aim to give practitioners a data-driven recipe for picking the right stack and to provide the research community with a public, reproducible benchmark.
 
 
 
@@ -547,6 +542,12 @@ In this section you should present your philosophical assumption(s), research me
 \label{sec:structure}
 \sweExpl{ Rapportens disposition}
 Chapter~\ref{ch:background} presents relevant background information about xxx.  Chapter~\ref{ch:methods} presents the methodology and method used to solve the problem. …
+
+
+
+
+
+
 
 \cleardoublepage
 \chapter{Background}
