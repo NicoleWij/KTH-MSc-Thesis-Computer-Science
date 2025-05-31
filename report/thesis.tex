@@ -463,7 +463,7 @@ Live online services increasingly draw on a steady stream of data from other pla
 %Prior studies confirm that each choice shifts the balance between latency, throughput, and scalability. Trindade \etal\ show that switching from scheduled polling to an event-driven pipeline cuts the slowest response times under the same load profile \cite{Trindade2021EDAImpact}. In another study, Heldt \etal\ report that purpose-built time-series databases answer range queries up to three times faster than a row-oriented traditional SQL engine running on identical hardware \cite{Heldt2021SciTS}. However, those studies are evaluated in isolation, examining ingestion and storage separately, and they rarely account for the strict request limits that public APIs impose.
 
 \subsection{Ingestion Strategy}
-Industrial systems provide a clear lesson about how we fetch new data. In one SCADA migration, requests sent every few seconds, even when nothing had changed, filled the network with duplicate traffic. This is also known as regular Modbus polls. Switching to push-style updates, where events are sent only when values change, showed to cut both bandwidth and waiting time dramatically \cite{Johansson2021SCADAIaaS}.  
+Industrial systems provide a clear lesson about how we fetch new data. In one \gls{SCADA} migration, requests sent every few seconds, even when nothing had changed, filled the network with duplicate traffic. This is also known as regular Modbus polls. Switching to push-style updates, where events are sent only when values change, showed to cut both bandwidth and waiting time dramatically \cite{Johansson2021SCADAIaaS}.  
 Large cloud studies report a similar pattern: constant polling wasted about 30\% of CPU, whereas letting services push events cut CPU use in half and made the slowest responses nearly 90\% faster \cite{Lewis2020PowerOfEDA}.  
 Battery-powered IoT devices gain even more. When tested, it was shown that weekly energy use fell roughly \( \sim3000\times \) when they slept until an event arrived instead of waking on a timer \cite{Makarovi2022EnergyEfficientIoT}.  
 
@@ -481,14 +481,11 @@ Recent surveys at the edge demonstrate that schema-flexible NoSQL engines can ma
 
 
 
-
 \section{Problem}
 \label{sec:problem}
 Real-time services that rely on rate-limited public APIs, such as Klimra's train-delay platform, must choose both an ingestion style and a database. Prior work compares polling with event-driven pipelines on a single datastore or contrasts databases under synthetic, unconstrained loads, leaving engineers without data that reflects the full stack they must deploy in the cloud.
 
 This thesis therefore asks: \emph{How do six back-end variants, formed by crossing polling and event-driven ingestion with three AWS storage engines (RDS PostgreSQL, Amazon Timestream, DynamoDB), differ in end-to-end update latency, query speed, and resource use when operating at Trafikverket's real-time train-position rate limit?} The goal is to get a statistically robust answer that will give practitioners a concrete decision matrix and provide researchers with a reproducible benchmark for future optimisation studies.
-
-
 
 %\subsection{Original problem and definition}
 %\label{sec:researchQuestion}

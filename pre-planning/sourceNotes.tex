@@ -1,4 +1,5 @@
 \documentclass[11pt]{article}
+\usepackage{dirtytalk}
 \usepackage[utf8]{inputenc}
 \usepackage{geometry}
 \usepackage[hidelinks]{hyperref}
@@ -21,14 +22,33 @@
 
 \section*{Event-Driven vs Polling Ingestion}
 \begin{itemize}
-  \item[] \textbf{Migration of a SCADA system to IaaS clouds – a case study}
+  \item[] \textbf{1. Analyzing the Efficiency of Event-Driven APIs}
   \begin{itemize}
-      \item[] This case study of migrating an industrial SCADA system to the cloud evaluates polling-based versus event-driven data ingestion. The authors explain that in traditional polling (e.g. Modbus protocols), the SCADA master repeatedly requests sensor data at fixed intervals, often “flooding” the network with repetitive data and wasted effort when no new events have occurred. They recommend an event-driven architecture (where sensors push updates on change) to reduce unnecessary traffic and latency in real-time monitoring, noting that event-driven protocols drastically cut down the volume of data transmitted compared to continuous polling. 
+      \item[] \textbf{Scope \& method}  This is a bachelor-level case study at Bolagsverket that builds three prototypes. These are: MQTT broker, WebSocket server, and the agency's legacy SFTP flow. It then measures nine resource metrics (CPU, duration, network I/O, memory, disk, threads, handles) while replaying messages of increasing payload sizes.
+      
+      \item[] \textbf{Key findings}  MQTT and WebSocket cut latency and roughly halve CPU/network usage compared with SFTP for typical payloads; MQTT stays fastest as payloads grow, whereas WebSocket performance drops sharply beyond ≈4 kB; SFTP shows linear disk-I/O growth, which signals a bottleneck for bulk updates.
+      
+      \item[] \textbf{Relevance}  Mirrors this thesis's ingestion axis (polling-style file transfer vs.\ event-driven push) and logs the same resource counters planned for the Klimra benchmark, providing both a comparable metric suite and an additional empirical data point from a Swedish public-sector context.
+  \end{itemize}
+  \item[] \textbf{2. Migration of a SCADA system to IaaS clouds – a case study}
+  \begin{itemize}
+      \item[] \textbf{Scope \& method} The authors took a factory-control system (SCADA) that normally \emph{polls} hundreds of sensors every millisecond and moved it to virtual machines in the cloud.  They timed each request and also watched how much CPU, memory, and network traffic the system used.
+      
+      \item[] \textbf{Key findings} As the number of sensors grew, the round-trip time for each poll exploded—from about 0.01 s with one sensor to roughly 14 s with 800 sensors.  Almost all of that delay happened inside the software, not on the network, showing that constant polling can overload the server itself.
+      
+      \item[] \textbf{Relevance} This study is a clear real-world example of how polling can become a performance bottleneck.  It backs up my argument that switching to event-driven updates can cut wasted work, useful support for the \textit{ingestion‐strategy} part of my comparison, even though the paper says nothing about databases.
       \item[] \href{https://link.springer.com/article/10.1186/s13677-017-0080-5}{LINK}
   \end{itemize}
-  \item[] \textbf{Energy-efficient network protocols for domestic IoT application design}
+  \item[] \textbf{3. Energy-efficient network protocols for domestic IoT application design}
   \begin{itemize}
-      \item[] This experimental study compares polling vs. event-driven communication in a domestic IoT scenario (monitoring a “smart” appliance) with a focus on energy performance. Results showed that at low event occurrence rates, a polling architecture was extremely inefficient – for example, weekly energy consumption in polling mode was over 3000 times higher than in an event-driven mode under sparse events. An event-driven approach (device sleeps until an event triggers a transmission) is clearly more energy-efficient when events are infrequent. However, the trade-off reverses as event frequency grows: beyond a certain threshold of event rate (~7 events in their test scenario), continuous polling can approach or exceed the efficiency of event-driven updates, and a broadcast or polling strategy becomes preferable for very frequent updates. This highlights a performance trade-off between minimizing idle overhead and handling high-frequency data in real time.
+      \item[] \textbf{Scope \& method} Measured the power draw of five common wireless links (Bluetooth, BLE, ZigBee, Wi-Fi, 433 MHz) in three communication styles—\emph{broadcast}, \emph{polling}, and \emph{event-driven}.  
+      A toaster-to-gateway “smart kitchen” scenario was used to calculate weekly energy use at different event rates. :contentReference[oaicite:0]{index=0}
+      
+      \item[] \textbf{Key findings} With infrequent events, event-driven traffic is far cheaper: Bluetooth polling consumed ≈3000× more energy than event-driven for 20 events/week, and Wi-Fi about 10 000×.  
+      Above a threshold (~7–10 events/week for their RF433 example) polling or even broadcast becomes the cheaper option, illustrating a clear crossover point between idle overhead and high-rate efficiency. :contentReference[oaicite:1]{index=1}
+      
+      \item[] \textbf{Relevance} Although focused on battery life rather than latency, the paper nicely quantifies the \textit{same polling-vs-push trade-off} under varying event frequencies.  
+      I can cite it to show that the “best” ingestion style depends on workload intensity—an insight that complements my latency-centric benchmark and helps justify testing multiple load levels.
       \item[] \href{https://www.researchgate.net/publication/335426973\_Energy-Efficient\_Network\_Protocols\_for\_Domestic\_IoT\_Application\_Design}{LINK}
   \end{itemize}
   \newpage

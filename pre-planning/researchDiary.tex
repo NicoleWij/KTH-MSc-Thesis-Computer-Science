@@ -1,0 +1,71 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{datetime2}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
+
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+\newcommand{\entrydate}[1]{\section*{#1}}
+\newcommand{\subheading}[1]{\subsection*{\textcolor{gray}{#1}}}
+
+\title{Research Diary – Nicole Wijkman}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+% EXAMPLE ENTRY
+\entrydate{2025-05-30}
+
+\subheading{Goals for Today}
+\begin{itemize}[leftmargin=*]
+    \item Find eventual sources.
+    \item Read through my already collected sources, write a paragraph about each.
+    \item EXTRA: Read through 1.2 Background, comment on potential additions/fixes.
+\end{itemize}
+
+\subheading{What I Did}
+\begin{itemize}[leftmargin=*]
+    \item Read paper: Shah et al., 2022 on time-series DBs.
+    \item 
+    \item 
+\end{itemize}
+
+\subheading{What Worked}
+\begin{itemize}[leftmargin=*]
+    \item Paper was very clear and helped justify Timestream as a choice.
+    \item Realized CloudWatch can provide native metrics for all three storage options.
+\end{itemize}
+
+\subheading{What Didn't Work}
+\begin{itemize}[leftmargin=*]
+    \item Still unclear how to simulate real-time API rate limits using k6.
+    \item AWS Timestream documentation lacks examples for write throughput benchmarking.
+\end{itemize}
+
+\subheading{Next Steps}
+\begin{itemize}[leftmargin=*]
+    \item Look at Marcu et al., 2022 on push vs. pull.
+    \item Try setting up k6 with synthetic endpoints for testing.
+\end{itemize}
+
+\subheading{Reflections}
+Small win today: I'm starting to get a better sense of where the research gap is. Even though the problem has been looked at before, no one is isolating the architecture/storage combination under identical ingestion conditions. That’s my niche.
+
+\newpage
+
+% Add more entries like this:
+% \entrydate{2025-06-11}
+% ...
+
+\end{document}
