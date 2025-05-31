@@ -42,10 +42,10 @@
   \item[] \textbf{3. Energy-efficient network protocols for domestic IoT application design}
   \begin{itemize}
       \item[] \textbf{Scope \& method} Measured the power draw of five common wireless links (Bluetooth, BLE, ZigBee, Wi-Fi, 433 MHz) in three communication styles—\emph{broadcast}, \emph{polling}, and \emph{event-driven}.  
-      A toaster-to-gateway “smart kitchen” scenario was used to calculate weekly energy use at different event rates. :contentReference[oaicite:0]{index=0}
+      A toaster-to-gateway \say{smart kitchen} scenario was used to calculate weekly energy use at different event rates.
       
       \item[] \textbf{Key findings} With infrequent events, event-driven traffic is far cheaper: Bluetooth polling consumed ≈3000× more energy than event-driven for 20 events/week, and Wi-Fi about 10 000×.  
-      Above a threshold (~7–10 events/week for their RF433 example) polling or even broadcast becomes the cheaper option, illustrating a clear crossover point between idle overhead and high-rate efficiency. :contentReference[oaicite:1]{index=1}
+      Above a threshold (~7–10 events/week for their RF433 example), polling or even broadcast becomes the cheaper option, illustrating a clear crossover point between idle overhead and high-rate efficiency.
       
       \item[] \textbf{Relevance} Although focused on battery life rather than latency, the paper nicely quantifies the \textit{same polling-vs-push trade-off} under varying event frequencies.  
       I can cite it to show that the “best” ingestion style depends on workload intensity—an insight that complements my latency-centric benchmark and helps justify testing multiple load levels.
