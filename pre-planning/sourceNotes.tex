@@ -3,7 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{geometry}
 \usepackage[hidelinks]{hyperref}
-\geometry{margin=0.8in}
+\geometry{margin=0.75in}
 
 % Nicely-formatted bullet lists
 \usepackage{enumitem}
@@ -51,20 +51,33 @@
       I can cite it to show that the “best” ingestion style depends on workload intensity—an insight that complements my latency-centric benchmark and helps justify testing multiple load levels.
       \item[] \href{https://www.researchgate.net/publication/335426973\_Energy-Efficient\_Network\_Protocols\_for\_Domestic\_IoT\_Application\_Design}{LINK}
   \end{itemize}
-  \newpage
-  \item[] \textbf{The Power of Event-Driven Architecture: Enabling Real-Time Systems and Scalable Solutions}
+  \item[] \textbf{4. The Power of Event-Driven Architecture: Enabling Real-Time Systems and Scalable Solutions}
   \begin{itemize}
-      \item[] This paper examines the impact of adopting an event-driven architecture (EDA) in enterprise back-end systems, compared to traditional periodic polling. Kommera reports that in large-scale data center orchestration, polling-based mechanisms were wasting substantial resources – roughly 22–31\% of available CPU on average – with nearly 70\% of polling operations finding no new data (i.e. idle work). The study cites that switching to an event-driven model yielded significant performance gains: across several enterprise use cases, CPU utilization dropped by about 47\% and critical operation response times improved by ~89\% when moving from polling to event-driven ingestion. These results underscore the efficiency advantage of event-driven designs in API-driven systems – by reacting to events in real time rather than constantly querying, systems can vastly reduce overhead and latency.
+      \item[] \textbf{Scope \& method} A narrative review that explains what Event-Driven Architecture (EDA) is, why big platforms (Netflix, Uber) use it, and which technologies (Kafka, serverless functions) make it work.  No new experiments; evidence comes from published case studies and industry reports.
+      
+      \item[] \textbf{Key points} EDA decouples producers and consumers so systems can react immediately to events instead of polling.  Reported benefits include 40-90 \% drops in CPU or response-time figures in large data-centre workloads; main challenges are event “storming,” eventual consistency, and debugging complex flows.
+      
+      \item[] \textbf{Relevance} Gives high-level motivation and common pitfalls for switching from polling to push.  Useful as background to frame my benchmark results and to cite generic pros/cons of EDA, but it does not supply hard latency numbers or any database insight—so it will stay a supporting, not central, reference.
   \end{itemize}
-  \item[] \textbf{On the impact of event-driven architecture on performance: An exploratory
-study}
+  \item[] \textbf{5. On the impact of event-driven architecture on performance: An exploratory study}
   \begin{itemize}
-      \item[] This recent empirical study directly compares an event-driven microservices architecture with a traditional monolithic architecture under the same application workload. The authors implemented two versions of an application – one using asynchronous event queues between services, and one using a straightforward monolithic (synchronous) design – and measured metrics like CPU usage, memory consumption, throughput, and response times. Perhaps counterintuitively, the monolithic (polling/request-response) architecture outperformed the event-driven version in their tests: it used fewer computational resources and achieved faster response times than the event-driven architecture. The paper notes that the overhead of event routing, message handling, and intermediate brokers in the EDA introduced extra latency and resource usage, suggesting that the benefits of event-driven ingestion are not automatic and may depend on the context. This study provides a nuanced view that while EDA can improve scalability, it may incur performance overhead unless carefully optimized.
+      \item[] \textbf{Scope \& method}  Builds two \emph{identical} web-shop applications: one classic monolith, one decomposed into microservices that talk through an event bus.  
+      Runs the same user-load tests on each version and records CPU, RAM, response time, throughput, and the number of network packets.
+      
+      \item[] \textbf{Key findings}  Contrary to common \say{EDA is faster} claims, the monolith used \emph{less} CPU and memory and answered requests more quickly in every load scenario tested.  
+      The event-driven version spent extra time routing and serialising messages, so its raw throughput advantage came at the cost of higher resource use.
+      
+      \item[] \textbf{Relevance}  A cautionary counter-example that event-driven designs can hurt performance if the message overhead is not tuned.  
+      Useful to quote when explaining why my benchmark measures both latency and resource cost instead of assuming EDA will always win.
       \item[] \href{https://www.sciencedirect.com/science/article/pii/S0167739X23003977}{LINK}
   \end{itemize}
-  \item[] \textbf{Event-Driven Microservices Architecture for Data Center Orchestration}
+  \item[] \textbf{6. Event-Driven Microservices Architecture for Data Center Orchestration}
   \begin{itemize}
-      \item[] This work offers a broad review of adopting event-driven microservice architecture (EDMA) in modern back-end systems, highlighting real-time data processing benefits over polling-centric designs. It emphasizes that traditional polling approaches impose heavy overhead by continuously checking for updates and consuming resources for oft-null results, whereas an event-driven approach triggers processing only when relevant events occur. Across various enterprise case studies, moving to an event-driven ingestion model led to dramatic improvements in operational efficiency, responsiveness, and resource utilization. For example, the paper cites industry reports of significantly higher throughput and lower latency in systems that replaced periodic API polling with event-driven notifications. Overall, this source underlines the performance trade-offs: event-driven architectures can greatly enhance real-time responsiveness and efficiency in backend systems, though they require robust messaging infrastructure and design considerations (such as handling eventual consistency and complex event management). 
+      \item[] \textbf{Scope \& method}  A 2025 tutorial-style journal article that surveys why large data-centers are replacing polling-based orchestration with event-driven microservices.  It synthesises industry case studies (Netflix, telcos, banks) and cites benchmark figures from earlier work; no new experiments are run.
+      
+      \item[] \textbf{Key points}  Polling wastes 22–31 \% CPU and delays actions by ≈40 s in big clusters; switching to event streams cuts CPU by ~47 \% and shrinks response time by ~89 \%.  The paper explains core EDA patterns (event sourcing, CQRS, sagas, circuit-breaker) and warns about \say{event storms} and debugging complexity.
+      
+      \item[] \textbf{Relevance}  Good high-level background: reinforces the motivation for testing push vs. polling and lists design patterns I can reference when building Klimra prototypes.  Because it is a review, not a benchmark, I will use it as supporting context rather than as evidence for performance numbers in my results chapter.
       \item[] \href{https://www.ijsat.org/research-paper.php?id=3113}{LINK}
   \end{itemize}
 \end{itemize}
@@ -74,26 +87,57 @@ study}
 \subsection*{Background and Context}
 Modern data-intensive applications (e.g. IoT sensor networks, financial tick feeds, telemetry) generate time-series data at high velocity. Choosing the right database system is critical for real-time ingestion and querying of this data. Traditional relational databases (SQL/RDBMS) can struggle with the volume and sequential nature of time-stamped data, while specialized time-series databases (TSDBs) and NoSQL databases promise optimizations for high ingestion rates and scalable query performance. Recent research has empirically compared these systems under heavy write loads and real-time query scenarios, often using IoT or sensor data as benchmarks. Below, we summarize several peer-reviewed studies and academic theses that benchmark time-series vs. relational vs. NoSQL databases (including AWS services like Amazon Timestream, DynamoDB, and RDS PostgreSQL) under high-ingestion or real-time workloads. We highlight both performance results and methodology (datasets, queries, and metrics) from each source, to inform database selection for such use cases.
 \begin{itemize}
-    \item[] \textbf{Comparative Analysis of Time-Series Databases in the Context of Edge Computing for Low-Power Sensor Networks}
+    \item[] \textbf{1. Comparative Analysis of Time Series Databases in the Context of Edge Computing for Low Power Sensor Networks}
     \begin{itemize}
-        \item[] This study (ICCS 2020 conference) compared three TSDBs (TimescaleDB, InfluxDB, Riak TS) against two relational systems (PostgreSQL and SQLite) on a resource-constrained device (Raspberry Pi). The authors simulated an IoT sensor workload with a custom app for inserting time-series readings and querying them. Result: Despite the low-power hardware, a relational database (PostgreSQL) kept pace with or outperformed the specialized stores in many cases. In fact, PostgreSQL and InfluxDB delivered the best read query throughput in their tests, while PostgreSQL achieved the fastest insert rates of all systems. TimescaleDB (PostgreSQL with time-series extension) did not show a performance gain over vanilla PostgreSQL in that environment, possibly due to the small dataset and device limits. The experiment demonstrated that even on IoT edge devices, a well-tuned relational engine can handle high ingestion, though results might differ at larger scale. 
-    \end{itemize}
-    \item[] \textbf{Performance Analysis of Time Series Databases for IoT Applications}
+      \item[] \textbf{Scope \& method}  Benchmarks three TSDBs (TimescaleDB, InfluxDB, Riak TS) and two relational engines (PostgreSQL, SQLite) on a Raspberry Pi, using a Python generator that inserts and queries 28 800 synthetic sensor readings; records insert rate and three aggregation-query latencies.
+      
+      \item[] \textbf{Key findings}  PostgreSQL matched or beat the TSDBs on this small edge device: fastest inserts (1,756 rows/s in 10-row batches) and tied with InfluxDB for read throughput.  TimescaleDB showed no gain over vanilla PostgreSQL, and SQLite lagged badly.  Conclusion: on very constrained hardware, a tuned relational DB can outperform specialised stores.
+      
+      \item[] \textbf{Relevance}  Useful counter-example for my storage axis: shows that TSDB advantages shrink on low-power nodes, so I should not assume TimescaleDB will always win when server resources are limited.  I will cite it when justifying the need to measure resource usage as well as raw latency in the Klimra benchmark.
+  \end{itemize}
+    \item[] \textbf{2. Performance Analysis of Time Series Databases for IoT Applications}
     \begin{itemize}
-        \item[] This Uppsala University thesis evaluated two purpose-built time-series databases (InfluxDB and TimescaleDB) against a general-purpose RDBMS (MariaDB/MySQL) using real IoT sensor data. The methodology involved loading between 1 million and 50 million timestamped readings and executing four query types: point lookups, time-range selects, aggregate computations, and “time-sensitive” aggregates (windowed analysis). Findings: Both InfluxDB and TimescaleDB significantly outperformed the relational database on almost all queries except the simplest point lookup. In particular, InfluxDB excelled at large-range and aggregate queries, running about 8–20× faster than TimescaleDB for certain heavy analytics on big datasets. TimescaleDB, on the other hand, matched or beat InfluxDB on small-scale queries and was about 19× faster than Influx for single-record point retrievals due to its indexing on keys. These results underscore that specialized TSDBs handle high-volume time-series aggregation workloads more efficiently than a traditional SQL store, though a relational engine with a time-series extension (Timescale) can still shine for selective queries. The thesis also emphasizes tailoring the database choice to specific IoT use-cases and query patterns.
+        \item[] \textbf{Scope \& method} A 2024 bachelor thesis from Uppsala University that loads 1 – 50 million real sensor readings into two TSDBs (InfluxDB 2.x, TimescaleDB 2.x) and a relational baseline (MariaDB/MySQL). Four query types are timed: single point lookup, time-range selection, simple aggregate, and windowed (\say{time-sensitive}) aggregate.
+      
+        \item[] \textbf{Key findings} InfluxDB and TimescaleDB beat MariaDB on every query except the single-row lookup. InfluxDB excels on large datasets and heavy aggregates (≈ 8 – 20× faster than TimescaleDB). TimescaleDB wins point look-ups (≈ 19× faster than InfluxDB) thanks to indexes inherited from PostgreSQL. Conclusion: choose a DB to match query mix—TSDBs shine on range/aggregate workloads; relational engines still dominate keyed.
+      
+       \item[] \textbf{Relevance} Gives concrete latency numbers for the \textit{storage-engine axis} of my study and illustrates how query pattern changes the winner. I will cite it when justifying why Klimra's benchmark must include both small point queries and wide time-range analytics.
     \end{itemize}
-    \item[] \textbf{SciTS: A Benchmark for Time-Series Databases in Scientific Experiments and Industrial IoT}
+    \newpage
+    \item[] \textbf{3. SciTS: A Benchmark for Time-Series Databases in Scientific Experiments and Industrial IoT}
     \begin{itemize}
-        \item[] This paper is a strong fit for my thesis because it addresses almost the same experimental questions I need to answer. The authors benchmark three purpose-built time-series databases (InfluxDB, ClickHouse, TimescaleDB) against a conventional relational engine (PostgreSQL) while sustaining a high ingest rate—very similar to the constant stream of train-position updates I will pull from Trafikverket. Crucially, they don’t stop at latency: their tests log CPU, memory, and both disk- and network-I/O for every run, giving me a concrete template for the “memory and I/O usage” measurements my examiner asked about. They also evaluate range, aggregation and down-sampling queries after ingestion, which mirrors the analytics I plan to run over historical delay data. Because the study is peer-reviewed (ACM SSDBM 2022), I can cite it with confidence and use its methodology and results as a comparative baseline.
-    \end{itemize}
-    \item[] \textbf{A Comparative Analysis of Database Management Systems for Time Series Data}
+       \item[] \textbf{Scope \& method}  Proposes \emph{SciTS}, an open-source benchmark that stresses databases with heavy INSERT loads \textit{and} five realistic query types (raw fetch, out-of-range, aggregate, down-sample, two-sensor compare).  Evaluates four engines—InfluxDB, ClickHouse, TimescaleDB, and PostgreSQL—while logging CPU, memory, disk-, and network-I/O.
+      
+       \item[] \textbf{Key findings}  ClickHouse leads on both ingest (≈1.3 M rows/s) and most queries; InfluxDB and TimescaleDB trade wins depending on query pattern; PostgreSQL falls behind once indexes no longer fit in RAM.  Resource metrics reveal that PostgreSQL’s swap use, not network, drives its slowdown.
+      
+       \item[] \textbf{Relevance}  Closely matches my study design: same databases (except DynamoDB), same high-ingestion focus, same multi-metric logging.  Offers a ready template for workload definitions and a comparative baseline against which Klimra's train-delay dataset results can be discussed.
+  \end{itemize}
+    \item[] \textbf{4. A Comparative Analysis of Database Management Systems for Time Series Data}
     \begin{itemize}
-        \item[] A Swedish master’s thesis compared a relational time-series extension (TimescaleDB on PostgreSQL) with a NoSQL document store (MongoDB) featuring its native time-series collections. The case study used a weather sensor dataset (millions of readings across many stations) and measured query response times for typical analytics (e.g. retrieving all data in a given time interval vs. fetching data from specific sensors). Result: The two systems exhibited complementary strengths. TimescaleDB handled complex, large-range interval queries more efficiently – e.g. pulling all readings over a time window across many sensors was faster with Timescale’s partitioned hypertables. MongoDB, however, outperformed Timescale for targeted lookups involving a subset of sensors (e.g. querying a single weather station’s data). This suggests that a document-oriented NoSQL DB, with flexible JSON schema, can be advantageous when queries are highly selective on tags (like sensor ID), whereas a time-series relational DB excels at bulk time-range scans. The thesis methodology logged wall-clock timings for each query type, repeating trials to account for variability. The authors conclude that neither system is universally better – the “optimal” choice depends on whether the workload is broad-scale analysis or narrow, per-sensor retrieval in this time-series context
-    \end{itemize}
-    \item[] \textbf{Comparative Analysis of AWS Cloud Data Storage System Architectures} 
+      \item[] \textbf{Scope \& method}  Bachelor thesis (KTH EECS, 2023) that loads publicly-available SMHI weather data (millions of readings, many stations) into two systems: PostgreSQL + TimescaleDB and MongoDB (native time-series collections).  
+      Five real-world query patterns are timed—from single-station look-ups to full-range interval scans—and runtimes are averaged over repeated runs.
+      
+      \item[] \textbf{Key findings}  TimescaleDB excels at broad time-range and complex aggregate queries (up to 100× faster); MongoDB wins highly-selective, tag-filtered look-ups (over 30× faster in one case).  Neither DBMS dominates overall; the “right” choice depends on query mix and selectivity.
+      
+      \item[] \textbf{Relevance}  Directly informs my storage-engine axis by showing complementary strengths of a relational-TSDB extension versus a NoSQL document store.  I will cite it when arguing that Klimra’s workload—mixing broad range analytics with targeted station queries—may favour different back-ends for different tasks.
+  \end{itemize}
+    \item[] \textbf{5. Comparative Analysis of AWS Cloud Data Storage System Architectures} 
     \begin{itemize}
-        \item[]  This University of Helsinki master’s thesis (2025) focuses on AWS-managed database services for time-series IoT data, comparing Amazon Timestream (a serverless TSDB), Amazon DynamoDB (NoSQL key-value store), and an AWS data lake approach (e.g. storing time-series in S3 or similar) for ingesting and querying high-frequency sensor streams. The thesis designed an end-to-end IoT data pipeline (using AWS IoT Core and Lambda) to feed each storage solution, then evaluated query performance under different access patterns (e.g. retrieving recent vs. entire history of the data) and ingestion throughput. Finding: Amazon Timestream was found to underperform significantly in certain scenarios – in particular, it showed “significantly poorer performance” when retrieving full data items (i.e. full dataset scans or large result sets) compared to the other solutions. This indicates that while Timestream is optimized for time-series, it may struggle with large ad-hoc queries, potentially due to internal storage layouts or query engine trade-offs. DynamoDB and the data lake approach likely handled such full-data queries more efficiently in the study’s tests (e.g. Dynamo’s key-value access was faster for bulk retrieval in this case). The thesis underscores the importance of evaluating cloud database services under realistic workload scenarios – a system like DynamoDB might offer better consistency for high-concurrency writes, whereas Timestream’s performance benefits appear only under certain query patterns and not for exhaustive scans. The overall methodology and results provide guidance on architecting IoT data platforms on AWS, balancing factors like query latency, data volume, and cost.
-    \end{itemize}
+      \item[] \textbf{Scope \& method}  
+      2025 University-of-Helsinki master’s thesis that builds three end-to-end IoT pipelines on AWS:  
+      (i) \textit{Amazon Timestream} (serverless TSDB),  
+      (ii) \textit{DynamoDB} (key-value NoSQL), and  
+      (iii) \textit{Kinesis Data Streams + S3 data-lake}.  
+      A simulator publishes high-frequency air-quality readings (MQTT via IoT Core); the study measures retrieval time for three window sizes—last 1 min, last 30 min, and 1-day history—plus counts API calls and estimates cost.
+      
+      \item[] \textbf{Key findings}  
+      *Timestream* excels when queries filter or aggregate individual fields, but performs worst on full-row scans.  
+      *DynamoDB* is fastest for very short, recent slices (≤ 30 min) yet times out on multi-hour ranges.  
+      *S3 data-lake* (batched through Firehose) dominates bulk historical reads but is unsuitable for “latest-minute” dashboards.  Service configuration (shard count, retention, partitioning) strongly influences results.
+      
+      \item[] \textbf{Relevance}  
+      Directly matches my AWS storage axis (PostgreSQL/Timestream/DynamoDB vs. S3).  Confirms that Timestream is not a guaranteed win and that access-pattern matters—a lesson I will incorporate when selecting query workloads and when discussing why Klimra might need more than one backend.
+  \end{itemize}
 \end{itemize}
 
 \newpage

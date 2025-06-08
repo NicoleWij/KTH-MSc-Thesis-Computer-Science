@@ -20,10 +20,10 @@
 
 \makeatletter
 \newcommand{\disablepackage}[2]{%
-  \disable@package@load{#1}{#2}%
+ \disable@package@load{#1}{#2}%
 }
 \newcommand{\reenablepackage}[1]{%
-  \reenable@package@load{#1}%
+ \reenable@package@load{#1}%
 }
 \makeatother
 \ifxeorlua
@@ -32,7 +32,7 @@
 
 \documentclass[nomenclature, english, biblatex]{kththesis}
 
-\newcommand*{\generalExpl}[1]{\todo[inline]{#1}}                
+\newcommand*{\generalExpl}[1]{\todo[inline]{#1}}    
 
 \newcommand*{\engExpl}[1]{\todo[inline, backgroundcolor=kth-lightgreen40]{#1}}
 \newcommand*{\sweExpl}[1]{\todo[inline, backgroundcolor=kth-lightblue40]{#1}}
@@ -41,10 +41,10 @@
 
 
 \usepackage[
-    backend=biber,
-    style=ieee,
-    citestyle=numeric-comp,
-    sorting=none
+  backend=biber,
+  style=ieee,
+  citestyle=numeric-comp,
+  sorting=none
 ]{biblatex}
 \addbibresource{references.bib}
 
@@ -63,19 +63,19 @@
 
 
 \lstnewenvironment{verbatimsc}
-    {
-    \lstset{%
-        basicstyle=\ttfamily\tiny,
-        backgroundcolor=\color{white},
-        columns=[l]fixed,
-        language=[LaTeX]TeX,
-        keywordstyle=\color{red},
-        breaklines=true,
-        breakatwhitespace=true,
-        breakindent=0em,
-        frame=none,
-        postbreak={}
-    }
+  {
+  \lstset{%
+  basicstyle=\ttfamily\tiny,
+  backgroundcolor=\color{white},
+  columns=[l]fixed,
+  language=[LaTeX]TeX,
+  keywordstyle=\color{red},
+  breaklines=true,
+  breakatwhitespace=true,
+  breakindent=0em,
+  frame=none,
+  postbreak={}
+  }
 }{}
 
 \lstdefinestyle{[LaTeX]TeX}{
@@ -91,42 +91,44 @@ morekeywords={begin, todo, textbf, textit, texttt}
 \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
 
 \ifbiblatex
-    \usepackage[plainpages=false]{hyperref}
+  \usepackage[plainpages=false]{hyperref}
 \else
-    \usepackage[
-    backref=page,
-    pagebackref=false,
-    plainpages=false,
-    unicode=true,
-    bookmarks=true,
-    bookmarksopen=false,
-    pdfpagemode=UseNone,
-    destlabel,
-    pdfencoding=auto, 
-    ]{hyperref}
-    \makeatletter
-    \ltx@ifpackageloaded{attachfile2}{
-    }
-    {\usepackage{backref}
-    \renewcommand*{\backref}[1]{}
-    \renewcommand*{\backrefalt}[4]{%
-    \ifcase #1%
-          \or [Page~#2.]%
-          \else [Pages~#2.]%
-    \fi%
-    }
-    }
-    \makeatother
+  \usepackage[
+  backref=page,
+  pagebackref=false,
+  plainpages=false,
+  unicode=true,
+  bookmarks=true,
+  bookmarksopen=false,
+  pdfpagemode=UseNone,
+  destlabel,
+  pdfencoding=auto, 
+  ]{hyperref}
+  \makeatletter
+  \ltx@ifpackageloaded{attachfile2}{
+  }
+  {\usepackage{backref}
+  \renewcommand*{\backref}[1]{}
+  \renewcommand*{\backrefalt}[4]{%
+  \ifcase #1%
+   \or [Page~#2.]%
+   \else [Pages~#2.]%
+  \fi%
+  }
+  }
+  \makeatother
 
 \fi
 \usepackage[all]{hypcap}
+\usepackage{booktabs}
+\usepackage{bbding}
 \usepackage[acronym, style=super, section=section, nonumberlist, nomain,
 nopostdot]{glossaries}
 \setlength{\glsdescwidth}{0.75\textwidth}
 \usepackage[]{glossaries-extra}
 \usepackage{dirtytalk}
 \ifinswedish
-    %\usepackage{glossaries-swedish}
+  %\usepackage{glossaries-swedish}
 \fi
 
 \newglossary[tlg]{readme}{tld}{tdn}{README acronyms}
@@ -178,13 +180,13 @@ nopostdot]{glossaries}
 \input{lib/pdf_related_includes}
 
 
-% the custom colors and the commands are defined in defines.tex    
+% the custom colors and the commands are defined in defines.tex  
 \hypersetup{
-	colorlinks  = true,
-	breaklinks  = true,
-	linkcolor   = \linkscolor,
-	urlcolor    = \urlscolor,
-	citecolor   = \refscolor,
+	colorlinks = true,
+	breaklinks = true,
+	linkcolor  = \linkscolor,
+	urlcolor  = \urlscolor,
+	citecolor  = \refscolor,
 	anchorcolor = black
 }
 
@@ -203,53 +205,53 @@ nopostdot]{glossaries}
 \definecolor{string}{RGB}{0, 0, 0}
 
 \lstdefinelanguage{json}{
-    numbers=none,
-    numberstyle=\small,
-    frame=none,
-    rulecolor=\color{black},
-    showspaces=false,
-    showtabs=false,
-    breaklines=true,
-    postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{gray}\hookrightarrow\space}},
-    breakatwhitespace=true,
-    basicstyle=\ttfamily\small,
-    extendedchars=false,
-    upquote=true,
-    morestring=[b]",
-    stringstyle=\color{string},
-    literate=
-     *{0}{{{\color{numb}0}}}{1}
-      {1}{{{\color{numb}1}}}{1}
-      {2}{{{\color{numb}2}}}{1}
-      {3}{{{\color{numb}3}}}{1}
-      {4}{{{\color{numb}4}}}{1}
-      {5}{{{\color{numb}5}}}{1}
-      {6}{{{\color{numb}6}}}{1}
-      {7}{{{\color{numb}7}}}{1}
-      {8}{{{\color{numb}8}}}{1}
-      {9}{{{\color{numb}9}}}{1}
-      {:}{{{\color{punct}{:}}}}{1}
-      {,}{{{\color{punct}{,}}}}{1}
-      {\{}{{{\color{delim}{\{}}}}{1}
-      {\}}{{{\color{delim}{\}}}}}{1}
-      {[}{{{\color{delim}{[}}}}{1}
-      {]}{{{\color{delim}{]}}}}{1}
-      {’}{{\char13}}1,
+  numbers=none,
+  numberstyle=\small,
+  frame=none,
+  rulecolor=\color{black},
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{gray}\hookrightarrow\space}},
+  breakatwhitespace=true,
+  basicstyle=\ttfamily\small,
+  extendedchars=false,
+  upquote=true,
+  morestring=[b]",
+  stringstyle=\color{string},
+  literate=
+ *{0}{{{\color{numb}0}}}{1}
+ {1}{{{\color{numb}1}}}{1}
+ {2}{{{\color{numb}2}}}{1}
+ {3}{{{\color{numb}3}}}{1}
+ {4}{{{\color{numb}4}}}{1}
+ {5}{{{\color{numb}5}}}{1}
+ {6}{{{\color{numb}6}}}{1}
+ {7}{{{\color{numb}7}}}{1}
+ {8}{{{\color{numb}8}}}{1}
+ {9}{{{\color{numb}9}}}{1}
+ {:}{{{\color{punct}{:}}}}{1}
+ {,}{{{\color{punct}{,}}}}{1}
+ {\{}{{{\color{delim}{\{}}}}{1}
+ {\}}{{{\color{delim}{\}}}}}{1}
+ {[}{{{\color{delim}{[}}}}{1}
+ {]}{{{\color{delim}{]}}}}{1}
+ {'}{{\char13}}1,
 }
 
 \lstdefinelanguage{XML}
 {
-  basicstyle=\ttfamily\color{blue}\bfseries\small,
-  morestring=[b]",
-  morestring=[s]{>}{<},
-  morecomment=[s]{<?}{?>},
-  stringstyle=\color{black},
-  identifierstyle=\color{blue},
-  keywordstyle=\color{cyan},
-  breaklines=true,
-  postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{gray}\hookrightarrow\space}},
-  breakatwhitespace=true,
-  morekeywords={xmlns,version,type}
+ basicstyle=\ttfamily\color{blue}\bfseries\small,
+ morestring=[b]",
+ morestring=[s]{>}{<},
+ morecomment=[s]{<?}{?>},
+ stringstyle=\color{black},
+ identifierstyle=\color{blue},
+ keywordstyle=\color{cyan},
+ breaklines=true,
+ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{gray}\hookrightarrow\space}},
+ breakatwhitespace=true,
+ morekeywords={xmlns,version,type}
 }
 
 
@@ -273,15 +275,15 @@ nopostdot]{glossaries}
 % https://kib.ki.se/en/publish-analyse/publish-your-article-open-access/open-licence-your-publication-cc
 \begin{comment}
 \usepackage[
-    type={CC},
-    %modifier={by-nc-nd},
-    %version={4.0},
-    modifier={by-nc},
-    imagemodifier={-eu-88x31},  % to get Euro symbol rather than Dollar sign
-    hyphenation={RaggedRight},
-    version={4.0},
-    %modifier={zero},
-    %version={1.0},
+  type={CC},
+  %modifier={by-nc-nd},
+  %version={4.0},
+  modifier={by-nc},
+  imagemodifier={-eu-88x31}, % to get Euro symbol rather than Dollar sign
+  hyphenation={RaggedRight},
+  version={4.0},
+  %modifier={zero},
+  %version={1.0},
 ]{doclicense}
 \end{comment}
 
@@ -310,21 +312,21 @@ eng
 An abstract is (typically) about 250 and 350 words (1/2 A4-page) with the following components:
 % key parts of the abstract
 \begin{itemize}
-  \item What is the topic area? (optional) Introduces the subject area for the project.
-  \item Short problem statement
-  \item Why was this problem worth a Bachelor's/Master’s thesis project? (\ie, why is the problem both significant and of a suitable degree of difficulty for a Bachelor's/Master’s thesis project? Why has no one else solved it yet?)
-  \item How did you solve the problem? What was your method/insight?
-  \item Results/Conclusions/Consequences/Impact: What are your key results/\linebreak[4]conclusions? What will others do based on your results? What can be done now that you have finished - that could not be done before your thesis project was completed?
+ \item What is the topic area? (optional) Introduces the subject area for the project.
+ \item Short problem statement
+ \item Why was this problem worth a Bachelor's/Master's thesis project? (\ie, why is the problem both significant and of a suitable degree of difficulty for a Bachelor's/Master's thesis project? Why has no one else solved it yet?)
+ \item How did you solve the problem? What was your method/insight?
+ \item Results/Conclusions/Consequences/Impact: What are your key results/\linebreak[4]conclusions? What will others do based on your results? What can be done now that you have finished - that could not be done before your thesis project was completed?
 \end{itemize}
 
 \end{scontents}
 \engExpl{The following are some notes about what can be included (in terms of LaTeX) in your abstract.}
-Choice of typeface with \textbackslash textit, \textbackslash textbf, and \textbackslash texttt:  \textit{x}, \textbf{x}, and \texttt{x}.
+Choice of typeface with \textbackslash textit, \textbackslash textbf, and \textbackslash texttt: \textit{x}, \textbf{x}, and \texttt{x}.
 
 Text superscripts and subscripts with \textbackslash textsubscript and \textbackslash textsuperscript: A\textsubscript{x} and A\textsuperscript{x}.
 
 Some symbols that you might find useful are available, such as: \textbackslash textregistered, \textbackslash texttrademark, and \textbackslash textcopyright. For example, 
-the copyright symbol: \textbackslash textcopyright Maguire 2022 results in \textcopyright Maguire 2022. Additionally, here are some examples of text superscripts (which can be combined with some symbols): \textbackslash textsuperscript\{99m\}Tc, A\textbackslash textsuperscript\{*\}, A\textbackslash textsuperscript\{\textbackslash textregistered\}, and A\textbackslash texttrademark resulting in \textsuperscript{99m}Tc, A\textsuperscript{*}, A\textsuperscript{\textregistered}, and A\texttrademark. Two examples of subscripts are: H\textbackslash textsubscript\{2\}O and CO\textbackslash textsubscript\{2\} which produce  H\textsubscript{2}O and CO\textsubscript{2}.
+the copyright symbol: \textbackslash textcopyright Maguire 2022 results in \textcopyright Maguire 2022. Additionally, here are some examples of text superscripts (which can be combined with some symbols): \textbackslash textsuperscript\{99m\}Tc, A\textbackslash textsuperscript\{*\}, A\textbackslash textsuperscript\{\textbackslash textregistered\}, and A\textbackslash texttrademark resulting in \textsuperscript{99m}Tc, A\textsuperscript{*}, A\textsuperscript{\textregistered}, and A\texttrademark. Two examples of subscripts are: H\textbackslash textsubscript\{2\}O and CO\textbackslash textsubscript\{2\} which produce H\textsubscript{2}O and CO\textsubscript{2}.
 
 You can use simple environments with begin and end: itemize and enumerate and within these use instances of \textbackslash item.
 
@@ -349,21 +351,21 @@ Note that one can include percentages, such as: 51\% or \SI{51}{\percent}.
 \end{scontents}
 \engExpl{\textbf{Choosing good keywords can help others to locate your paper, thesis, dissertation, \ldots and related work.}}
 Choose the most specific keyword from those used in your domain, see for example: the ACM Computing Classification System ({\small \url{https://www.acm.org/publications/computing-classification-system/how-to-use})},
-the IEEE Taxonomy ({\small \url{https://www.ieee.org/publications/services/thesaurus-thank-you.html}}), PhySH (Physics Subject Headings)\linebreak[4] ({\small \url{https://physh.aps.org/}}), \ldots or keyword selection tools such as the  National Library of Medicine's Medical Subject Headings (MeSH)  ({\small \url{https://www.nlm.nih.gov/mesh/authors.html}}) or Google's Keyword Tool ({\small \url{https://keywordtool.io/}})\\
+the IEEE Taxonomy ({\small \url{https://www.ieee.org/publications/services/thesaurus-thank-you.html}}), PhySH (Physics Subject Headings)\linebreak[4] ({\small \url{https://physh.aps.org/}}), \ldots or keyword selection tools such as the National Library of Medicine's Medical Subject Headings (MeSH) ({\small \url{https://www.nlm.nih.gov/mesh/authors.html}}) or Google's Keyword Tool ({\small \url{https://keywordtool.io/}})\\
 
 \textbf{Formatting the keywords}:
 \begin{itemize}
-  \item The first letter of a keyword should be set with a capital letter and proper names should be capitalized as usual.
-  \item Spell out acronyms and abbreviations.
-  \item Avoid "stop words" - as they generally carry little or no information.
-  \item List your keywords separated by commas (``,'').
-\end{itemize}    
+ \item The first letter of a keyword should be set with a capital letter and proper names should be capitalized as usual.
+ \item Spell out acronyms and abbreviations.
+ \item Avoid "stop words" - as they generally carry little or no information.
+ \item List your keywords separated by commas (``,'').
+\end{itemize}  
 Since you should have both English and Swedish keywords - you might think of ordering the keywords in corresponding order (\ie, so that the n\textsuperscript{th} word in each list correspond) - this makes it easier to mechanically find matching keywords.
 \end{abstract}
 \cleardoublepage
 \babelpolyLangStart{swedish}
 \begin{abstract}
-    \markboth{\abstractname}{}
+  \markboth{\abstractname}{}
 \begin{scontents}[store-env=lang]
 swe
 \end{scontents}
@@ -388,7 +390,7 @@ I would like to thank xxxx for having yyyy.
 \fancypagestyle{plain}{}
 \renewcommand{\chaptermark}[1]{ \markboth{#1}{}} 
 \tableofcontents
-  \markboth{\contentsname}{}
+ \markboth{\contentsname}{}
 
 \cleardoublepage
 \listoffigures
@@ -401,10 +403,10 @@ I would like to thank xxxx for having yyyy.
 \cleardoublepage
 % Align the text expansion of the glossary entries
 \newglossarystyle{mylong}{%
-  \setglossarystyle{long}%
-  \renewenvironment{theglossary}%
-     {\begin{longtable}[l]{@{}p{\dimexpr 2cm-\tabcolsep}p{0.8\hsize}}}% <-- change the value here
-     {\end{longtable}}%
+ \setglossarystyle{long}%
+ \renewenvironment{theglossary}%
+ {\begin{longtable}[l]{@{}p{\dimexpr 2cm-\tabcolsep}p{0.8\hsize}}}% <-- change the value here
+ {\end{longtable}}%
  }
 %\glsaddall
 %\printglossaries[type=\acronymtype, title={List of acronyms}]
@@ -417,9 +419,9 @@ I would like to thank xxxx for having yyyy.
 
 % if the nomenclature option was specified, then include the nomenclature page(s)
 \ifnomenclature
-    \cleardoublepage
-    % Output the nomenclature list
-    \printnomenclature
+  \cleardoublepage
+  % Output the nomenclature list
+  \printnomenclature
 \fi
 
 %% The following label is essential to know the page number of the last page of the preface
@@ -437,13 +439,45 @@ I would like to thank xxxx for having yyyy.
 
 \chapter{Introduction}
 \label{ch:introduction}
-Live digital services, from train-delay trackers to home-energy dashboards, depend on streams of fresh data delivered through public \glspl{API}. This study is conducted in collaboration with \textit{Klimra}, whose platform automates train-delay compensation and therefore lives or dies by how fast those external updates reach its users. Behind the scenes, two technical decisions dominate how quickly those streams reach end-users and how much computing effort they consume: \emph{(i)} whether the back-end pulls updates at fixed intervals (polling) or reacts to push events (event driven), and \emph{(ii)} which type of database stores the incoming records; relational, specialised time-series, or cloud NoSQL.
+Live digital services rely on a continuous flow of fresh data from public \glspl{API}. This thesis is conducted in collaboration with \textit{Klimra}, a Swedish start-up that automates train-delay compensation and now wants to add a live delay dashboard. Whether that dashboard is useful depends entirely on how quickly external updates can be ingested and displayed to travellers. 
 
-Prior studies paint a consistent picture.  Moving from fixed-interval polling to an event-driven pipeline shortens both average and tail response times, but it also injects more messages into the system and can push CPU usage to brief spikes \cite{Trindade2021EDAImpact}.  
-Side-by-side database tests tell a similar \say{give-and-take} story: relational engines remain versatile, time-series stores (e.g.\ TimescaleDB, InfluxDB) excel at range queries and fast inserts, and cloud NoSQL services scale reads smoothly. However, each benefit comes with extra memory, disk, or replica overheads \cite{Heldt2021SciTS}.  
-Smaller IoT benchmarks echo these results: time-series databases outpace general SQL for sliding-window queries, while NoSQL keeps pace only after adding replicas, which raises resource consumption \cite{Grzesik2020EdgeIoTBenchmark,Vergara2021PerformanceTSDB}.
+Behind the scenes, two architectural choices dominate both the speed of those updates and the resources they consume: 
+\begin{itemize}[noitemsep,leftmargin=*]
+ \item[] \textbf{(i)} ingestion method:
+ \begin{itemize}[noitemsep,leftmargin=*]
+ \item whether the back-end pulls updates at fixed intervals (\emph{polling}) 
+ \item or reacts to push events (\emph{event driven})
+ \end{itemize}
+\end{itemize}
+and
+\begin{itemize}[noitemsep,leftmargin=*]
+ \item[] \textbf{(ii)} the storage engine:
+ \begin{itemize}[noitemsep,leftmargin=*]
+ \item \emph{Relational:} the classic \say{tables and SQL} databases (e.g.\ PostgreSQL)
+ \item \emph{\gls{TSDB}:} built specifically for timestamped sensor data (e.g.\ TimescaleDB, Amazon Timestream)
+ \item \emph{NoSQL:} cloud services that store flexible key-value records instead of fixed tables (e.g.\ DynamoDB)
+ \end{itemize}
+\end{itemize}
 
-This thesis benchmarks the six most common combinations of ingestion strategy and storage engine under realistic rate limits, aiming to give engineers a data-driven recipe for choosing the right stack.  
+\noindent
+Prior studies show that switching from polling to event-driven pipelines lowers average and tail latency but can raise CPU bursts \cite{Trindade2021EDAImpact}. 
+Database comparisons tell a similar trade-off story: relational engines are versatile, time-series stores excel at range queries and fast inserts, and cloud NoSQL services scale reads smoothly, each at the cost of extra memory, disk, or replicas \cite{Heldt2021SciTS,Grzesik2020EdgeIoTBenchmark,Vergara2021PerformanceTSDB}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Design space: two ingestion styles × three DB families}
+  \label{tab:design-space}
+  \begin{tabular}{lcc}
+    \toprule
+                     & \textbf{Polling} & \textbf{Event-driven} \\ \midrule
+    \textbf{PostgreSQL (relational)} & X & X \\
+    \textbf{Timestream (TSDB)}       & X & X \\
+    \textbf{DynamoDB (NoSQL)}        & X & X \\ \bottomrule
+  \end{tabular}
+\end{table}
+
+\noindent
+This thesis benchmarks six common ingestion–storage combinations under Trafikverket's rate limit (see Figure~\ref{tab:design-space}), aiming to give engineers a data-driven recipe for choosing the right stack.
 The remainder of the chapter states the background (Section \ref{sec:background}), defines the problem (Section \ref{sec:problem}), describes the purpose and goals (Sections \ref{sec:purpose}–\ref{sec:goals}), sketches the method (Section \ref{sec:method}), lists delimitations (Section \ref{sec:delimitations}), and outlines the structure of the thesis (Section \ref{sec:structure}).
 
 
@@ -451,31 +485,35 @@ The remainder of the chapter states the background (Section \ref{sec:background}
 
 \section{Background}
 \label{sec:background}
-Live online services increasingly draw on a steady stream of data from other platforms. Any application that depends on real-time updates must ingest public or partner \glspl{API} quickly enough for the information to remain relevant by the time it reaches end-users. In a cloud environment, two key architectural choices largely decide how fresh the data stays: How updates are fetched and where they are stored.
+Live online services increasingly draw on a steady stream of data from other platforms. Any application that depends on real-time updates must ingest public or partner \glspl{API} quickly enough for the information to remain relevant by the time it reaches end-users. In a cloud environment, two key architectural choices largely decide how fresh the data stays: How updates are fetched (ingestion strategy) and where they are stored (storage engine).
 
-\begin{enumerate}
-    \item \textbf{Ingestion strategy:} fixed-interval polling versus event-driven push pipelines
-    \item \textbf{Storage engine:} general-purpose relational stores, specialised time-series engines, or cloud-native NoSQL.
-\end{enumerate}
+%\begin{itemize}[noitemsep,leftmargin=*]
+%  \item[] \textbf{(i) Ingestion strategy:} fixed-interval polling versus event-driven push pipelines
+%  \item[] \textbf{(ii) Storage engine:} general-purpose relational stores, specialised time-series engines, or cloud-native NoSQL.
+%\end{itemize}
 
 %COMMENT: Too broad - went more into detail in finished sections
 %-----------------------
 %Prior studies confirm that each choice shifts the balance between latency, throughput, and scalability. Trindade \etal\ show that switching from scheduled polling to an event-driven pipeline cuts the slowest response times under the same load profile \cite{Trindade2021EDAImpact}. In another study, Heldt \etal\ report that purpose-built time-series databases answer range queries up to three times faster than a row-oriented traditional SQL engine running on identical hardware \cite{Heldt2021SciTS}. However, those studies are evaluated in isolation, examining ingestion and storage separately, and they rarely account for the strict request limits that public APIs impose.
 
 \subsection{Ingestion Strategy}
-Industrial systems provide a clear lesson about how we fetch new data. In one \gls{SCADA} migration, requests sent every few seconds, even when nothing had changed, filled the network with duplicate traffic. This is also known as regular Modbus polls. Switching to push-style updates, where events are sent only when values change, showed to cut both bandwidth and waiting time dramatically \cite{Johansson2021SCADAIaaS}.  
-Large cloud studies report a similar pattern: constant polling wasted about 30\% of CPU, whereas letting services push events cut CPU use in half and made the slowest responses nearly 90\% faster \cite{Lewis2020PowerOfEDA}.  
-Battery-powered IoT devices gain even more. When tested, it was shown that weekly energy use fell roughly \( \sim3000\times \) when they slept until an event arrived instead of waking on a timer \cite{Makarovi2022EnergyEfficientIoT}.  
+Industrial control systems show what can go wrong with naïve polling. 
+In one \gls{SCADA} migration the master asked each sensor for new values every few seconds, even when nothing had changed; the extra traffic clogged the network. 
+After switching to push-style updates where the sensors send data only when a value changes, both bandwidth use and wait time dropped sharply \cite{Johansson2021SCADAIaaS}. 
+Large data-centre studies show a similar pattern: constant polling wasted about 30\% of CPU, while event notifications halve CPU load and cut the slowest response times by almost 90\% \cite{Lewis2020PowerOfEDA}. 
+Battery-powered IoT devices benefit even more: weekly energy use fell roughly \( \sim3000\times \) when devices slept until an event arrived instead of waking on a timer \cite{Makarovi2022EnergyEfficientIoT}.
 
-It is, however, important to remember that Event-driven designs are not cost-free. They need message brokers and extra processing to decode each event. In some small-scale tests, a single, tightly integrated program (a monolith) still handled requests faster than a network of event-driven microservices \cite{Trindade2021EDAImpact}.  
-These mixed results frame the first dimension of this thesis: should a real-time backend \emph{poll} for updates or react to \emph{events}?
+Event-driven designs are not free, however. 
+They need message brokers and extra work to decode each event, and small tests have shown that a single, tightly integrated program (a monolith) can still answer faster than a network of event-driven microservices \cite{Trindade2021EDAImpact}. 
+These mixed results set up the first question of this thesis: should a real-time back-end \emph{poll} for updates or react to \emph{events}?
 
 \subsection{Storage Engine}
-On the storage side, purpose-built TSDBs promise high ingest rates and window-query speed-ups by chunking data on time rather than keys.  
-Edge and sensor benchmarks show TimescaleDB and InfluxDB ingesting millions of rows on a Raspberry Pi while answering range queries \(3{\times}\) faster than SQLite~\cite{Grzesik2020EdgeIoTBenchmark}.  
-Larger laboratory workloads confirm the trend: InfluxDB excelled at heavy aggregates, whereas TimescaleDB shone on point look-ups~\cite{Daqouri2023TimeseriesVsSQL,Heldt2021SciTS}.  
-Cloud studies complicate the picture: Amazon Timestream under-performed on full-history queries compared with DynamoDB and an S3 data-lake pattern~\cite{Johansson2022AWSCloudData}, and MongoDB beat TimescaleDB on tag-selective look-ups despite higher range-query cost~\cite{Mohamed2024DBMSComparison}.  
-Recent surveys at the edge demonstrate that schema-flexible NoSQL engines can match TSDB write throughput once they scale replicas—at the price of extra memory and network I/O~\cite{Zhang2023EdgeTSDB,Vergara2021PerformanceTSDB}.
+Three families of databases matter for this study, each with its own strengths and limitations.
+\textbf{Relational systems}, such as vanilla PostgreSQL, organise data in tables and are reliable all-rounders, but can slow down when millions of time-stamped rows arrive every minute.
+\textbf{Time-series databases} (\glspl{TSDB}) like InfluxDB, TimescaleDB, and Amazon Timestream are built for that exact workload: they append new samples in time-order blocks, so inserts remain fast and range queries over recent hours or days run quickly. For example, TimescaleDB and InfluxDB loaded millions of sensor readings on a Raspberry Pi and answered range queries about three times faster than SQLite, a lightweight relational engine \cite{Grzesik2020EdgeIoTBenchmark}. In larger lab tests, InfluxDB led on heavy aggregations, while TimescaleDB was best for single-row look-ups thanks to PostgreSQL's indexing \cite{Daqouri2023TimeseriesVsSQL,Heldt2021SciTS}. Performance, however, is not guaranteed. In the cloud, Amazon Timestream fell behind DynamoDB and even a simple S3 data-lake when full-history scans were required \cite{Johansson2022AWSCloudData}, and MongoDB beat TimescaleDB on highly selective tag queries \cite{Mohamed2024DBMSComparison}.
+Finally, \textbf{cloud NoSQL services} such as DynamoDB trade strict schema and complex joins for limitless horizontal scaling; studies show they can match \gls{TSDB} write speed once enough replicas are added, but the extra nodes consume more memory and network bandwidth \cite{Zhang2023EdgeTSDB,Vergara2021PerformanceTSDB}.
+
+These mixed results underline that no single engine is \say{best} in every situation. Relational databases offer familiarity and strong consistency, \glspl{TSDB} excel at broad time-range analytics, and NoSQL stores scale effortlessly for simple key-value access—each at a cost that must be weighed for Klimra's real-time dashboard.
 
 
 
@@ -483,63 +521,119 @@ Recent surveys at the edge demonstrate that schema-flexible NoSQL engines can ma
 
 \section{Problem}
 \label{sec:problem}
-Real-time services that rely on rate-limited public APIs, such as Klimra's train-delay platform, must choose both an ingestion style and a database. Prior work compares polling with event-driven pipelines on a single datastore or contrasts databases under synthetic, unconstrained loads, leaving engineers without data that reflects the full stack they must deploy in the cloud.
 
-This thesis therefore asks: \emph{How do six back-end variants, formed by crossing polling and event-driven ingestion with three AWS storage engines (RDS PostgreSQL, Amazon Timestream, DynamoDB), differ in end-to-end update latency, query speed, and resource use when operating at Trafikverket's real-time train-position rate limit?} The goal is to get a statistically robust answer that will give practitioners a concrete decision matrix and provide researchers with a reproducible benchmark for future optimisation studies.
+Klimra's live-delay dashboard—like any service that relies on a public, rate-limited API—must deliver fresh data in seconds. Developers must therefore decide both \textit{how} to fetch updates (polling or push) and \textit{where} to store them (relational, time-series, or NoSQL). The literature treats these decisions separately: ingestion studies vary the fetch style but leave the database unchanged \cite{Trindade2021EDAImpact,Lewis2020PowerOfEDA}, while database benchmarks compare storage engines using a single, high-throughput synthetic workload that ignores API rate limits and keeps the ingestion method fixed \cite{Heldt2021SciTS,Grzesik2020EdgeIoTBenchmark}. Because no study evaluates both choices together under a realistic traffic cap, engineers lack evidence for selecting a complete backend stack.
 
-%\subsection{Original problem and definition}
-%\label{sec:researchQuestion}
-
-%\subsection{Scientific and engineering issues}
-%\label{sec:issues}
-
+This thesis aims to close that gap by measuring six AWS configurations: polling versus event-driven ingestion paired with RDS PostgreSQL, Amazon Timestream, or DynamoDB. It records update latency, query speed, and resource use while staying within Trafikverket's live request limit, giving practitioners a clear decision matrix and researchers a reproducible baseline.
 
 
 
 \section{Purpose}
 \label{sec:purpose}
-\sweExpl{Syfte}
-\sweExpl{Skilj på syfte och mål! Syfte är att förändra något till det bättre. I examensarbetet finns ofta två aspekter på detta. Dels vill problemägaren (företaget) få sitt problem löst till det bättre men akademin och ingenjörssamfundet vill också få nya erfarenheter och vetskap. Beskriv ett syfte som tillfredställer båda dessa aspekter.\\
-Det finns även ett syfte till som kan vara värt att beakta och det är att du som student skall ta examen och att du måste bevisa, i ditt examensarbete, att du uppfyller examensmålen. Dessa mål sammanfaller med kursmålen för examensarbetskursen. 
-}
-\generalExpl{State the purpose of your thesis and the purpose of your degree project.\\
-Describe who benefits and how they benefit if you achieve your goals. Include anticipated ethical, sustainability, social issues, etc. related to your project. (Return to these in your reflections in Section~\ref{sec:reflections}.)}
+The study has a dual purpose. For Klimra, it aims to guide the choice of ingestion style and database so that the dashboard developed in this project can meet latency targets without breaching Trafikverket's request limit. For the academic and engineering community, it fills the documented research gap by supplying a public, statistically sound benchmark that links ingestion strategy with storage choice under a real-world traffic cap. Achieving these aims also demonstrates the author's ability to design, execute, and analyse a cloud-scale performance study, thereby satisfying the goals of the master's degree project.
 
 
 
 \section{Goals}
 \label{sec:goals}
-\sweExpl{Mål}
-\sweExpl{Skilj på syfte och mål. Syftet är att åstakomma en förändring i något. Målen är vad som konkret skall göras för att om möjligt uppnå den önskade förändringen (syfte). }
+The project turns that purpose into four concrete goals:
 
-\generalExpl{State the goal/goals of this degree project.}
+\begin{enumerate}[label=\textbf{G\arabic*},leftmargin=*]
+  \item \textbf{Prototype} six back-end variants that differ only in \emph{(i)} ingestion style (polling, event-driven) and \emph{(ii)} storage engine (RDS PostgreSQL, Amazon Timestream, DynamoDB).
 
-The goal of this project is XXX. This has been divided into the following three sub-goals:
-\begin{enumerate}
-\item Subgoal 1 \sweExpl{för att tillfredsställa problemägaren – industrin?}
-\item Subgoal 2\sweExpl{för att tillfredsställa ingenjörssamfundet och vetenskapen – akademin) }
-\item Subgoal 3\sweExpl{eventuellt, för att uppfylla kursmålen – du som student}
+  \item \textbf{Benchmark} each variant against Trafikverket's live train-position API, measuring update latency, query latency, throughput, CPU, memory, and network I/O.
+
+  \item \textbf{Analyse} the results using appropriate statistical tests to identify significant differences and resource trade-offs.
+
+  \item \textbf{Deliverables}:  
+        \begin{itemize}[noitemsep,leftmargin=*]
+          \item a reusable k6/Grafana benchmarking toolkit,  
+          \item a decision matrix that maps workload patterns to the most efficient configuration for Klimra, and  
+          \item a reproducible dataset and report that other researchers can build on.
+        \end{itemize}
 \end{enumerate}
 
-\generalExpl{In addition to presenting the goal(s), you might also state what the deliverables and results of the project are.}
+
+
 
 \section{Research Methodology}
 \label{sec:method}
-\sweExpl{Undersökningsmetod}
-\sweExpl{Här anger du vilken vilken övergripande undersökningsstrategi eller metod du skall använda för att försöka besvara den akademiska frågeställning och samtidigt lösa det e v ursprungliga problemet. Ofta kan man använda ”lösandet av ursprungsproblemet” som en fallstudie kring en akademisk frågeställning. Du undersöker någon intressant fråga i ”skarpt” läge och samlar resultat och erfarenhet ur detta.\\
-Tänk på att företaget ibland måste stå tillbaka i sin önskan och förväntan på projektets resultat till förmån för ny eller kompletterande ingenjörserfarenhet och vetenskap (ditt examensarbete). Det är du som student som bestämmer och löser fördelningen mellan dessa två intressen men se till att alla är informerade. }
-\generalExpl{Introduce your choice of methodology/methodologies and method/methods – and the reason why you chose them. Contrast them with and explain why you did not choose other methodologies or methods. (The details of the actual methodology and method you have chosen will be given in Chapter~\ref{ch:methods}. Note that in Chapter~\ref{ch:methods}, the focus could be research strategies, data collection, data analysis, and quality assurance.)\\
-In this section you should present your philosophical assumption(s), research method(s), and research approach(es).}
+
+This study adopts a \textit{design-science case‐study} approach: one React/Node train-tracking application is implemented once and then redeployed with six back-end variants so that only the ingestion style (polling versus event-driven) and the database (PostgreSQL, Amazon Timestream, DynamoDB) differ.
+
+\subsection{Experimental frame}
+The frame states what is varied, what is fixed, and what is measured. A 24-hour recording of Trafikverket's train position feed is replayed at real-time speed with \textsc{k6}, an open-source HTTP load generator scripted in JavaScript. Each back-end is launched by Terraform, which provides an identical virtual machine for every trial. It provides two virtual CPU cores, 4 GiB of RAM, and runs on Amazon's Graviton 3 processor. AWS CloudWatch, the platform's built-in monitoring service, samples once per second five metric groups: update latency, ingestion delay, query latency, CPU + memory load, and network/disk I/O. This multi-metric set mirrors the suites used in recent cloud benchmarks \cite{Heldt2021SciTS,Grzesik2020EdgeIoTBenchmark}.
+
+
+\subsection{Sampling and analysis}
+Each of the six back-ends will be exercised 15 times, for 30 minutes per run, on freshly launched virtual machines. This repetition rate follows the noisy-neighbour guidance of Hidalgo \textit{et al.} for cloud experiments, where background tenants can distort a single run's latency or throughput \cite{Hidalgo2023StreamProcMicroservices}. The resulting time series are evaluated in three steps:
+
+\begin{enumerate}[label=\arabic*., leftmargin=*]
+  \item \textbf{Shapiro–Wilk test} checks whether each metric is approximately normally distributed.  
+  \item \textbf{One-way ANOVA} (if normal) or \textbf{Kruskal–Wallis} (if non-normal) compares all six back-ends in one go to detect any statistically significant difference.  
+  \item \textbf{Holm–Šidák correction} on post-hoc pairwise tests keeps the overall false-positive rate below $5\,\%$.  
+\end{enumerate}
+
+\noindent
+Every reported difference is accompanied by an \textbf{effect size}: $\eta^{2}$ for ANOVA or $\varepsilon^{2}$ for Kruskal–Wallis. This is so that readers know how large the gap is, not just that it exists.
+
+
+\subsection{Method choices}
+Local emulators and micro-benchmarks were rejected because they mask cloud side variance and ignore the interaction between ingestion logic and storage engine. All Terraform scripts, Dockerfiles, and raw metric logs will be released under an open licence to meet reproducibility guidelines for cloud experiments \cite{PerformanceEvaluationMetrics}.
+
+
+
+
+
 
 \section{Delimitations}
 \label{sec:delimitations}
-\sweExpl{Avgränsningar}
-\generalExpl{Describe the boundary/limits of your thesis project and what you are explicitly not going to do. This will help you bound your efforts – as you have clearly defined what is out of the scope of this thesis project. Explain the delimitations. These are all the things that could affect the study if they were examined and included in the degree project.}
+This thesis targets the \emph{server-side} path from Trafikverket's API to Klimra's planned dashboard. The work is therefore \textbf{delimited} as follows:
+
+\begin{itemize}[noitemsep,leftmargin=*]
+  \item \textbf{Cloud scope:} Only AWS databases are benchmarked (RDS PostgreSQL, Amazon Timestream, DynamoDB). Other cloud providers or locally hosted databases are not included.
+
+  \item \textbf{Ingestion patterns:} The study compares fixed-interval polling with event-driven SQS/Lambda pipelines. Other mechanisms, such as long polling, gRPC streams, or change-data-capture, are left for future work.
+
+  \item \textbf{Databases:} One representative engine is chosen per family. Variants such as InfluxDB, TimescaleDB on self-managed Postgres, or document stores beyond DynamoDB are out of scope.
+
+  \item \textbf{Client side:} UI/UX design, mobile apps, and front-end optimisation are not evaluated. The React dashboard is used only as a constant workload generator.
+
+  \item \textbf{Non-functional aspects:} Security hardening, cost modelling, carbon footprint, and detailed failure-recovery analysis are acknowledged but not measured.
+
+  \item \textbf{Traffic profile:} Experiments replay one 24-hour snapshot at the live request limit. Burst tests above that limit and multi-day retention scenarios are excluded.
+
+  \item \textbf{Geography:} All resources are hosted in a single AWS region; cross-region latency and replication behaviour are not studied.
+\end{itemize}
+
+\noindent
+These boundaries keep the project focused on the interplay between ingestion style and storage engine under a realistic, rate-limited workload.
+
+
+
 
 \section{Structure of the thesis}
 \label{sec:structure}
-\sweExpl{ Rapportens disposition}
-Chapter~\ref{ch:background} presents relevant background information about xxx.  Chapter~\ref{ch:methods} presents the methodology and method used to solve the problem. …
+
+\begin{description}[leftmargin=0cm]
+
+  \item[Chapter~\ref{ch:introduction}] introduces the study, states the problem, purpose, goals, delimitations, and gives a roadmap for the rest of the thesis.
+
+  \item[Chapter~\ref{ch:background}] reviews related work on ingestion strategies, database families, and cloud-benchmark practices needed to understand the study.
+
+  \item[Chapter~\ref{ch:methods}] explains the research methodology, experimental frame, sampling strategy, and statistical tests.
+
+  \item[Chapter~\ref{ch:whatYouDid}] outlines the implementation of the six AWS back-end variants and the k6/Grafana benchmarking toolkit.
+
+  \item[Chapter~\ref{ch:resultsAndAnalysis}] presents the collected metrics and analyses latency, resource use, and scalability trade-offs.
+
+  \item[Chapter~\ref{ch:discussion}] interprets the results, compares them to prior work, and discusses practical implications for cloud architects.
+
+  \item[Chapter~\ref{ch:conclusionsAndFutureWork}] summarises the main findings, notes limitations, and suggests directions for future research.
+
+  \item[Appendices] list acronyms and supply supporting artefacts (Terraform scripts, code snippets, raw data) to ensure reproducibility.
+
+\end{description}
 
 
 
@@ -567,7 +661,7 @@ This chapter provides basic background information about xxx. Additionally, this
 
 
 \sweExpl{Vilken viktig litteratur och
-  (forsknings-)artiklar har du studerat inom området (litteraturstudie)? }
+ (forsknings-)artiklar har du studerat inom området (litteraturstudie)? }
 
 \section{Major background area 1}
 \sweExpl{Viktigt bakgrundsområde 1}
@@ -575,28 +669,28 @@ There are xxx characteristics that distinguish yyy from other information and co
 
  
 \begin{figure}[!ht]
-  \begin{center}
-    \includegraphics[width=0.5\textwidth]{figures/lots_of_stars.png}
-  \end{center}
-  \caption{Lots of stars  (Inspired by Figure x.y on page z of [xxx])}
-  \label{fig:lotsofstars}
+ \begin{center}
+  \includegraphics[width=0.5\textwidth]{figures/lots_of_stars.png}
+ \end{center}
+ \caption{Lots of stars (Inspired by Figure x.y on page z of [xxx])}
+ \label{fig:lotsofstars}
 \end{figure}
 \sweExpl{Massor av stärnor (Inspirerad av figur x.y på sidan z i [xxx])}
 
 
 \begin{table}[!ht]
-  \begin{center}
-    \caption{xxx characteristics}
-    \label{tab:tablecaracteristics}
-    \begin{tabular}{l|S[table-format=4.6]} % <-- Alignments: 1st column left, 2nd middle, with vertical lines in between
-      \textbf{Characteristics} & \textbf{Description}\\
-      $\alpha$ & $\beta$ \\
-      \hline
-      1 & 1110.1\\
-      2 & 10.1\\
-      3 & 23.113231\\
-    \end{tabular}
-  \end{center}
+ \begin{center}
+  \caption{xxx characteristics}
+  \label{tab:tablecaracteristics}
+  \begin{tabular}{l|S[table-format=4.6]} % <-- Alignments: 1st column left, 2nd middle, with vertical lines in between
+ \textbf{Characteristics} & \textbf{Description}\\
+ $\alpha$ & $\beta$ \\
+ \hline
+ 1 & 1110.1\\
+ 2 & 10.1\\
+ 3 & 23.113231\\
+  \end{tabular}
+ \end{center}
 \end{table}
 \sweExpl{Egenskaper}
 \sweExpl{Beskrivning}
@@ -617,7 +711,7 @@ Using the nearest data center may improve performance, see \cite{bogdanov_neares
 \subsection{Link layer Encapsulation}
 \label{sec:llencap}
 
-See Figure~\ref{fig:ieee8023-data-packet} which uses the \textsf{bytefield}  \LaTeX\ package. 
+See Figure~\ref{fig:ieee8023-data-packet} which uses the \textsf{bytefield} \LaTeX\ package. 
 
 
 \begin{figure}[!ht]
@@ -636,8 +730,8 @@ See Figure~\ref{fig:ieee8023-data-packet} which uses the \textsf{bytefield}  \La
 \bitbox[]{4}{\textbf{MAC \\[-1ex] \tiny{packet}}} & \colorbitbox{lightgray}{4}{\tiny Preamble} & \colorbitbox{lightgray}{2}{\tiny SFD} & \colorbitbox{lightgray}{16}{\tiny MAC Client Data} & \colorbitbox{lightgray}{3}{\tiny Padding} &
 \colorbitbox{lightgray}{2}{\tiny CRC} & \colorbitbox{lightgray}{4}{\tiny Extension}
 \end{bytefield}
-     \caption{Ethernet data link layer protocol encapsulated into a IEEE~802.3 MAC packet}
-     \label{fig:ieee8023-data-packet}
+ \caption{Ethernet data link layer protocol encapsulated into a IEEE~802.3 MAC packet}
+ \label{fig:ieee8023-data-packet}
 \end{figure}
 
 \subsection{IP packet headers}
@@ -660,8 +754,8 @@ contrasted with the IPv6 header shown in Figure~\ref{fig:ipv6-header}.
 \wordbox{1}{Destination Address}\\
 \colorbitbox{lightgray}{24}{Options} & \colorbitbox{lightgray}{8}{Padding}
 \end{bytefield}
-     \caption[IPv4 datagram header]{IPv4 datagram header. Light grey-colored fields are optional.}
-    \label{fig:ipv4-header} 
+ \caption[IPv4 datagram header]{IPv4 datagram header. Light grey-colored fields are optional.}
+  \label{fig:ipv4-header} 
 \end{figure}
 
 %
@@ -676,8 +770,8 @@ contrasted with the IPv6 header shown in Figure~\ref{fig:ipv6-header}.
 \wordbox{4}{Source Address}\\
 \wordbox{4}{Destination Address}\\
 \end{bytefield}
-     \caption{IPv6 datagram header}
-    \label{fig:ipv6-header}
+ \caption{IPv6 datagram header}
+  \label{fig:ipv6-header}
 \end{figure}
 
 \subsection{Test for accessibility of formulas}
@@ -710,31 +804,31 @@ Carrier clouds have been suggested as a way to reduce the delay between the user
 
 \section{Summary}\sweExpl{Sammanfattning}
 \sweExpl{Det är trevligt om detta kapitel
-  avslutas med en sammanfattning. Till exempel kan du inkludera en tabell som
-  sammanfattar andras idéer och fördelar och nackdelar med varje - så som
-  senare kan du jämföra din lösning till var och en av dessa. Detta kommer
-  också att hjälpa dig att definiera de variabler som du kommer att använda
-  för din utvärdering.}
+ avslutas med en sammanfattning. Till exempel kan du inkludera en tabell som
+ sammanfattar andras idéer och fördelar och nackdelar med varje - så som
+ senare kan du jämföra din lösning till var och en av dessa. Detta kommer
+ också att hjälpa dig att definiera de variabler som du kommer att använda
+ för din utvärdering.}
 
 \engExpl{It is nice to have this chapter conclude with a summary. For
-  example, you can include a table that summarizes other people's ideas and
-  benefits and drawbacks with each - so as later you can compare your solution
-  to each of them. This will also help you define the variables that you will
-  use for your evaluation.}
+ example, you can include a table that summarizes other people's ideas and
+ benefits and drawbacks with each - so as later you can compare your solution
+ to each of them. This will also help you define the variables that you will
+ use for your evaluation.}
 
 \cleardoublepage
 \chapter{Method or Methods}
 \label{ch:methods}
 \sweExpl{Metod eller Metodval}
 \generalExpl{This chapter is about Engineering-related
-  content, Methodologies and Methods.  Use a self-explaining title.\\The
-  contents and structure of this chapter will change with your choice of
-  methodology and methods.}
+ content, Methodologies and Methods. Use a self-explaining title.\\The
+ contents and structure of this chapter will change with your choice of
+ methodology and methods.}
 
 
 
 \generalExpl{Describe the engineering-related contents (preferably with models) and the research methodology and methods that are used in the degree project.\\
-Give a theoretical description of the scientific or engineering methodology  you are going to use and why have you chosen this method. What other methods did you consider and why did you reject them?\\
+Give a theoretical description of the scientific or engineering methodology you are going to use and why have you chosen this method. What other methods did you consider and why did you reject them?\\
 In this chapter, you describe what engineering-related and scientific skills you are going to apply, such as modeling, analyzing, developing, and evaluating engineering-related and scientific content. The choice of these methods should be appropriate for the problem. Additionally, you should be conscious of aspects relating to society and ethics (if applicable). The choices should also reflect your goals and what you (or someone else) should be able to do as a result of your solution - which could not be done well before you started.}
 
 The purpose of this chapter is to provide an overview of the research method
@@ -760,7 +854,7 @@ beskriver ramverket som valts för att utvärdera xxx.\\
 Ofta kan man koppla ett antal följdfrågor till undersökningsfrågan och problemlösningen t ex\\
 (1) Vilken process skall användas för konstruktion av lösningen och vilken process skall kopplas till denna för att svara på undersökningsfrågan?\\
 (2) Hur och vilket resultat (storheter) skall presenteras både för att redovisa svar på undersökningsfrågan (resultatkapitlet i denna rapport) och redovisa resultat av problemlösningen (prototypen, ofta dokument som bilagor men vilka dokument och varför?).\\
-(3) Vilken teori/teknik skall väljas och användas både för undersökningen (taxonomi, matematik, grafer, storheter mm)  och  problemlösning (UML, UseCases, Java mm) och varför?\\
+(3) Vilken teori/teknik skall väljas och användas både för undersökningen (taxonomi, matematik, grafer, storheter mm) och problemlösning (UML, UseCases, Java mm) och varför?\\
 (4) Vad behöver du som student leverera för att uppnå hög kvaliet (minimikrav) eller mycket hög kvalitet på examensarbetet?\\
 (5) Frågorna kopplar till de följande underkapitlen.\\
 (6) Resonemanget bygger på att studenter på hing-programmet ofta skall konstruera något åt problemägaren och att man till detta måste koppla en intressant ingenjörsfråga. Det finns hela tiden en dualism mellan dessa aspekter i exjobbet.
@@ -774,28 +868,28 @@ Ofta kan man koppla ett antal följdfrågor till undersökningsfrågan och probl
 Figure~\ref{fig:researchprocess} shows the steps conducted to carry out this research. 
 
 \sweExpl{Figur~\ref{fig:researchprocess} visar de steg som utförs för att genomföra\\
-Beskriv, gärna med ett aktivitetsdiagram (UML?), din undersökningsprocess och utvecklingsprocess.  Du måste koppla ihop det akademiska intresset (undersökningsprocess) med ursprungsproblemet (utvecklingsprocess)
+Beskriv, gärna med ett aktivitetsdiagram (UML?), din undersökningsprocess och utvecklingsprocess. Du måste koppla ihop det akademiska intresset (undersökningsprocess) med ursprungsproblemet (utvecklingsprocess)
 denna forskning.\\
 Aktivitetsdiagram från t ex UML-standard}
 
 
  
 \begin{figure}[!ht]
-  \begin{center}
-    \includegraphics[width=0.5\textwidth]{figures/researchprocess.png}
-  \end{center}
-  \caption{Research Process}
-  \label{fig:researchprocess}
+ \begin{center}
+  \includegraphics[width=0.5\textwidth]{figures/researchprocess.png}
+ \end{center}
+ \caption{Research Process}
+ \label{fig:researchprocess}
 \end{figure}
 
 \generalExpl{Example of using customized item labels.}
 Some steps in the process:
 \begin{enumerate}[leftmargin=*, label=\textbf{Step \arabic*}, ref=Step \arabic*] %labelindent=1em for indent
-    \itemsep0em
-    \item \label{x:s1} plan experiment,
-    \item \label{x:s2} conduct experiment,
-    \item \label{x:s3} analyze data from the experiment, and
-    \item \label{x:s4} discuss the results of the analysis.
+  \itemsep0em
+  \item \label{x:s1} plan experiment,
+  \item \label{x:s2} conduct experiment,
+  \item \label{x:s3} analyze data from the experiment, and
+  \item \label{x:s4} discuss the results of the analysis.
 \end{enumerate}
 
 \sweExpl{Forskningsprocessen}
@@ -847,7 +941,7 @@ Beskriv allt att någon annan skulle behöva återskapa din testmiljö / testbä
 \subsection{Validity of method}
 \label{sec:validtyOfMethod}
 \sweExpl{Giltigheten av metoder\\
-  Har dina metoder gett dig de rätta svaren och lösningarna? Var metoderna korrekta?}
+ Har dina metoder gett dig de rätta svaren och lösningarna? Var metoderna korrekta?}
 
 \engExpl{How will you know if your results are valid?}
 \engExpl{Remember that validity is about the \textit{accuracy} of a measurement while reliability is about the \textit{consistency} of the measurement values under the same conditions (\ie repeatability).}
@@ -899,7 +993,7 @@ Bland dessa bilagor återfinns ofta, och enligt någon angiven standard, kravdok
 \cleardoublepage
 \chapter{What you did}\engExpl{Choose your own chapter title to describe this}
 \label{ch:whatYouDid}
-\sweExpl{[Vad gjorde du? Hur gick det till? – Välj lämplig rubrik (“Genomförande”, “Konstruktion”, ”Utveckling”  eller annat]}
+\sweExpl{[Vad gjorde du? Hur gick det till? – Välj lämplig rubrik (“Genomförande”, “Konstruktion”, ”Utveckling” eller annat]}
 
 
 \engExpl{What have you done? How did you do it? What design decisions did you make? How did what you did help you to meet your goals?}
@@ -915,30 +1009,30 @@ to access this page when served will be quantified in a series of
 experiments. The configurations that have been tested in the test bed are
 listed in Table~\ref{tab:configstested}. In \SI{7.0}{\percent} of cases, there was an error indicating xxxxx.
 
-\sweExpl{Figur~\ref{fig:homepageicon}  visar en enkel ikon för en hemsida. Tiden för att få tillgång till den här sidan när den laddas kommer att kvantifieras i en serie experiment. De konfigurationer som har testats i provbänk listas ini tabell~\ref{tab:configstested}.\\
+\sweExpl{Figur~\ref{fig:homepageicon} visar en enkel ikon för en hemsida. Tiden för att få tillgång till den här sidan när den laddas kommer att kvantifieras i en serie experiment. De konfigurationer som har testats i provbänk listas ini tabell~\ref{tab:configstested}.\\
 Vad du har gjort? Hur gjorde du det? Vilka designval gjorde du?}
  
 \begin{figure}[!ht]
-  \begin{center}
-    \includegraphics[width=0.25\textwidth]{figures/Homepage-icon.png}
-  \end{center}
-  \caption{Homepage icon}
-  \label{fig:homepageicon}
+ \begin{center}
+  \includegraphics[width=0.25\textwidth]{figures/Homepage-icon.png}
+ \end{center}
+ \caption{Homepage icon}
+ \label{fig:homepageicon}
 \end{figure}
 
 \begin{table}[!ht]
-  \begin{center}
-    \caption{Configurations tested}
-    \label{tab:configstested}
-    \resizebox{\columnwidth}{!}{%
-    \begin{tabular}{l|c} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
-      \textbf{Configuration} & \textbf{Description} \\
-      \hline
-      1 & Simple test with one server\\
-      2 & Simple test with one server\\
-    \end{tabular}
-    }
-  \end{center}
+ \begin{center}
+  \caption{Configurations tested}
+  \label{tab:configstested}
+  \resizebox{\columnwidth}{!}{%
+  \begin{tabular}{l|c} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+ \textbf{Configuration} & \textbf{Description} \\
+ \hline
+ 1 & Simple test with one server\\
+ 2 & Simple test with one server\\
+  \end{tabular}
+  }
+ \end{center}
 \end{table}
 \sweExpl{Testade konfigurationer}
 
@@ -948,10 +1042,10 @@ Vad du har gjort? Hur gjorde du det? Vilka designval gjorde du?}
 
 Two commonly used simulators are:
 \begin{description}[labelwidth =\widthof{\textbf{ns-2 or ns-3 simulator}}, leftmargin = !]
-    \item[\textbf{Mininet}] This simulator uses traffic control (\texttt{tc}) to simulate network devices connected by links with specific bandwidth, packet loss rates, qdisc methods, etc.
-    
-    
-    \item[\textbf{ns-2 or ns-3 simulator}] These simulators are very useful for simulating wireless communication links between moving devices. You can specify the mobility patterns of the nodes.
+  \item[\textbf{Mininet}] This simulator uses traffic control (\texttt{tc}) to simulate network devices connected by links with specific bandwidth, packet loss rates, qdisc methods, etc.
+  
+  
+  \item[\textbf{ns-2 or ns-3 simulator}] These simulators are very useful for simulating wireless communication links between moving devices. You can specify the mobility patterns of the nodes.
 \end{description}
 
 \subsection{Some examples of coding}
@@ -974,28 +1068,28 @@ In contrast, Listing~\ref{lst:programmes} is an example of code in Python to
 get a list of all of the programs at KTH. Note that on {\DTMsetdatestyle{iso}\DTMdisplaydate{2025}{6}{1}{-1}} the KOPPS API will no longer work.
 \engExpl{Note that the change to the iso date format was done in a group so that afterwards the date style returns to what it was, resulting in \DTMdisplaydate{2025}{6}{1}{-1}.}
 
-\lstset{extendedchars=true}  %% This allows character codes in the range 128-255
+\lstset{extendedchars=true} %% This allows character codes in the range 128-255
 \begin{lstlisting}[language={Python}, caption={Using a python program to
-    access the KTH API to get all of the programs at KTH}, label=lst:programmes]
+  access the KTH API to get all of the programs at KTH}, label=lst:programmes]
 KOPPSbaseUrl = 'https://www.kth.se'
 
 def v1_get_programmes():
-    global Verbose_Flag
-    #
-    # Use the KOPPS API to get the data
-    # note that this returns XML
-    url = "{0}/api/kopps/v1/programme".format(KOPPSbaseUrl)
-    if Verbose_Flag:
-        print("url: " + url)
-    #
-    r = requests.get(url)
-    if Verbose_Flag:
-        print("result of getting v1 programme: {}".format(r.text))
-    #
-    if r.status_code == requests.codes.ok:
-        return r.text           # simply return the XML
-    #
-    return None
+  global Verbose_Flag
+  #
+  # Use the KOPPS API to get the data
+  # note that this returns XML
+  url = "{0}/api/kopps/v1/programme".format(KOPPSbaseUrl)
+  if Verbose_Flag:
+  print("url: " + url)
+  #
+  r = requests.get(url)
+  if Verbose_Flag:
+  print("result of getting v1 programme: {}".format(r.text))
+  #
+  if r.status_code == requests.codes.ok:
+  return r.text  # simply return the XML
+  #
+  return None
 \end{lstlisting}
 \FloatBarrier
 
@@ -1005,25 +1099,25 @@ In \Cref{lst:exampleUsingMinted}, line \ref{listinline:ExcelWriter} shows the us
 \begin{minted}[linenos,breaklines, escapeinside=||]{python}
 import pandas as pd
 def make_spreadsheet_of_differences(pds):
-    global school
-    publishers=set()
-    writer = pd.ExcelWriter(f'/tmp/{school}_compare_duplicates.xlsx', engine='xlsxwriter') |\label{listinline:ExcelWriter}|
-    print("starting")
-    for idx, p in enumerate(pds):
-        p0=list(p)[0]
-        p1=list(p)[1]
-        print(f"\nfor {p0} and {p1}")
-        comp, publisher1, publisher2=compare_two_records_silent(p0, p1)
-        sheet_name=f'{p0}'.split(':')[1]
-        print(f'Wrote {sheet_name=}')|\label{listinline:UsingToexcel}|
-        comp.to_excel(writer, sheet_name=sheet_name)
-        publishers.add(publisher1)
-        publishers.add(publisher2)
-    
-    # Close the Pandas Excel writer and output the Excel file.
-    writer.close()|\label{listinline:closingWriter}|
-    print(f"{publishers=}")
-    return publishers
+  global school
+  publishers=set()
+  writer = pd.ExcelWriter(f'/tmp/{school}_compare_duplicates.xlsx', engine='xlsxwriter') |\label{listinline:ExcelWriter}|
+  print("starting")
+  for idx, p in enumerate(pds):
+  p0=list(p)[0]
+  p1=list(p)[1]
+  print(f"\nfor {p0} and {p1}")
+  comp, publisher1, publisher2=compare_two_records_silent(p0, p1)
+  sheet_name=f'{p0}'.split(':')[1]
+  print(f'Wrote {sheet_name=}')|\label{listinline:UsingToexcel}|
+  comp.to_excel(writer, sheet_name=sheet_name)
+  publishers.add(publisher1)
+  publishers.add(publisher2)
+  
+  # Close the Pandas Excel writer and output the Excel file.
+  writer.close()|\label{listinline:closingWriter}|
+  print(f"{publishers=}")
+  return publishers
 \end{minted}
 \caption{Example of using \texttt{minted} with python code}
 \label{lst:exampleUsingMinted}
@@ -1043,8 +1137,8 @@ These figures are just some examples to show that you can draw your own figures 
 \Cref{fig:processAnInvoice} shows the processing of key-value extraction from a PDF document using Azure's Form Recognizer. 
 
 \tikzset{
-    processBox/.style={rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, font=\sffamily, draw=black, fill=red!20},
-    largeBox/.style={rectangle, rounded corners, minimum width=3cm, minimum height=4cm,text centered, draw=black}
+  processBox/.style={rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, font=\sffamily, draw=black, fill=red!20},
+  largeBox/.style={rectangle, rounded corners, minimum width=3cm, minimum height=4cm,text centered, draw=black}
 }
 \begin{figure}[!ht]
 \resizebox{1.1\textwidth}{!}{%
@@ -1052,41 +1146,41 @@ These figures are just some examples to show that you can draw your own figures 
 [align=left,node distance=2cm]
 
 \node (document) [tape,tape bend top=none,draw,font=\sffamily] {PDF\\Document};
-\node (GDM) [processBox,  right=0.5cm of document] {OCR};
+\node (GDM) [processBox, right=0.5cm of document] {OCR};
 \node (OCRoutput) [largeBox, right=1cm of GDM] {OCR output};
 
 \node (kvp) [tape,tape bend top=none,draw,font=\sffamily, below=0.25cm of OCRoutput.north] {key-value\\pairs};
 \node (entities) [tape,tape bend top=none,draw,font=\sffamily, above=0.35cm of OCRoutput.south] {Entities};
 \node (Manual) [processBox, right=1cm of kvp] {Analyze the extracted\\key-value pairs};
-\draw [-latex](document) --  (GDM);
-\draw [-latex](kvp) --  (Manual);
+\draw [-latex](document) -- (GDM);
+\draw [-latex](kvp) -- (Manual);
 \path[ draw
-     , -latex'] let \p1=(GDM.east), \p2=(kvp.west) in (GDM.east) -- +(0.25*\x2-0.25*\x1, \y1) -- +(0.5*\x2-0.5*\x1, \y2) -- (kvp.west);
+ , -latex'] let \p1=(GDM.east), \p2=(kvp.west) in (GDM.east) -- +(0.25*\x2-0.25*\x1, \y1) -- +(0.5*\x2-0.5*\x1, \y2) -- (kvp.west);
 \path[ draw
-     , -latex'] let \p1=(GDM.east), \p2=(kvp.west), \p3=(entities.west) in (GDM.east) --  +(0.25*\x2-0.25*\x1, \y1) -- +(0.5*\x3-0.5*\x1, \y3) -- (entities.west);
+ , -latex'] let \p1=(GDM.east), \p2=(kvp.west), \p3=(entities.west) in (GDM.east) -- +(0.25*\x2-0.25*\x1, \y1) -- +(0.5*\x3-0.5*\x1, \y3) -- (entities.west);
 \end{tikzpicture}
 }
 \caption{The processing of key-value extraction from a PDF document using Azure's Form Recognizer}
-  \label{fig:processAnInvoice}
+ \label{fig:processAnInvoice}
 \end{figure}
 \FloatBarrier
 \subsubsection{Hyper-V with Containers}
  \Cref{fig:hyperVcontainers} shows how Hyper-V deals with containers.
  
  \tikzset{
-    container/.style={rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, draw=black, fill=blue!20},
-    containerization/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=blue!20},
-    hypervisor/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=red!20},
-    os/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=orange!20},
-    guestos/.style={rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, draw=black, fill=orange!40},
-    infrastructure/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=green!20},
-    hos/.style={rectangle, rounded corners, minimum width=6cm, minimum height=1cm,text centered, draw=black, fill=orange!20},
-    kernel/.style={rectangle, rounded corners, minimum width=6cm, minimum height=1cm,text centered, draw=black, fill=purple!20},
-    services/.style={rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=pink!20]}
+  container/.style={rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, draw=black, fill=blue!20},
+  containerization/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=blue!20},
+  hypervisor/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=red!20},
+  os/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=orange!20},
+  guestos/.style={rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, draw=black, fill=orange!40},
+  infrastructure/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=green!20},
+  hos/.style={rectangle, rounded corners, minimum width=6cm, minimum height=1cm,text centered, draw=black, fill=orange!20},
+  kernel/.style={rectangle, rounded corners, minimum width=6cm, minimum height=1cm,text centered, draw=black, fill=purple!20},
+  services/.style={rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=pink!20]}
 }
 
 \begin{figure}[ht!]
-    \centering
+  \centering
 \resizebox{1\textwidth}{!}{%
 \begin{tikzpicture}
 [align=center,node distance=2cm]
@@ -1101,48 +1195,48 @@ These figures are just some examples to show that you can draw your own figures 
 \node (Kernel2) [kernel, anchor=north west, align=left, above=1.5cm of OS2.north east, anchor=north east, text width=3cm, text centered] {Kernel};
 
 \node (ServiceA) [container, anchor=east, above=1 cm of Kernel1.east, anchor=east] {Services};
-\node (AppA) [container,  left=0.25cm of ServiceA] {App 1};
+\node (AppA) [container, left=0.25cm of ServiceA] {App 1};
 
 \node (ServiceB) [container, anchor=east, above=1 cm of Kernel2.east, anchor=east] {Services};
-\node (AppB) [container,  left=0.25cm of ServiceB] {App 2};
-%\node (AppC) [container,  right=0.25cm of AppB] {App 3};
+\node (AppB) [container, left=0.25cm of ServiceB] {App 2};
+%\node (AppC) [container, right=0.25cm of AppB] {App 3};
 
-\draw[black,thick,dashed] ($(OS2.north west)+(-0.3,3.75)$)  rectangle ($(OS2.south east)+(0.5,-0.3)$);
+\draw[black,thick,dashed] ($(OS2.north west)+(-0.3,3.75)$) rectangle ($(OS2.south east)+(0.5,-0.3)$);
 \node[text width=5cm, text=red, above=0.1cm of ServiceB] 
-    {\textbf{Container}};
+  {\textbf{Container}};
 
-\draw[red,thick,dotted] ($(Kernel2.north west)+(-0.3,1.6)$)  rectangle ($(Kernel2.south east)+(0.3,-0.3)$);
+\draw[red,thick,dotted] ($(Kernel2.north west)+(-0.3,1.6)$) rectangle ($(Kernel2.south east)+(0.3,-0.3)$);
 \node[text width=5cm, text=black, above=0.8cm of ServiceB] 
-    {\textbf{VM}};
+  {\textbf{VM}};
 \end{tikzpicture}
 }
-    \caption{Hyper-V with containers}
-    \label{fig:hyperVcontainers}
+  \caption{Hyper-V with containers}
+  \label{fig:hyperVcontainers}
 \end{figure}
 \FloatBarrier
 \subsubsection{\glsfmtshort{VM} versus Containers}
 \Cref{fg:vmsVersusContainers} shows a comparison of virtual machines (VMs) versus containers.
 
 \begin{figure*}[ht!]
-    \centering
-    \begin{subfigure}[t]{0.5\textwidth}
-        \centering
+  \centering
+  \begin{subfigure}[t]{0.5\textwidth}
+  \centering
 \resizebox{1\textwidth}{!}{%
 \begin{tikzpicture}
 [align=left,node distance=2cm]
 
 \node (AppA) [container,align=left] {App 1};
-\node (AppB) [container,  right=0.25cm of AppA] {App 2};
-\node (AppC) [container,  right=0.25cm of AppB] {App 3};
+\node (AppB) [container, right=0.25cm of AppA] {App 2};
+\node (AppC) [container, right=0.25cm of AppB] {App 3};
 
-\node (GosA) [guestos,align=left,  below=0.25cm of AppA.south west,anchor=north west] {Guest OS};
-\node (GosB) [guestos,  right=0.25cm of GosA] {Guest OS};
-\node (GosC) [guestos,  right=0.25cm of GosB] {Guest OS};
+\node (GosA) [guestos,align=left, below=0.25cm of AppA.south west,anchor=north west] {Guest OS};
+\node (GosB) [guestos, right=0.25cm of GosA] {Guest OS};
+\node (GosC) [guestos, right=0.25cm of GosB] {Guest OS};
 
 \draw [decoration={brace,amplitude=0.5em},decorate, ultra thick,gray, transform canvas={xshift = 0.5cm}]
-       (AppC.north -| AppC.east) -- (GosC.south -| AppC.east);
-\node[text width=5cm,  right=1cm of GosC.north east] 
-    {\textbf{VMs}};
+  (AppC.north -| AppC.east) -- (GosC.south -| AppC.east);
+\node[text width=5cm, right=1cm of GosC.north east] 
+  {\textbf{VMs}};
 
 \node (Hypervisor) [hypervisor, anchor=north west, align=left, below=0.25cm of GosA.south west, anchor=north west, text width=13cm, text centered] {Hypervisor};
 
@@ -1153,20 +1247,20 @@ These figures are just some examples to show that you can draw your own figures 
 
 \end{tikzpicture}
 }
-        \caption{VM}
-    \end{subfigure}%
-    ~ 
-    \begin{subfigure}[t]{0.5\textwidth}
-        \centering
-        \resizebox{1\textwidth}{!}{%
+  \caption{VM}
+  \end{subfigure}%
+  ~ 
+  \begin{subfigure}[t]{0.5\textwidth}
+  \centering
+  \resizebox{1\textwidth}{!}{%
 \begin{tikzpicture}
 [align=left,node distance=2cm]
 
 \node (AppA) [container,align=left] {App 1};
-\node (AppB) [container,  right=0.25cm of AppA] {App 2};
-\node (AppC) [container,  right=0.25cm of AppB] {App 3};
-\node[text width=5cm,  right=0.25cm of AppC] 
-    {\textbf{Apps running in Containers}};
+\node (AppB) [container, right=0.25cm of AppA] {App 2};
+\node (AppC) [container, right=0.25cm of AppB] {App 3};
+\node[text width=5cm, right=0.25cm of AppC] 
+  {\textbf{Apps running in Containers}};
 
 
 \node (Containerization) [containerization, anchor=north west, align=left, below=0.25cm of AppA.south west, anchor=north west, text width=13cm, text centered] {Docker Engine};
@@ -1178,10 +1272,10 @@ These figures are just some examples to show that you can draw your own figures 
 
 \end{tikzpicture}
 }
-        \caption{Containers}
-    \end{subfigure}
-    \caption{Virtual machines (VMs) versus Containers}
-    \label{fg:vmsVersusContainers}
+  \caption{Containers}
+  \end{subfigure}
+  \caption{Virtual machines (VMs) versus Containers}
+  \label{fg:vmsVersusContainers}
 \end{figure*}
 
 \cleardoublepage
@@ -1204,16 +1298,16 @@ The delay has been computed from the time the GET request is received until the 
 \sweExpl{Lite statistik av fördröjningsmätningarna visas i Tabell~\ref{tab:delayMeasurements}. Förseningen har beräknats från den tidpunkt då begäran GET tas emot fram till svaret skickas.}
 
 \begin{table}[!ht]
-  \begin{center}
-    \caption{Delay measurement statistics}
-    \label{tab:delayMeasurements}
-    \begin{tabular}{l|S[table-format=4.2]|S[table-format=3.2]} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
-      \textbf{Configuration} & \textbf{Average delay (ns)} & \textbf{Median delay (ns)}\\
-      \hline
-      1 & 467.35 & 450.10\\
-      2 & 1687.5 & 901.23\\
-    \end{tabular}
-  \end{center}
+ \begin{center}
+  \caption{Delay measurement statistics}
+  \label{tab:delayMeasurements}
+  \begin{tabular}{l|S[table-format=4.2]|S[table-format=3.2]} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+ \textbf{Configuration} & \textbf{Average delay (ns)} & \textbf{Median delay (ns)}\\
+ \hline
+ 1 & 467.35 & 450.10\\
+ 2 & 1687.5 & 901.23\\
+  \end{tabular}
+ \end{center}
 \end{table}
 
 Table \ref{tab:ping_results} shows the measurement of round trip times from four hosts to and from a server.
@@ -1225,7 +1319,7 @@ Table \ref{tab:ping_results} shows the measurement of round trip times from four
 \begin{tabular}{l *{4}{S[table-format=2.3]}}
 {} & \multicolumn{4}{c}{host to server RTT in ms} \\
 \cmidrule{2-5}
-Host & \multicolumn{1}{c}{min}  & \multicolumn{1}{c}{avg} & \multicolumn{1}{c}{max} & \multicolumn{1}{c}{mdev} \\
+Host & \multicolumn{1}{c}{min} & \multicolumn{1}{c}{avg} & \multicolumn{1}{c}{max} & \multicolumn{1}{c}{mdev} \\
 \midrule
 h1 & 5.625 & 5.625 & 5.625 & 0.0 \\
 h2 & 2.909 & 2.909 & 1.909 & 0.0 \\
@@ -1334,21 +1428,21 @@ Given these measurements, we can calculate our processing bit rate as the invers
 \Cref{tab:majorMarkupLMDetailedResult} shows another table in which some values have been set in bold (using \textbackslash B) to emphasize them. Note how the \texttt{S} formatting has been modified so that it considers the weight of the characters and this is able to decimal align even these hold-faced numbers with the numbers in the column above them.
 
 \begin{table}[!ht]
-    \centering
-    \caption{Median values of sandwich attributes}
-    \label{tab:majorMarkupLMDetailedResult}
-    \begin{tabular}{l *{2}{S[detect-weight,mode=text,table-format=3.2]}}
-        & \multicolumn{2}{c}{\textbf{sites}}\\
-        \cmidrule{2-3}
-        \textbf{Attribute} & \textbf{A} & \textbf{B} \\
-        \midrule
-        price (in SEK) & 36.5 & 71.3 \\
-        protean (g) & 97.2 & 100.0 \\
-        salt (mg) & 9.7 & 9.3 \\
-        \hline
-        \textbf{Average customer rating in \%} & \B 82.2 & \B 89.9 \\
-        \midrule
-    \end{tabular}
+  \centering
+  \caption{Median values of sandwich attributes}
+  \label{tab:majorMarkupLMDetailedResult}
+  \begin{tabular}{l *{2}{S[detect-weight,mode=text,table-format=3.2]}}
+  & \multicolumn{2}{c}{\textbf{sites}}\\
+  \cmidrule{2-3}
+  \textbf{Attribute} & \textbf{A} & \textbf{B} \\
+  \midrule
+  price (in SEK) & 36.5 & 71.3 \\
+  protean (g) & 97.2 & 100.0 \\
+  salt (mg) & 9.7 & 9.3 \\
+  \hline
+  \textbf{Average customer rating in \%} & \B 82.2 & \B 89.9 \\
+  \midrule
+  \end{tabular}
 \end{table}
 \FloatBarrier
 
@@ -1357,7 +1451,7 @@ Given these measurements, we can calculate our processing bit rate as the invers
 \Cref{fig:stackedrust} shows a stacked bar chart using pgfplots. It illustrates how easy it is to take a set of data and make a stacked bar plot. One of the features is the shifted values -- this is very useful when the bar itself is too small to put the value into.
 
 \pgfplotstableread{
-Label Numbers  Refs  Struct/Enum  Heap  Arrays
+Label Numbers Refs Struct/Enum Heap Arrays
 cratesio 70.04 19.83 8.31 1.3 0.52
 librs 49.26 30.49 10.80 7.92 1.53
 rustc 55.01 24.80 11.54 6.16 2.49
@@ -1365,70 +1459,70 @@ rustc 55.01 24.80 11.54 6.16 2.49
 
 
 \pgfkeys{
-    /pgf/number format/.cd,
-    fixed,
-    fixed zerofill,
-    precision=2
+  /pgf/number format/.cd,
+  fixed,
+  fixed zerofill,
+  precision=2
 }
 \begin{figure}[ht!]
-    \centering
-    \scalebox{0.9}{
-    \begin{tikzpicture}
-    \begin{axis}[
-        ybar stacked,
-        %reverse legend,
-        reverse legend=false,
-        %https://tex.stackexchange.com/questions/88892/pgfplots-bar-plot-spacing-inbetween-bars
-        enlarge x limits=0.4,
-	    bar width=45pt,
-        /pgfplots/nodes near coords*/.append style={
-        every node near coord/.style={
-            color=black,
-            font=\small,
-            name=X,
-%            shift={    
-%                (50pt,25pt)
-%                },
-            xshift={50pt},
-                yshift ={
-                ifthenelse((\plotnum == 4), 30pt,20pt)},
-            },
-            scatter/@post marker code/.append code={
-                \node(Y){};
-                \draw(X)--(Y.center);
-            }
-        },
-	    nodes near coords,
-        bar shift=5pt,
-        ymin=0,
-        ymax=115,
-        xtick=data,
-        width=1\textwidth,
-        legend style={draw=none},
-        legend image post style={scale=2.0},
-        legend style={
-            at={(0.5,-0.2)},
-            anchor=north,
-            legend columns=-2,
-            font=\large,
-            %mark size=20pt,
-        },
-        ylabel=Percentage points (\%),
-        xticklabels from table={\testdata}{Label},
-        xticklabel style={rotate=30},
-    ]
-    \addplot  table [y=Numbers, meta=Label, x expr=\coordindex] {\testdata};
-    \addlegendentry{Numbers}
-    \addplot table [y=Refs, meta=Label, x expr=\coordindex] {\testdata};
-    \addlegendentry{Refs}
-    \addplot  table [y=Struct/Enum, meta=Label, x expr=\coordindex] {\testdata};
-    \addlegendentry{Struct/Enum}
-    \addplot  table [y=Heap, meta=Label, x expr=\coordindex] {\testdata};
-    \addlegendentry{Heap}
-    \addplot  table [y=Arrays, meta=Label, x expr=\coordindex] {\testdata};
-    \addlegendentry{Arrays}
-    \end{axis}
-    \end{tikzpicture}}
+  \centering
+  \scalebox{0.9}{
+  \begin{tikzpicture}
+  \begin{axis}[
+  ybar stacked,
+  %reverse legend,
+  reverse legend=false,
+  %https://tex.stackexchange.com/questions/88892/pgfplots-bar-plot-spacing-inbetween-bars
+  enlarge x limits=0.4,
+	  bar width=45pt,
+  /pgfplots/nodes near coords*/.append style={
+  every node near coord/.style={
+  color=black,
+  font=\small,
+  name=X,
+%  shift={  
+%    (50pt,25pt)
+%    },
+  xshift={50pt},
+    yshift ={
+    ifthenelse((\plotnum == 4), 30pt,20pt)},
+  },
+  scatter/@post marker code/.append code={
+    \node(Y){};
+    \draw(X)--(Y.center);
+  }
+  },
+	  nodes near coords,
+  bar shift=5pt,
+  ymin=0,
+  ymax=115,
+  xtick=data,
+  width=1\textwidth,
+  legend style={draw=none},
+  legend image post style={scale=2.0},
+  legend style={
+  at={(0.5,-0.2)},
+  anchor=north,
+  legend columns=-2,
+  font=\large,
+  %mark size=20pt,
+  },
+  ylabel=Percentage points (\%),
+  xticklabels from table={\testdata}{Label},
+  xticklabel style={rotate=30},
+  ]
+  \addplot table [y=Numbers, meta=Label, x expr=\coordindex] {\testdata};
+  \addlegendentry{Numbers}
+  \addplot table [y=Refs, meta=Label, x expr=\coordindex] {\testdata};
+  \addlegendentry{Refs}
+  \addplot table [y=Struct/Enum, meta=Label, x expr=\coordindex] {\testdata};
+  \addlegendentry{Struct/Enum}
+  \addplot table [y=Heap, meta=Label, x expr=\coordindex] {\testdata};
+  \addlegendentry{Heap}
+  \addplot table [y=Arrays, meta=Label, x expr=\coordindex] {\testdata};
+  \addlegendentry{Arrays}
+  \end{axis}
+  \end{tikzpicture}}
 \caption{Rust types distribution for the compiler, crates.io, and lib.rs.
 (percentage) - appears here with the permission of the author - see the thesis at \url{https://urn.kb.se/resolve?urn=urn\%3Anbn\%3Ase\%3Akth\%3Adiva-332124}}
 \label{fig:stackedrust}
@@ -1465,7 +1559,7 @@ Förbättringsförslag?}
 \engExpl{Describe the conclusions (reflect on the whole introduction given in Chapter 1).}
 
 
-  
+ 
 \engExpl{Discuss the positive effects and the drawbacks.\\
 Describe the evaluation of the results of the degree project.\\
 Did you meet your goals?\\
@@ -1519,7 +1613,7 @@ In particular, the author of this thesis wishes to point out xxxxxx remains as a
 \sweExpl{Reflektioner}
 \sweExpl{Vilka är de relevanta ekonomiska, sociala, miljömässiga och etiska aspekter av ditt arbete?}
 \engExpl{What are the relevant economic, social,
-  environmental, and ethical aspects of your work?
+ environmental, and ethical aspects of your work?
 }
 
 
@@ -1544,12 +1638,12 @@ xxxx.
 
 
 \ifbiblatex
-    %\typeout{Biblatex current language is \currentlang}
-    \printbibliography[heading=bibintoc]
+  %\typeout{Biblatex current language is \currentlang}
+  \printbibliography[heading=bibintoc]
 \else
-    \phantomsection  % make it include a hyperref - see https://tex.stackexchange.com/a/98995
-    \addcontentsline{toc}{chapter}{References}
-    \bibliography{references}
+  \phantomsection % make it include a hyperref - see https://tex.stackexchange.com/a/98995
+  \addcontentsline{toc}{chapter}{References}
+  \bibliography{references}
 \fi
 
 
@@ -1577,20 +1671,20 @@ An argument for including supporting material in the PDF file is that it will be
 }
 
 \begin{figure}[!ht]
-  \begin{center}
-    \includegraphics[width=0.50\textwidth]{README_notes/pdf-viewer-attached-files.png}
-  \end{center}
-  \caption{Adobe Acrobat Reader using the paperclip icon for the attached references.bib file}
-  \label{fig:PDFreaderPaperclipExample}
+ \begin{center}
+  \includegraphics[width=0.50\textwidth]{README_notes/pdf-viewer-attached-files.png}
+ \end{center}
+ \caption{Adobe Acrobat Reader using the paperclip icon for the attached references.bib file}
+ \label{fig:PDFreaderPaperclipExample}
 \end{figure}
 \FloatBarrier
 
 \begin{figure}[!ht]
-  \begin{center}
-    \includegraphics[width=0.99\textwidth]{README_notes/Bib-save-embedded-example.png}
-  \end{center}
-  \caption{Adobe Acrobat Reader after right-clicking on the push-pin icon for the attached references.bib file}
-  \label{fig:PDFreaderPushpinExample}
+ \begin{center}
+  \includegraphics[width=0.99\textwidth]{README_notes/Bib-save-embedded-example.png}
+ \end{center}
+ \caption{Adobe Acrobat Reader after right-clicking on the push-pin icon for the attached references.bib file}
+ \label{fig:PDFreaderPushpinExample}
 \end{figure}
 \FloatBarrier
 \cleardoublepage
@@ -1600,38 +1694,38 @@ An argument for including supporting material in the PDF file is that it will be
 
 \section{Just for testing KTH colors}
 \ifdigitaloutput
-    \textbf{You have selected to optimize for digital output}
+  \textbf{You have selected to optimize for digital output}
 \else
-    \textbf{You have selected to optimize for print output}
+  \textbf{You have selected to optimize for print output}
 \fi
 \begin{itemize}[noitemsep]
-    \item Primary color
-    \begin{itemize}
-    \item \textcolor{kth-blue}{kth-blue \ifdigitaloutput
-    actually Deep sea
-    \fi} {\color{kth-blue} \rule{0.3\linewidth}{1mm} }\\
+  \item Primary color
+  \begin{itemize}
+  \item \textcolor{kth-blue}{kth-blue \ifdigitaloutput
+  actually Deep sea
+  \fi} {\color{kth-blue} \rule{0.3\linewidth}{1mm} }\\
 
-    \item \textcolor{kth-blue80}{kth-blue80} {\color{kth-blue80} \rule{0.3\linewidth}{1mm} }\\
+  \item \textcolor{kth-blue80}{kth-blue80} {\color{kth-blue80} \rule{0.3\linewidth}{1mm} }\\
 \end{itemize}
 
-\item  Secondary colors
+\item Secondary colors
 \begin{itemize}[noitemsep]
-    \item \textcolor{kth-lightblue}{kth-lightblue \ifdigitaloutput
-    actually Stratosphere
-    \fi} {\color{kth-lightblue} \rule{0.3\linewidth}{1mm} }\\
+  \item \textcolor{kth-lightblue}{kth-lightblue \ifdigitaloutput
+  actually Stratosphere
+  \fi} {\color{kth-lightblue} \rule{0.3\linewidth}{1mm} }\\
 
-    \item \textcolor{kth-lightred}{kth-lightred \ifdigitaloutput
-    actually Fluorescence\fi} {\color{kth-lightred} \rule{0.3\linewidth}{1mm} }\\
+  \item \textcolor{kth-lightred}{kth-lightred \ifdigitaloutput
+  actually Fluorescence\fi} {\color{kth-lightred} \rule{0.3\linewidth}{1mm} }\\
 
-    \item \textcolor{kth-lightred80}{kth-lightred80} {\color{kth-lightred80} \rule{0.3\linewidth}{1mm} }\\
+  \item \textcolor{kth-lightred80}{kth-lightred80} {\color{kth-lightred80} \rule{0.3\linewidth}{1mm} }\\
 
-    \item \textcolor{kth-lightgreen}{kth-lightgreen \ifdigitaloutput
-    actually Front-lawn\fi} {\color{kth-lightgreen} \rule{0.3\linewidth}{1mm} }\\
+  \item \textcolor{kth-lightgreen}{kth-lightgreen \ifdigitaloutput
+  actually Front-lawn\fi} {\color{kth-lightgreen} \rule{0.3\linewidth}{1mm} }\\
 
-    \item \textcolor{kth-coolgray}{kth-coolgray \ifdigitaloutput
-    actually Office\fi} {\color{kth-coolgray} \rule{0.3\linewidth}{1mm} }\\
+  \item \textcolor{kth-coolgray}{kth-coolgray \ifdigitaloutput
+  actually Office\fi} {\color{kth-coolgray} \rule{0.3\linewidth}{1mm} }\\
 
-    \item \textcolor{kth-coolgray80}{kth-coolgray80} {\color{kth-coolgray80} \rule{0.3\linewidth}{1mm} }
+  \item \textcolor{kth-coolgray80}{kth-coolgray80} {\color{kth-coolgray80} \rule{0.3\linewidth}{1mm} }
 \end{itemize}
 \end{itemize}
 
@@ -1639,38 +1733,38 @@ An argument for including supporting material in the PDF file is that it will be
 
 % Include an example of using nomenclature
 \ifnomenclature
-    \cleardoublepage
-    \chapter{Main equations}
-    \label{ch:NomenclatureExamples}
-    This appendix gives some examples of equations that are used throughout this thesis.
-    \section{A simple example}
-    The following example is adapted from Figure 1 of the documentation for the package nomencl (\url{https://ctan.org/pkg/nomencl}).
-    \begin{equation}\label{eq:mainEq}
-    a=\frac{N}{A}
-    \end{equation}
-    \nomenclature{$a$}{The number of angels per unit area\nomrefeq}%       %% include the equation number in the list
-    \nomenclature{$N$}{The number of angels per needle point\nomrefpage}%  %% include the page number in the list
-    \nomenclature{$A$}{The area of the needle point}%
-    The equation $\sigma = m a$%
-    \nomenclature{$\sigma$}{The total mass of angels per unit area\nomrefeqpage}%
-    \nomenclature{$m$}{The mass of one angel}
+  \cleardoublepage
+  \chapter{Main equations}
+  \label{ch:NomenclatureExamples}
+  This appendix gives some examples of equations that are used throughout this thesis.
+  \section{A simple example}
+  The following example is adapted from Figure 1 of the documentation for the package nomencl (\url{https://ctan.org/pkg/nomencl}).
+  \begin{equation}\label{eq:mainEq}
+  a=\frac{N}{A}
+  \end{equation}
+  \nomenclature{$a$}{The number of angels per unit area\nomrefeq}%  %% include the equation number in the list
+  \nomenclature{$N$}{The number of angels per needle point\nomrefpage}% %% include the page number in the list
+  \nomenclature{$A$}{The area of the needle point}%
+  The equation $\sigma = m a$%
+  \nomenclature{$\sigma$}{The total mass of angels per unit area\nomrefeqpage}%
+  \nomenclature{$m$}{The mass of one angel}
 follows easily from \Cref{eq:mainEq}.
 
-    \section{An even simpler example}
-    The formula for the diameter of a circle is shown in \Cref{eq:secondEq} area of a circle in \cref{eq:thirdEq}.
-    \begin{equation}\label{eq:secondEq}
-    D_{circle}=2\pi r
-    \end{equation}
-    \nomenclature{$D_{circle}$}{The diameter of a circle\nomrefeqpage}%
-    \nomenclature{$r$}{The radius of a circle\nomrefeqpage}%
+  \section{An even simpler example}
+  The formula for the diameter of a circle is shown in \Cref{eq:secondEq} area of a circle in \cref{eq:thirdEq}.
+  \begin{equation}\label{eq:secondEq}
+  D_{circle}=2\pi r
+  \end{equation}
+  \nomenclature{$D_{circle}$}{The diameter of a circle\nomrefeqpage}%
+  \nomenclature{$r$}{The radius of a circle\nomrefeqpage}%
 
-    \begin{equation}\label{eq:thirdEq}
-    A_{circle}=\pi r^2
-    \end{equation}
-    \nomenclature{$A_{circle}$}{The area of a circle\nomrefeqpage}%
+  \begin{equation}\label{eq:thirdEq}
+  A_{circle}=\pi r^2
+  \end{equation}
+  \nomenclature{$A_{circle}$}{The area of a circle\nomrefeqpage}%
 
-    Some more text that refers to \eqref{eq:thirdEq}.
-\fi  %% end of nomenclature example
+  Some more text that refers to \eqref{eq:thirdEq}.
+\fi %% end of nomenclature example
 
 \cleardoublepage
 % Information for authors
@@ -1711,7 +1805,7 @@ follows easily from \Cref{eq:mainEq}.
 \cleardoublepage
 \clearpage\thispagestyle{empty}\mbox{} % empty page with backcover on the other side
 \kthbackcover
-\fancyhead{}  % Do not use header on this extra page or pages
+\fancyhead{} % Do not use header on this extra page or pages
 \section*{€€€€ For DIVA €€€€}
 \lstset{numbers=none} %% remove any list line numbering
 \divainfo{pg:lastPageofPreface}{pg:lastPageofMainmatter}
