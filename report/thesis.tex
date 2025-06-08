@@ -121,7 +121,7 @@ morekeywords={begin, todo, textbf, textit, texttt}
 \fi
 \usepackage[all]{hypcap}
 \usepackage{booktabs}
-\usepackage{bbding}
+\usepackage{graphicx}
 \usepackage[acronym, style=super, section=section, nonumberlist, nomain,
 nopostdot]{glossaries}
 \setlength{\glsdescwidth}{0.75\textwidth}
@@ -439,7 +439,7 @@ I would like to thank xxxx for having yyyy.
 
 \chapter{Introduction}
 \label{ch:introduction}
-Live digital services rely on a continuous flow of fresh data from public \glspl{API}. This thesis is conducted in collaboration with \textit{Klimra}, a Swedish start-up that automates train-delay compensation and now wants to add a live delay dashboard. Whether that dashboard is useful depends entirely on how quickly external updates can be ingested and displayed to travellers. 
+Live digital services rely on a continuous flow of fresh data from public \glspl{API}. This thesis is conducted in collaboration with \textit{Klimra}, a Swedish start-up that automates train-delay compensation and now wants to add a live delay dashboard. Whether that dashboard is useful depends entirely on how quickly external updates can be ingested and displayed to travellers. Choosing an architecture that minimises latency under an API rate cap is therefore of great importance.
 
 Behind the scenes, two architectural choices dominate both the speed of those updates and the resources they consume: 
 \begin{itemize}[noitemsep,leftmargin=*]
@@ -463,22 +463,26 @@ and
 Prior studies show that switching from polling to event-driven pipelines lowers average and tail latency but can raise CPU bursts \cite{Trindade2021EDAImpact}. 
 Database comparisons tell a similar trade-off story: relational engines are versatile, time-series stores excel at range queries and fast inserts, and cloud NoSQL services scale reads smoothly, each at the cost of extra memory, disk, or replicas \cite{Heldt2021SciTS,Grzesik2020EdgeIoTBenchmark,Vergara2021PerformanceTSDB}.
 
-\begin{table}[htbp]
-  \centering
-  \caption{Design space: two ingestion styles × three DB families}
-  \label{tab:design-space}
-  \begin{tabular}{lcc}
-    \toprule
-                     & \textbf{Polling} & \textbf{Event-driven} \\ \midrule
-    \textbf{PostgreSQL (relational)} & X & X \\
-    \textbf{Timestream (TSDB)}       & X & X \\
-    \textbf{DynamoDB (NoSQL)}        & X & X \\ \bottomrule
-  \end{tabular}
-\end{table}
-
 \noindent
-This thesis benchmarks six common ingestion–storage combinations under Trafikverket's rate limit (see Figure~\ref{tab:design-space}), aiming to give engineers a data-driven recipe for choosing the right stack.
-The remainder of the chapter states the background (Section \ref{sec:background}), defines the problem (Section \ref{sec:problem}), describes the purpose and goals (Sections \ref{sec:purpose}–\ref{sec:goals}), sketches the method (Section \ref{sec:method}), lists delimitations (Section \ref{sec:delimitations}), and outlines the structure of the thesis (Section \ref{sec:structure}).
+This thesis benchmarks six AWS-based ingestion–storage combinations under Trafikverket's rate limit, aiming to give engineers a data-driven recipe for choosing the right stack. Figure~\ref{fig:pipeline} below illustrates the end-to-end path that each variant implements and that we benchmark.
+The remainder of the chapter states the background (Section~\ref{sec:background}), defines the problem (Section~\ref{sec:problem}), describes the purpose and goals (Sections~\ref{sec:purpose}–\ref{sec:goals}), sketches the method (Section~\ref{sec:method}), lists delimitations (Section~\ref{sec:delimitations}), and outlines the structure of the thesis (Section~\ref{sec:structure}).
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{
+  \begin{tikzpicture}[>=latex,
+      box/.style = {draw, thick, rounded corners,
+                    minimum width = 3cm, minimum height = 1cm,
+                    text width    = 2.8cm, align = center}]
+    \node[box, fill=blue!10]                (api)    {Trafikverket\\REST API};
+    \node[box, fill=orange!10, right=2cm of api] (ingest) {Ingestion layer\\(Polling \emph{or} Events)};
+    \node[box, fill=green!10,  right=2cm of ingest] (db)   {Database\\(SQL / TSDB / NoSQL)};
+    \node[box, fill=yellow!15, right=2cm of db]   (ui)   {React dashboard\\(traveller view)};
+    \draw (api) -- (ingest) -- (db) -- (ui);
+  \end{tikzpicture}}%
+  \caption{Benchmark scope: API, ingestion layer, database, React dashboard}
+  \label{fig:pipeline}
+\end{figure}
 
 
 
