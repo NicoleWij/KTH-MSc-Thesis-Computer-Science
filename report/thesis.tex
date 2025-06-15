@@ -439,11 +439,11 @@ I would like to thank xxxx for having yyyy.
 
 \chapter{Introduction}
 \label{ch:introduction}
-Live digital services rely on a continuous flow of fresh data from public \glspl{API}. This thesis is conducted in collaboration with \textit{Klimra}, a Swedish start-up that automates train-delay compensation and now wants to add a live delay dashboard. Whether that dashboard is useful depends entirely on how quickly external updates can be ingested and displayed to travellers. Choosing an architecture that minimises latency under an API rate cap is therefore of great importance.
+Live digital services rely on a continuous flow of fresh data from public \glspl{API}. This thesis is conducted in collaboration with \textit{Klimra}, a Swedish start-up that automates train-delay compensation and now wants to add a live delay dashboard. Whether that dashboard is useful depends entirely on how quickly external updates can be ingested and displayed to travellers. Choosing an architecture that minimises latency under an \gls{API} rate cap is therefore of great importance.
 
 Behind the scenes, two architectural choices dominate both the speed of those updates and the resources they consume: 
 \begin{itemize}[noitemsep,leftmargin=*]
- \item[] \textbf{(i)} ingestion method:
+ \item[] \textbf{(i) ingestion method:}
  \begin{itemize}[noitemsep,leftmargin=*]
  \item whether the back-end pulls updates at fixed intervals (\emph{polling}) 
  \item or reacts to push events (\emph{event driven})
@@ -451,7 +451,7 @@ Behind the scenes, two architectural choices dominate both the speed of those up
 \end{itemize}
 and
 \begin{itemize}[noitemsep,leftmargin=*]
- \item[] \textbf{(ii)} the storage engine:
+ \item[] \textbf{(ii) the storage engine:}
  \begin{itemize}[noitemsep,leftmargin=*]
  \item \emph{Relational:} the classic \say{tables and SQL} databases (e.g.\ PostgreSQL)
  \item \emph{\gls{TSDB}:} built specifically for timestamped sensor data (e.g.\ TimescaleDB, Amazon Timestream)
@@ -461,11 +461,7 @@ and
 
 \noindent
 Prior studies show that switching from polling to event-driven pipelines lowers average and tail latency but can raise CPU bursts \cite{Trindade2021EDAImpact}. 
-Database comparisons tell a similar trade-off story: relational engines are versatile, time-series stores excel at range queries and fast inserts, and cloud NoSQL services scale reads smoothly, each at the cost of extra memory, disk, or replicas \cite{Heldt2021SciTS,Grzesik2020EdgeIoTBenchmark,Vergara2021PerformanceTSDB}.
-
-\noindent
-This thesis benchmarks six AWS-based ingestion–storage combinations under Trafikverket's rate limit, aiming to give engineers a data-driven recipe for choosing the right stack. Figure~\ref{fig:pipeline} below illustrates the end-to-end path that each variant implements and that we benchmark.
-The remainder of the chapter states the background (Section~\ref{sec:background}), defines the problem (Section~\ref{sec:problem}), describes the purpose and goals (Sections~\ref{sec:purpose}–\ref{sec:goals}), sketches the method (Section~\ref{sec:method}), lists delimitations (Section~\ref{sec:delimitations}), and outlines the structure of the thesis (Section~\ref{sec:structure}).
+Database comparisons tell a similar story of trade-offs: relational engines are versatile, time-series stores excel at range queries and fast inserts, and cloud NoSQL services scale reads smoothly, each at the cost of extra memory, disk, or replicas \cite{Heldt2021SciTS,Grzesik2020EdgeIoTBenchmark,Vergara2021PerformanceTSDB}.
 
 \begin{figure}[htbp]
   \centering
@@ -483,6 +479,10 @@ The remainder of the chapter states the background (Section~\ref{sec:background}
   \caption{Benchmark scope: API, ingestion layer, database, React dashboard}
   \label{fig:pipeline}
 \end{figure}
+
+\noindent
+This thesis benchmarks six AWS-based ingestion–storage combinations under Trafikverket's rate limit, aiming to give engineers a data-driven recipe for choosing the right stack. Figure~\ref{fig:pipeline} above illustrates the end-to-end path that each variant implements and that we benchmark.
+The remainder of the chapter states the background (Section~\ref{sec:background}), defines the problem (Section~\ref{sec:problem}), describes the purpose and goals (Sections~\ref{sec:purpose}–\ref{sec:goals}), sketches the method (Section~\ref{sec:method}), lists delimitations (Section~\ref{sec:delimitations}), and outlines the structure of the thesis (Section~\ref{sec:structure}).
 
 
 
@@ -526,7 +526,7 @@ These mixed results underline that no single engine is \say{best} in every situa
 \section{Problem}
 \label{sec:problem}
 
-Klimra's live-delay dashboard—like any service that relies on a public, rate-limited API—must deliver fresh data in seconds. Developers must therefore decide both \textit{how} to fetch updates (polling or push) and \textit{where} to store them (relational, time-series, or NoSQL). The literature treats these decisions separately: ingestion studies vary the fetch style but leave the database unchanged \cite{Trindade2021EDAImpact,Lewis2020PowerOfEDA}, while database benchmarks compare storage engines using a single, high-throughput synthetic workload that ignores API rate limits and keeps the ingestion method fixed \cite{Heldt2021SciTS,Grzesik2020EdgeIoTBenchmark}. Because no study evaluates both choices together under a realistic traffic cap, engineers lack evidence for selecting a complete backend stack.
+Klimra's live-delay dashboard—like any service that relies on a public, rate-limited API—must deliver fresh data in seconds. Developers must therefore decide both \textit{how} to fetch updates (polling or push) and \textit{where} to store them (relational, time-series, or NoSQL). The literature treats these decisions separately: ingestion studies vary the fetch style but leave the database unchanged \cite{Trindade2021EDAImpact,Lewis2020PowerOfEDA}, while database benchmarks compare storage engines using a single, high-throughput synthetic workload that ignores \gls{API} rate limits and keeps the ingestion method fixed \cite{Heldt2021SciTS,Grzesik2020EdgeIoTBenchmark}. Because no study evaluates both choices together under a realistic traffic cap, engineers lack evidence for selecting a complete backend stack.
 
 This thesis aims to close that gap by measuring six AWS configurations: polling versus event-driven ingestion paired with RDS PostgreSQL, Amazon Timestream, or DynamoDB. It records update latency, query speed, and resource use while staying within Trafikverket's live request limit, giving practitioners a clear decision matrix and researchers a reproducible baseline.
 
@@ -592,7 +592,7 @@ Local emulators and micro-benchmarks were rejected because they mask cloud side 
 
 \section{Delimitations}
 \label{sec:delimitations}
-This thesis targets the \emph{server-side} path from Trafikverket's API to Klimra's planned dashboard. The work is therefore \textbf{delimited} as follows:
+This thesis targets the server-side path from Trafikverket's \gls{API} to Klimra's planned dashboard. The work therefore has the following delimitations:
 
 \begin{itemize}[noitemsep,leftmargin=*]
   \item \textbf{Cloud scope:} Only AWS databases are benchmarked (RDS PostgreSQL, Amazon Timestream, DynamoDB). Other cloud providers or locally hosted databases are not included.
@@ -648,177 +648,162 @@ These boundaries keep the project focused on the interplay between ingestion sty
 \cleardoublepage
 \chapter{Background}
 \label{ch:background}
-\sweExpl{Bakgrund}
 
-\generalExpl{When you do your literature study, you should have a nearly complete Chapters 1 and 2.\\
-You may also find it convenient to introduce the future work section into your report early – so that you can put things that you think about but decide not to do now into this section.\\
-Note that later you can move things between this future work section and what you have done as you may change your mind about what to do now versus what to put off to future work.
-}
-\generalExpl{What does a reader (another x student -- where x is your study line) need to know to understand your report?
-What have others already done? (This is the “related work”.) Explain what and
-how prior work/prior research will be applied on or used in the degree
-project/work (described in this thesis). Explain why and what is not used in
-the degree project and give valid reasons for rejecting the work/research.}
-
-This chapter provides basic background information about xxx. Additionally, this chapter describes xxx. The chapter also describes related work xxxx.
+This chapter provides the technical foundation and overview of prior work needed to follow and understand the rest of the thesis. First, 
+%Section \ref{sec:prereq} first defines cloud-computing concepts, such as API rate limits, event brokers, and managed databases, on which the study builds.
+Section \ref{sec:ingestion} surveys fixed-interval polling and event-driven pipelines, summarising the latency, throughput, and cost trade-offs reported in recent literature. In a similar way, Section \ref{sec:storage} then reviews the three database families evaluated here (relational, time-series, and NoSQL) and the benchmark results in recent literature. Because earlier studies look at ingestion and storage separately, none test the two together under real-world rate limits. Section \ref{sec:gap} discusses how his thesis fills that gap. Finally, Section \ref{sec:summary} summarises the key points of the chapter.
 
 
-
-\sweExpl{Vilken viktig litteratur och
- (forsknings-)artiklar har du studerat inom området (litteraturstudie)? }
-
-\section{Major background area 1}
-\sweExpl{Viktigt bakgrundsområde 1}
-There are xxx characteristics that distinguish yyy from other information and communication technology (ICT) system, as shown in Figure~\ref{fig:lotsofstars}. Table \ref{tab:tablecaracteristics} summarizes these characteristics.
-
- 
-\begin{figure}[!ht]
- \begin{center}
-  \includegraphics[width=0.5\textwidth]{figures/lots_of_stars.png}
- \end{center}
- \caption{Lots of stars (Inspired by Figure x.y on page z of [xxx])}
- \label{fig:lotsofstars}
-\end{figure}
-\sweExpl{Massor av stärnor (Inspirerad av figur x.y på sidan z i [xxx])}
-
-
-\begin{table}[!ht]
- \begin{center}
-  \caption{xxx characteristics}
-  \label{tab:tablecaracteristics}
-  \begin{tabular}{l|S[table-format=4.6]} % <-- Alignments: 1st column left, 2nd middle, with vertical lines in between
- \textbf{Characteristics} & \textbf{Description}\\
- $\alpha$ & $\beta$ \\
- \hline
- 1 & 1110.1\\
- 2 & 10.1\\
- 3 & 23.113231\\
-  \end{tabular}
- \end{center}
-\end{table}
-\sweExpl{Egenskaper}
-\sweExpl{Beskrivning}
-
-\subsection{Subarea 1.1}
-Entangled states are an important part of quantum cryptography, but also relevant in other domains. This concept might be relevant for neutrinos, see for example \cite{kim_small-mass_2016}.
-
-\subsection{Subarea 1.1.2}
-Computational methods are increasingly used as a third method of carrying out
-scientific investigations. For example, computational experiments were used to
-find the amount of wear in a polyethylene liner of a hip prosthesis in \cite{maguire_jr_new_2014}.
-…
-
-\subsection{Subarea 1.1.2}
-Using the nearest data center may improve performance, see \cite{bogdanov_nearest_2015}
-
-
-\subsection{Link layer Encapsulation}
-\label{sec:llencap}
-
-See Figure~\ref{fig:ieee8023-data-packet} which uses the \textsf{bytefield} \LaTeX\ package. 
-
-
-\begin{figure}[!ht]
-	\centering
-\begin{bytefield}{21}
-\bitbox[]{7}{} & \bitbox[]{3}{\tiny octets:} & \bitbox[]{4}{\tiny 6} & \bitbox[]{4}{\tiny 6} & \bitbox[]{3}{\tiny 2} & \bitbox[]{5}{\tiny 46 to 1500} & \bitbox[]{3}{\tiny 0 to 46} & \bitbox[]{2}{\tiny 4}\\ 
-
-\bitbox[]{8}{\textbf{ETHERNET \\[-1ex] \tiny{data link-layer}}} & \bitbox[]{2}{} & 
-
-\bitbox{4}{\tiny Destination Address} & \bitbox{4}{\tiny Source Address} & \bitbox{3}{\tiny Length/ Type} & 
-\bitbox{5}{\tiny Data Payload} & \bitbox{3}{\tiny Padding} &
-\bitbox{2}{\tiny CRC} \\
-
-\bitbox[]{1}{} &\bitbox[]{3}{\tiny octets:} & \bitbox[]{4}{\tiny 7} & \bitbox[]{2}{\tiny 1} & \bitbox[]{0}{$\vdots$ \\[1ex]} & \bitbox[]{16}{} & \bitbox[]{0}{$\vdots$ \\[1ex]} & \bitbox[]{5}{} & \bitbox[]{4}{\tiny Variable}\\
-
-\bitbox[]{4}{\textbf{MAC \\[-1ex] \tiny{packet}}} & \colorbitbox{lightgray}{4}{\tiny Preamble} & \colorbitbox{lightgray}{2}{\tiny SFD} & \colorbitbox{lightgray}{16}{\tiny MAC Client Data} & \colorbitbox{lightgray}{3}{\tiny Padding} &
-\colorbitbox{lightgray}{2}{\tiny CRC} & \colorbitbox{lightgray}{4}{\tiny Extension}
-\end{bytefield}
- \caption{Ethernet data link layer protocol encapsulated into a IEEE~802.3 MAC packet}
- \label{fig:ieee8023-data-packet}
-\end{figure}
-
-\subsection{IP packet headers}
-\label{sec:ipheaders}
-The data link layer will receive a packet from the IP layer. The layout of
-an IPv4 packet is shown in Figure~\ref{fig:ipv4-header}. This should be
-contrasted with the IPv6 header shown in Figure~\ref{fig:ipv6-header}.
-
+%\section{Concepts and Prerequisites}
+%\label{sec:prereq}
+% ---------------------------------------------------------------
+%%% >> Keep this section only if the reader needs domain knowledge that a typical CS/SE student would not already have.
+%%% >> Bullet ideas:
+%%%    – What a “rate-limited public API” is
+%%%    – Definitions of latency, throughput, tail latency, etc.
+%%%    – AWS basics (Lambda, SQS, DynamoDB, …) if needed
+%%%    – Any special statistical terms you will use later
 %
-% IPv4 packet header
+% \subsection{Key Terminology}
+% \subsection{Cloud Building Blocks (AWS quick primer)}
+% \subsection{Performance Metrics Used in This Thesis}
+%---------------------------------------------------------------
+
+\section{Ingestion Strategies}
+\label{sec:ingestion}
+There are two main ways to pull information out of a channel: the application can poll at fixed intervals, or it can let the messaging system notify it as soon as a message arrives \cite[Ch.~10]{Hohpe2003EIP}.
+Most cloud back-ends adopt one of these two patterns when they fetch data from external services.
+
+
+Cloud back-ends usually obtain data in one of two ways: a Polling Consumer repeatedly requests it at a fixed interval, while an Event-Driven Consumer waits for the source to deliver a message \cite[Chap.~10]{Hohpe2003EIP}. This section introduces both patterns and reviews the performance findings reported in earlier studies.
+
+
+\subsection{Fixed-Interval Polling}
+Polling is conceptually simple: a worker thread (or PLC task) issues a request every $\Delta t$, parses the reply, and stores the result.
+Because a Polling Consumer calls receive only when it is ready, the application can precisely throttle how many messages it accepts and will thus keep itself from being overloaded.
+The trade-off is efficiency: when the channel is empty, the polling thread either blocks or wakes up only to find no work, so CPU time is wasted while nothing is processed \cite[pp.~494–497]{Hohpe2003EIP}.
+
+Johansson and Larsson migrated a \gls{SCADA} system to AWS and found that fixed‐interval polling flooded the network with repeated sensor messages; they therefore recommended replacing the loops with event notifications \cite{Johansson2021SCADAIaaS}.  
+Likewise, Makarović \textit{et~al.}\ showed that allowing a household IoT toaster to stay idle until an event arrives cuts Wi-Fi energy use by about \(3000\times\) compared with continuous polling \cite{Makarovi2022EnergyEfficientIoT}.
+
+
+\subsection{Event-Driven Pipelines}
+In the alternative Event-Driven Consumer pattern, the application hands a callback (listener) object to the messaging middleware; the broker then invokes that listener as soon as a new message arrives \cite[pp.~498–501]{Hohpe2003EIP}.  
+Since the thread sleeps until the broker calls back, the CPU only do work when there is an actual message, and the system reacts right away instead of waiting for the next poll.
+The downside is extra code: the callback has to be thread-safe, the program must handle several listener threads, and it must manage message acknowledgements or retries itself \cite[pp.~498–501]{Hohpe2003EIP}.
+
+Switching to events does not, however, automatically make systems faster. In a load-testing study, Berg showed that a quick microservice rewrite answered requests more slowly than the original monolith, even though it used less CPU, so the extra network and serialization overhead can cancel out the gains of an event-driven design if it is not tuned carefully \cite{Berg2022MonolithVsMicroservices}.
+Later work highlights three common problems: writing idempotent handlers, keeping events in the right order, and absorbing sudden bursts of messages without swamping the database \cite{Trindade2021EDAImpact}.
+
+
+%\subsection{Prior Work}
+%Table \ref{tab:ingestion-lit} sums up some key measurements from prior work.
+
+%\begin{table}[H]
+%  \centering
+%  \caption{Typical impact of moving from polling to event-driven ingestion}
+%  \label{tab:ingestion-lit}
+%  \begin{tabular}{p{3.4cm}p{4.0cm}p{3.7cm}}
+%    \toprule
+%    \textbf{Domain} & \textbf{Observed Change} & \textbf{Key Point} \\ \midrule
+%    Industrial SCADA           & Bandwidth ↓ (duplicates removed)      & Cuts \say{network flood} traffic \\
+%    Data-centre orchestration   & CPU ↓ 35–50 \%; latency ↓ 70 \%        & Less idle spin and better scale \\
+%    Home IoT (Wi-Fi sensor)     & Energy use ↓ $\approx\!3000\times$     & Polling wastes standby power \\
+%    Micro-service refactor      & CPU ↓ but latency ↑                   & Extra hops can hurt response \\ 
+%    \bottomrule
+%  \end{tabular}
+%\end{table}
+
+%\noindent
+%Most studies agree that event-driven designs save CPU time and bandwidth, but the gains depend on workload size, traffic bursts, and how well the system is built. Crucially, none of them compares polling and push methods while testing relational, time-series, and NoSQL databases under a real API rate limit. This is the research gap this thesis tackles.
+
+
+
+%%%       – cite Trindade et al., Lewis et al., etc.
+%%%       – summarise pros/cons table-style if helpful
+
+%%%    \subsection{Why a combined benchmark is still missing}
 %
-\begin{figure}[!ht]
-	\centering
-\begin{bytefield}{32}
-\bitheader{0-31} \\
-\bitbox{4}{\footnotesize{Version}} & \bitbox{4}{IHL} & \bitbox{6}{\tiny{Type of Service}} & \bitbox{2}{{\scriptsize ECN}} \bitbox{16}{Total Length}\\
-\bitbox{16}{Identification} & \bitbox{3}{Flags} & \bitbox{13}{Fragment Offset}\\
-\bitbox{8}{Time to Live} & \bitbox{8}{Protocol} & \bitbox{16}{Header Checksum}\\
-\wordbox{1}{Source Address}\\
-\wordbox{1}{Destination Address}\\
-\colorbitbox{lightgray}{24}{Options} & \colorbitbox{lightgray}{8}{Padding}
-\end{bytefield}
- \caption[IPv4 datagram header]{IPv4 datagram header. Light grey-colored fields are optional.}
-  \label{fig:ipv4-header} 
-\end{figure}
+% (Short quotes, numbers, and citations go here)
 
-%
-% IPv6 packet header
-%
-\begin{figure}[!ht]
-	\centering
-\begin{bytefield}{32}
-\bitheader{0-31} \\
-\bitbox{4}{\footnotesize{Version}} & \bitbox{8}{Traffic Class} & \bitbox{20}{Flow Label}\\
-\bitbox{16}{Payload Length} & \bitbox{8}{Next Header} & \bitbox{8}{Hop Limit}\\
-\wordbox{4}{Source Address}\\
-\wordbox{4}{Destination Address}\\
-\end{bytefield}
- \caption{IPv6 datagram header}
-  \label{fig:ipv6-header}
-\end{figure}
+% ---------------------------------------------------------------
+\section{Storage Technologies}
+\label{sec:storage}
 
-\subsection{Test for accessibility of formulas}
+Among the several storage paradigms available in the cloud, this study concentrates on three that best match real-time ingestion needs:
 
-As can be seen in these equations:
-$c=2 \cdot \pi \cdot r$ or \[ \int_{a}^{b} x^2 \,dx \] a chemical formula: $(C_5O_2H_8)_n$
-...
-\section{Major background area 2}\sweExpl{Viktigt bakgrundsområde 2}
-...
-\subsection{\glsentryshort{WLAN} Security}% you can't use the \gls() command in a heading - but you can get the short (\glsentryshort) or long version (\glsentryshort) or \glsentrylong or even the text entry (\glsentrytext) and then there is no problem - see https://tex.stackexchange.com/questions/198140/glossaries-and-custom-section-headings-broken
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Relational databases} (e.g.\ PostgreSQL on Amazon RDS) organise data in normalised tables and offer full SQL, strong \gls{ACID} guarantees, and mature indexing.  
+  \item \textbf{Time-series databases} (e.g.\ Amazon Timestream) append readings to time-ordered blocks, optimise range scans over recent windows, and compress repeating timestamps.  
+  \item \textbf{NoSQL key–value stores} (e.g.\ DynamoDB) relax joins and schema in favour of horizontal scaling and single-digit millisecond reads at any load.  
+\end{itemize}
 
-\subsection{Network layer security}
-...
+\noindent
+Prior work shows that each family excels under a different access pattern. Relational engines are versatile but can slow when millions of inserts arrive every minute \cite{Heldt2021SciTS}. Purpose-built time-series stores answer range queries up to three times faster than Postgres on identical hardware \cite{Grzesik2020EdgeIoTBenchmark}, while NoSQL services match write speed once enough replicas are added, although at higher memory cost \cite{Vergara2021PerformanceTSDB}. No single solution is universally \say{best,} so the rest of this section reviews each option in turn and ends with a literature-based trade-off matrix.
 
-\section{Related work area}\sweExpl{Relaterade arbeten}
+\subsection{Relational Databases (PostgreSQL/RDS)}
+Relational databases store information in tables made of rows and columns, where each table has a fixed schema that defines the names and data types of its columns. Queries are written in SQL, and the database engine guarantees \gls{ACID} properties so that transactions stay consistent even if many users change data at the same time \cite[Chs.~1–2]{Silberschatz2020DB}.
+
+PostgreSQL is a popular open-source implementation of the relational model; it adds useful extras such as JSON columns, full-text search, and advanced indexing options \cite[Ch.~27]{Silberschatz2020DB}. On AWS, you can run PostgreSQL as a managed service called Amazon RDS for PostgreSQL. RDS handles routine chores, such as creating automated backups, applying security patches, setting up replication across Availability Zones, and letting you scale storage with a few clicks. It does this so developers can focus on schema design and query tuning instead of server maintenance \cite{AWSRDSPostgreSQL}.
 
 
-\subsection{Major related work 1}\sweExpl{Relaterade arbeten 1}
-Carrier clouds have been suggested as a way to reduce the delay between the users and the cloud server that is providing them with content. However, there is a question of how to find the available resources in such a carrier cloud. One approach has been to disseminate resource information using an extension to OSPF-TE, see Roozbeh, Sefidcon, and Maguire \cite{roozbeh_resource_2013}.
+\subsection{Time-Series Databases (Amazon Timestream)}
+Time-series databases are built for data whose primary key is a timestamp. Instead of normal rows, they keep new samples in time-ordered batches and squeeze space by compressing columns that change slowly. They also let you run window queries, such as averages or rates, directly. Because data is only added and not rewritten, and most queries scan a continuous time range, a good TSDB can accept a high write load and still answer \say{last hour} or \say{last day} questions quickly; these queries ask for all points from the most recent 60 minutes or 24 hours and summarise them \cite[Chs.~3 \& 11]{Kleppmann2017DDIA}.
+
+Amazon Timestream is a managed, serverless \gls{TSDB}. Storage and compute grow automatically as your metric data increases. New data stays in memory for quick queries and is later moved to cheaper disk storage based on a retention rule you choose. Timestream's SQL lets you resample, fill gaps, or delete old records without separate \gls{ETL} jobs, and AWS takes care of backups, replication, and encryption \cite{AWSTimestreamDoc}.
 
 
-\subsection{Major related work n}\sweExpl{Relaterade arbeten}
+\subsection{NoSQL Key–Value Stores (DynamoDB)}
+Key-value databases keep every record as two parts: a unique key and its associated value.
+To read or update a record, the engine hashes the key and goes straight to the right location, so performance stays high even when the dataset grows large.
+Because the value can be any binary or JSON document, the database keeps it exactly as it is and does not enforce a fixed schema.
+Applications are free to add or remove fields without a formal migration, and clusters can shard data by key to spread load and add replicas easily \cite[Chs.~2 \& 8]{Sadalage2013NoSQLDistilled}.
 
-\subsection{Minor related work 1}\sweExpl{Mindre relaterat arbete 1}
+Amazon DynamoDB is AWS's managed key-value service.
+It is serverless, meaning that users never have to create or maintain the underlying machines.
+AWS provisions the hardware, applies software updates, and scales capacity up or down as traffic changes.
+All you supply are two numbers: your desired read and write capacity units. 
+The platform then handles partitioning, replication, and fail-over in the background.
+Each item is synchronously copied to three Availability Zones, backed up automatically, and served with single-digit millisecond latency.
+Features such as global secondary indexes, point-in-time recovery, and at-rest encryption are included, so developers do not have to run or patch their own database clusters \cite{AWSDynamoDBDoc}.
 
 
-…
-\subsection{Minor related work n}\sweExpl{Mindre relaterat arbete n}
+\subsection{Trade-Off Matrix from Literature}
+
+%%%       – cite Heldt et al., Grzesik et al., Vergara et al., etc.
+
+% ---------------------------------------------------------------
+\section{Related Work and Research Gap}
+\label{sec:gap}
+% ---------------------------------------------------------------
+%%% >> Keep this as 2–3 tight paragraphs:
+%%%    1. What has been done on ingestion *alone*
+%%%    2. What has been done on storage *alone*
+%%%    3. Why the combination under a real API rate limit
+%%%       has not been explored (your gap)
+%%%
+%%% Tip: Mention any methods you borrow. This pre-empts Method
+%%%      Chapter questions (“inspired by X, we adopt Y test loop …”).
+
+% ---------------------------------------------------------------
+\section{Summary}
+\label{sec:summary}
+% ---------------------------------------------------------------
+%%% >> 4–6 lines that:
+%%%    – Recap the most important takeaways
+%%%    – Sign-post how they connect to Chapter 3 (Methods)
+%%%      e.g. “Based on the gaps identified above, the next chapter
+%%%      details how six backend variants were prototyped and
+%%%      benchmarked …”
 
 
-\section{Summary}\sweExpl{Sammanfattning}
-\sweExpl{Det är trevligt om detta kapitel
- avslutas med en sammanfattning. Till exempel kan du inkludera en tabell som
- sammanfattar andras idéer och fördelar och nackdelar med varje - så som
- senare kan du jämföra din lösning till var och en av dessa. Detta kommer
- också att hjälpa dig att definiera de variabler som du kommer att använda
- för din utvärdering.}
 
-\engExpl{It is nice to have this chapter conclude with a summary. For
- example, you can include a table that summarizes other people's ideas and
- benefits and drawbacks with each - so as later you can compare your solution
- to each of them. This will also help you define the variables that you will
- use for your evaluation.}
+
+
+
+
+
+
 
 \cleardoublepage
 \chapter{Method or Methods}
@@ -1069,18 +1054,18 @@ return 0;
 \engExpl{This template uses the package \texttt{lstlistings} for many different listings. Alternatively, one could use the \texttt{minited} package together with the \texttt{listings} environment, see, for example, \href{https://www.overleaf.com/learn/latex/Code_Highlighting_with_minted}{Code Highlighting with minted}. }
 
 In contrast, Listing~\ref{lst:programmes} is an example of code in Python to
-get a list of all of the programs at KTH. Note that on {\DTMsetdatestyle{iso}\DTMdisplaydate{2025}{6}{1}{-1}} the KOPPS API will no longer work.
+get a list of all of the programs at KTH. Note that on {\DTMsetdatestyle{iso}\DTMdisplaydate{2025}{6}{1}{-1}} the KOPPS \gls{API} will no longer work.
 \engExpl{Note that the change to the iso date format was done in a group so that afterwards the date style returns to what it was, resulting in \DTMdisplaydate{2025}{6}{1}{-1}.}
 
 \lstset{extendedchars=true} %% This allows character codes in the range 128-255
 \begin{lstlisting}[language={Python}, caption={Using a python program to
-  access the KTH API to get all of the programs at KTH}, label=lst:programmes]
+  access the KTH \gls{API} to get all of the programs at KTH}, label=lst:programmes]
 KOPPSbaseUrl = 'https://www.kth.se'
 
 def v1_get_programmes():
   global Verbose_Flag
   #
-  # Use the KOPPS API to get the data
+  # Use the KOPPS \gls{API} to get the data
   # note that this returns XML
   url = "{0}/api/kopps/v1/programme".format(KOPPSbaseUrl)
   if Verbose_Flag:

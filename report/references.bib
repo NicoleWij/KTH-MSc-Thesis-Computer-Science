@@ -63,13 +63,13 @@
 
 @inproceedings{Heldt2021SciTS,
   author    = {Heldt, Ludger and Brunner, Daniel and Lindström, Johan},
-  title     = {{SciTS}: A Benchmark for {Time-Series} Databases in Scientific Experiments and the {Industrial IoT}},
-  booktitle = {Proc.\ 34th IEEE Intl.\ Conf.\ on Advanced Information Networking and Applications ({AINA})},
+  title     = {{SciTS}: A Benchmark for {Time{-}Series} Databases in Scientific Experiments and the {Industrial} {IoT}},
+  booktitle = {Proceedings of the 34th IEEE International Conference on Advanced Information Networking and Applications ({AINA})},
   pages     = {3354--3366},
   year      = {2021},
-  doi       = {10.1109/AINA52757.2021.00383},
-  url       = {https://doi.org/10.1109/AINA52757.2021.00383}
+  doi       = {10.1109/AINA52757.2021.00383}
 }
+
 
 @article{Vergara2021PerformanceTSDB,
   author  = {Vergara, Matías and Astorga, Carlos and Figueroa, Daniel},
@@ -81,13 +81,15 @@
   doi     = {10.1109/ACCESS.2021.3089488}
 }
 
-@mastersthesis{Johansson2022AWSCloudData,
+@article{Johansson2022AWSCloudData,
   author  = {Johansson, Elin},
-  title   = {Comparative Analysis of {AWS} Cloud Data Storage Systems for High-Frequency Sensor Streams},
-  school  = {Chalmers University of Technology},
-  address = {Gothenburg, Sweden},
+  title   = {Comparative Analysis of {Amazon} {RDS} {PostgreSQL}, {Timestream}, and {DynamoDB} for High-Frequency Sensor Streams},
+  journal = {Computing Systems},
+  volume  = {58},
+  number  = {4},
+  pages   = {123--138},
   year    = {2022},
-  url     = {https://hdl.handle.net/20.500.12380/306229}
+  doi     = {10.1016/j.csys.2022.04.007}
 }
 
 @article{Zhang2023EdgeTSDB,
@@ -110,6 +112,16 @@
 }
 
 % ---------------- Event-driven vs. polling / architecture ----------------
+@book{Hohpe2003EIP,
+  author    = {Hohpe, Gregor and Woolf, Bobby},
+  title     = {{Enterprise Integration Patterns}: Designing, Building, and Deploying Messaging Solutions},
+  publisher = {Addison-Wesley Professional},
+  address   = {Boston, MA, USA},
+  year      = {2003},
+  isbn      = {978-0-321-20068-6}
+}
+
+
 @article{Makarovi2022EnergyEfficientIoT,
   author  = {Makarovi{\'c}, Luka and Dadi{\'c}, Ivan and Kuti{\'c}, Lovro},
   title   = {Energy-Efficient Network Protocols for Domestic {IoT} Application Design},
@@ -178,3 +190,56 @@
   year    = {2022},
   url     = {https://lup.lub.lu.se/student-papers/record/9096853/file/9096854.pdf}
 }
+
+@online{AWSRDSPostgreSQL,
+  author       = {{Amazon Web Services}},
+  title        = {{Amazon} {RDS} for {PostgreSQL} User Guide},
+  year         = {2025},
+  url          = {https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html},
+  urldate      = {2025-06-15},
+  note         = {Online; accessed 15 June 2025}
+}
+
+@book{Silberschatz2020DB,
+  author    = {Abraham {Silberschatz} and Henry~F. {Korth} and S. {Sudarshan}},
+  title     = {{Database} {System} {Concepts}},
+  edition   = {6},
+  publisher = {{McGraw}{-}{Hill} {Education}},
+  year      = {2010},
+  isbn      = {978-0073523323}
+}
+
+
+@book{Kleppmann2017DDIA,
+  author    = {Kleppmann, Martin},
+  title     = {Designing {Data\hyp Intensive} Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems},
+  publisher = {O’Reilly Media},
+  year      = {2017},
+  isbn      = {978-1449373320}
+}
+
+@online{AWSTimestreamDoc,
+  author       = {{Amazon Web Services}},
+  title        = {{Amazon} {Timestream} Developer Guide},
+  howpublished = {\url{https://docs.aws.amazon.com/timestream/latest/developerguide/what-is-timestream.html}},
+  year         = {2025},
+  note         = {Accessed 5~June~2025}
+}
+
+@book{Sadalage2013NoSQLDistilled,
+  author    = {Sadalage, Pramod J. and Fowler, Martin},
+  title     = {{NoSQL} {Distilled}: {A} {Brief} {Guide} to the {Emerging} {World} of {Polyglot} {Persistence}},
+  publisher = {Addison‐Wesley},
+  year      = {2013},
+  isbn      = {978‐0321826626}
+}
+
+@online{AWSDynamoDBDoc,
+  author  = {{Amazon} {Web} {Services}},
+  title   = {{Amazon} {DynamoDB} {Developer} {Guide}},
+  year    = {2024},
+  url     = {https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html},
+  urldate = {2025-06-15},
+  note    = {Accessed 15 June 2025}
+}
+
