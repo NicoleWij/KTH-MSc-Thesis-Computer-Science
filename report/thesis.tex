@@ -770,25 +770,120 @@ Features such as global secondary indexes, point-in-time recovery, and at-rest e
 
 \subsection{Trade-Off Matrix from Literature}
 
-%%%       – cite Heldt et al., Grzesik et al., Vergara et al., etc.
+Taken together, recent benchmarks show a consistency in results.  
+Relational engines (PostgreSQL/RDS) excel at ad-hoc joins and point look-ups but slow down once sustained insert rates exceed \(\sim\!10^{4}\) rows s\(^{-1}\) on commodity cloud nodes \cite{Heldt2021SciTS}.  
+Purpose-built time-series stores keep up with bursty sensor feeds and answer
+range-window queries 2–3× faster than Postgres on the same hardware
+\cite{Grzesik2020EdgeIoTBenchmark,Daqouri2023TimeseriesVsSQL}.  
+Key–value services such as DynamoDB scale linearly with partitions and can
+match TSDB write speed, but they consume more memory and require careful key
+design to avoid hot shards \cite{Vergara2021PerformanceTSDB,Zhang2023EdgeTSDB}.
+Table~\ref{tab:storage-matrix} contrasts the most relevant findings.
 
-% ---------------------------------------------------------------
+\begin{table}[H]
+\centering
+\caption{Headline results from storage benchmarks (\(\uparrow\)=higher is
+better, \(\downarrow\)=lower is better).}
+\label{tab:storage-matrix}
+\begin{tabular}{p{2.8cm}p{2.1cm}p{2.1cm}p{5.5cm}}
+\toprule
+\textbf{Study} & \textbf{Best Write Through\-put} & \textbf{Fastest Range Query} & \textbf{Key Observation} \\
+\midrule
+Grzesik \textit{et al.}\ (2020) &
+InfluxDB \(\uparrow\) 1.6 M rows s\(^{-1}\) &
+TimescaleDB \(\downarrow\) 0.35 s (24 h window) &
+TSDBs beat SQLite and Riak-TS on Pi-class hardware \cite{Grzesik2020EdgeIoTBenchmark}. \\[4pt]
+
+Heldt \textit{et al.}\ (2021) &
+TimescaleDB \(\uparrow\) 3× Postgres &
+InfluxDB \(\downarrow\) 60 ms (1 h window) &
+Relational joins handy but cost 2–3× more CPU \cite{Heldt2021SciTS}. \\[4pt]
+
+Vergara \textit{et al.}\ (2021) &
+DynamoDB equals InfluxDB after 3 replicas &
+InfluxDB \(\downarrow\) 55 ms &
+NoSQL pays 1.8× RAM for same latency \cite{Vergara2021PerformanceTSDB}. \\[4pt]
+
+Johansson (2022) &
+S3 data-lake \(\uparrow\) 2× Timestream (bulk scan) &
+DynamoDB fastest for point reads &
+Cloud-managed TSDB not always top; depends on query mix \cite{Johansson2022AWSCloudData}. \\[4pt]
+
+Zhang \textit{et al.}\ (2023) &
+DynamoDB \(\uparrow\) 2 M rows s\(^{-1}\) (edge cluster) &
+TimescaleDB \(\downarrow\) 0.4 s &
+Key-design hot-spotting degrades NoSQL latency if ignored \cite{Zhang2023EdgeTSDB}. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+The matrix confirms that no single engine dominates every metric.  
+Relational stores offer flexible querying, \glspl{TSDB} shine on time-window analytics, and NoSQL services win on elastic scaling.  
+Yet every cited paper fixes the ingestion style (usually batch writes or simple polling). No work measures these engines under both polling and event-driven pipelines while obeying a live API rate limit.  
+
+
 \section{Related Work and Research Gap}
 \label{sec:gap}
-% ---------------------------------------------------------------
-%%% >> Keep this as 2–3 tight paragraphs:
-%%%    1. What has been done on ingestion *alone*
-%%%    2. What has been done on storage *alone*
-%%%    3. Why the combination under a real API rate limit
-%%%       has not been explored (your gap)
-%%%
-%%% Tip: Mention any methods you borrow. This pre-empts Method
-%%%      Chapter questions (“inspired by X, we adopt Y test loop …”).
+Earlier studies tend to split the backend story in two.
+Some papers ask only how fresh data is ingested (for example, comparing polling with event-driven updates), while others test where that data is stored (relational, time-series, or NoSQL engines).
+These single-focus results are helpful, but they do not answer the practical question facing a live, API-limited service such as Klimra's delay dashboard: Which mix of ingestion style \textit{and} database keeps updates fast without breaking the request cap? 
 
-% ---------------------------------------------------------------
-\section{Summary}
-\label{sec:summary}
-% ---------------------------------------------------------------
+The next three subsections review what the literature has taught us about (i) ingestion in isolation, (ii) storage in isolation, and (iii) why their combination under a real-world traffic limit is still missing. That gap sets the stage for the benchmark designed in Chapter~\ref{ch:methods}.
+
+\subsection{Ingestion in isolation}
+Several empirical studies examine only the data-ingestion side of a backend, keeping the database layer fixed.  
+In an industrial‐control study, Johansson and Larsson migrated an EclipseSCADA plant to two Australian IaaS regions and replayed traffic from 800 simulated Modbus sensors \cite{Johansson2021SCADAIaaS}.  
+With polling set to one millisecond, round-trip time for a single register climbed from \SI{11}{\milli\second} (1 sensor) to almost \SI{14}{\second} (800 sensors) because the server spent most of its time issuing and queuing requests instead of processing replies; the authors therefore recommended switching to event notifications to eliminate the \say{network flood.}
+
+For battery-powered devices, Makarović \textit{et al.} let a Wi-Fi \say{smart toaster} sleep until an event arrived.  
+Energy use fell from \SI{10.9}{\kilo\joule} (continuous polling for one week) to just \SI{3.6}{\joule}, roughly a three-thousand-fold drop \cite{Makarovi2022EnergyEfficientIoT}.
+
+Inside data-centre software, Trindade and Batista replaced REST polling scripts with a Kafka-based Event-Driven microservices Architecture.  
+Under the same workload, the event design cut average CPU load by \SI{47}{\percent} and trimmed mean response time by \SI{89}{\percent} \cite{Trindade2021EDAImpact}.
+
+The results are, however, not entirely one-sided.  
+Berg ported a small web shop from a monolith to AWS microservices and measured three load scenarios \cite{Berg2022MonolithVsMicroservices}.  
+Although the new design used less CPU, its mean response time rose from a stable \SI{13}–\SI{15}{\milli\second} to between \SI{16} and \SI{43}{\milli\second}, largely because each request now passed through multiple event queues.
+
+Taken together, these experiments show that event-driven ingestion can save CPU, bandwidth, and battery power, but poorly tuned pipelines may add extra hops and hurt tail latency.  
+All of the above work keeps the storage engine fixed; the next subsection reviews studies that take the opposite approach by varying the database while leaving ingestion unchanged.
+
+
+\subsection{Storage in isolation}
+%add detail about the studies
+Separate benchmarks compare relational, time-series, and NoSQL engines with
+synthetic workloads that write directly to the database.  
+Results agree that PostgreSQL is versatile but slows under very high
+insert rates \cite{Heldt2021SciTS}.  
+Time-series stores such as InfluxDB and TimescaleDB handle range queries
+two to three times faster than relational rows
+\cite{Grzesik2020EdgeIoTBenchmark,Daqouri2023TimeseriesVsSQL}.  
+Key–value services like DynamoDB match those write speeds once extra
+partitions are added, although they use more memory per record
+\cite{Vergara2021PerformanceTSDB,Zhang2023EdgeTSDB}.  
+These tests, however, feed the databases with pre-generated traces and do
+not model the delays of an external API.
+
+\subsection{Missing combination under a live rate limit}
+%add detail about the studies
+To the best of our knowledge, no prior work evaluates \emph{both} ingestion
+style and storage choice together while respecting the hard request limit
+imposed by a real public API.  
+This gap matters for companies such as Klimra, where the back-end must meet
+live traffic caps and still keep data fresh.  
+Inspired by the load-repetition method of Hidalgo \textit{et al.}
+\cite{Hidalgo2023StreamProcMicroservices}, the next chapter designs a test
+loop that replays one day of Trafikverket traffic and measures six AWS
+back-end variants.  The goal is to provide the first side-by-side data on
+how polling versus events interact with relational, time-series, and
+NoSQL storage under realistic limits.
+
+
+
+%\section{Summary}
+%\label{sec:summary}
+
 %%% >> 4–6 lines that:
 %%%    – Recap the most important takeaways
 %%%    – Sign-post how they connect to Chapter 3 (Methods)
