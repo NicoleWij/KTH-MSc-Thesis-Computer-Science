@@ -32,7 +32,7 @@
 
 \documentclass[nomenclature, english, biblatex]{kththesis}
 
-\newcommand*{\generalExpl}[1]{\todo[inline]{#1}}    
+\newcommand*{\generalExpl}[1]{\todo[inline]{#1}} 
 
 \newcommand*{\engExpl}[1]{\todo[inline, backgroundcolor=kth-lightgreen40]{#1}}
 \newcommand*{\sweExpl}[1]{\todo[inline, backgroundcolor=kth-lightblue40]{#1}}
@@ -41,10 +41,10 @@
 
 
 \usepackage[
-  backend=biber,
-  style=ieee,
-  citestyle=numeric-comp,
-  sorting=none
+ backend=biber,
+ style=ieee,
+ citestyle=numeric-comp,
+ sorting=none
 ]{biblatex}
 \addbibresource{references.bib}
 
@@ -63,19 +63,19 @@
 
 
 \lstnewenvironment{verbatimsc}
-  {
-  \lstset{%
-  basicstyle=\ttfamily\tiny,
-  backgroundcolor=\color{white},
-  columns=[l]fixed,
-  language=[LaTeX]TeX,
-  keywordstyle=\color{red},
-  breaklines=true,
-  breakatwhitespace=true,
-  breakindent=0em,
-  frame=none,
-  postbreak={}
-  }
+ {
+ \lstset{%
+ basicstyle=\ttfamily\tiny,
+ backgroundcolor=\color{white},
+ columns=[l]fixed,
+ language=[LaTeX]TeX,
+ keywordstyle=\color{red},
+ breaklines=true,
+ breakatwhitespace=true,
+ breakindent=0em,
+ frame=none,
+ postbreak={}
+ }
 }{}
 
 \lstdefinestyle{[LaTeX]TeX}{
@@ -91,44 +91,46 @@ morekeywords={begin, todo, textbf, textit, texttt}
 \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
 
 \ifbiblatex
-  \usepackage[plainpages=false]{hyperref}
+ \usepackage[plainpages=false]{hyperref}
 \else
-  \usepackage[
-  backref=page,
-  pagebackref=false,
-  plainpages=false,
-  unicode=true,
-  bookmarks=true,
-  bookmarksopen=false,
-  pdfpagemode=UseNone,
-  destlabel,
-  pdfencoding=auto, 
-  ]{hyperref}
-  \makeatletter
-  \ltx@ifpackageloaded{attachfile2}{
-  }
-  {\usepackage{backref}
-  \renewcommand*{\backref}[1]{}
-  \renewcommand*{\backrefalt}[4]{%
-  \ifcase #1%
-   \or [Page~#2.]%
-   \else [Pages~#2.]%
-  \fi%
-  }
-  }
-  \makeatother
+ \usepackage[
+ backref=page,
+ pagebackref=false,
+ plainpages=false,
+ unicode=true,
+ bookmarks=true,
+ bookmarksopen=false,
+ pdfpagemode=UseNone,
+ destlabel,
+ pdfencoding=auto, 
+ ]{hyperref}
+ \makeatletter
+ \ltx@ifpackageloaded{attachfile2}{
+ }
+ {\usepackage{backref}
+ \renewcommand*{\backref}[1]{}
+ \renewcommand*{\backrefalt}[4]{%
+ \ifcase #1%
+ \or [Page~#2.]%
+ \else [Pages~#2.]%
+ \fi%
+ }
+ }
+ \makeatother
 
 \fi
 \usepackage[all]{hypcap}
 \usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{threeparttable}
 \usepackage[acronym, style=super, section=section, nonumberlist, nomain,
 nopostdot]{glossaries}
 \setlength{\glsdescwidth}{0.75\textwidth}
 \usepackage[]{glossaries-extra}
 \usepackage{dirtytalk}
 \ifinswedish
-  %\usepackage{glossaries-swedish}
+ %\usepackage{glossaries-swedish}
 \fi
 
 \newglossary[tlg]{readme}{tld}{tdn}{README acronyms}
@@ -180,13 +182,13 @@ nopostdot]{glossaries}
 \input{lib/pdf_related_includes}
 
 
-% the custom colors and the commands are defined in defines.tex  
+% the custom colors and the commands are defined in defines.tex 
 \hypersetup{
 	colorlinks = true,
 	breaklinks = true,
-	linkcolor  = \linkscolor,
-	urlcolor  = \urlscolor,
-	citecolor  = \refscolor,
+	linkcolor = \linkscolor,
+	urlcolor = \urlscolor,
+	citecolor = \refscolor,
 	anchorcolor = black
 }
 
@@ -205,21 +207,21 @@ nopostdot]{glossaries}
 \definecolor{string}{RGB}{0, 0, 0}
 
 \lstdefinelanguage{json}{
-  numbers=none,
-  numberstyle=\small,
-  frame=none,
-  rulecolor=\color{black},
-  showspaces=false,
-  showtabs=false,
-  breaklines=true,
-  postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{gray}\hookrightarrow\space}},
-  breakatwhitespace=true,
-  basicstyle=\ttfamily\small,
-  extendedchars=false,
-  upquote=true,
-  morestring=[b]",
-  stringstyle=\color{string},
-  literate=
+ numbers=none,
+ numberstyle=\small,
+ frame=none,
+ rulecolor=\color{black},
+ showspaces=false,
+ showtabs=false,
+ breaklines=true,
+ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{gray}\hookrightarrow\space}},
+ breakatwhitespace=true,
+ basicstyle=\ttfamily\small,
+ extendedchars=false,
+ upquote=true,
+ morestring=[b]",
+ stringstyle=\color{string},
+ literate=
  *{0}{{{\color{numb}0}}}{1}
  {1}{{{\color{numb}1}}}{1}
  {2}{{{\color{numb}2}}}{1}
@@ -275,15 +277,15 @@ nopostdot]{glossaries}
 % https://kib.ki.se/en/publish-analyse/publish-your-article-open-access/open-licence-your-publication-cc
 \begin{comment}
 \usepackage[
-  type={CC},
-  %modifier={by-nc-nd},
-  %version={4.0},
-  modifier={by-nc},
-  imagemodifier={-eu-88x31}, % to get Euro symbol rather than Dollar sign
-  hyphenation={RaggedRight},
-  version={4.0},
-  %modifier={zero},
-  %version={1.0},
+ type={CC},
+ %modifier={by-nc-nd},
+ %version={4.0},
+ modifier={by-nc},
+ imagemodifier={-eu-88x31}, % to get Euro symbol rather than Dollar sign
+ hyphenation={RaggedRight},
+ version={4.0},
+ %modifier={zero},
+ %version={1.0},
 ]{doclicense}
 \end{comment}
 
@@ -359,13 +361,13 @@ the IEEE Taxonomy ({\small \url{https://www.ieee.org/publications/services/thesa
  \item Spell out acronyms and abbreviations.
  \item Avoid "stop words" - as they generally carry little or no information.
  \item List your keywords separated by commas (``,'').
-\end{itemize}  
+\end{itemize} 
 Since you should have both English and Swedish keywords - you might think of ordering the keywords in corresponding order (\ie, so that the n\textsuperscript{th} word in each list correspond) - this makes it easier to mechanically find matching keywords.
 \end{abstract}
 \cleardoublepage
 \babelpolyLangStart{swedish}
 \begin{abstract}
-  \markboth{\abstractname}{}
+ \markboth{\abstractname}{}
 \begin{scontents}[store-env=lang]
 swe
 \end{scontents}
@@ -419,9 +421,9 @@ I would like to thank xxxx for having yyyy.
 
 % if the nomenclature option was specified, then include the nomenclature page(s)
 \ifnomenclature
-  \cleardoublepage
-  % Output the nomenclature list
-  \printnomenclature
+ \cleardoublepage
+ % Output the nomenclature list
+ \printnomenclature
 \fi
 
 %% The following label is essential to know the page number of the last page of the preface
@@ -464,20 +466,20 @@ Prior studies show that switching from polling to event-driven pipelines lowers 
 Database comparisons tell a similar story of trade-offs: relational engines are versatile, time-series stores excel at range queries and fast inserts, and cloud NoSQL services scale reads smoothly, each at the cost of extra memory, disk, or replicas \cite{Heldt2021SciTS,Grzesik2020EdgeIoTBenchmark,Vergara2021PerformanceTSDB}.
 
 \begin{figure}[htbp]
-  \centering
-  \resizebox{\linewidth}{!}{
-  \begin{tikzpicture}[>=latex,
-      box/.style = {draw, thick, rounded corners,
-                    minimum width = 3cm, minimum height = 1cm,
-                    text width    = 2.8cm, align = center}]
-    \node[box, fill=blue!10]                (api)    {Trafikverket\\REST API};
-    \node[box, fill=orange!10, right=2cm of api] (ingest) {Ingestion layer\\(Polling \emph{or} Events)};
-    \node[box, fill=green!10,  right=2cm of ingest] (db)   {Database\\(SQL / TSDB / NoSQL)};
-    \node[box, fill=yellow!15, right=2cm of db]   (ui)   {React dashboard\\(traveller view)};
-    \draw (api) -- (ingest) -- (db) -- (ui);
-  \end{tikzpicture}}%
-  \caption{Benchmark scope: API, ingestion layer, database, React dashboard}
-  \label{fig:pipeline}
+ \centering
+ \resizebox{\linewidth}{!}{
+ \begin{tikzpicture}[>=latex,
+  box/.style = {draw, thick, rounded corners,
+     minimum width = 3cm, minimum height = 1cm,
+     text width = 2.8cm, align = center}]
+ \node[box, fill=blue!10]    (api) {Trafikverket\\REST API};
+ \node[box, fill=orange!10, right=2cm of api] (ingest) {Ingestion layer\\(Polling \emph{or} Events)};
+ \node[box, fill=green!10, right=2cm of ingest] (db) {Database\\(SQL / TSDB / NoSQL)};
+ \node[box, fill=yellow!15, right=2cm of db] (ui) { Dashboard / Website\\(traveller view)};
+ \draw (api) -- (ingest) -- (db) -- (ui);
+ \end{tikzpicture}}%
+ \caption{Benchmark scope: API, ingestion layer, database, React dashboard}
+ \label{fig:pipeline}
 \end{figure}
 
 \noindent
@@ -492,8 +494,8 @@ The remainder of the chapter states the background (Section~\ref{sec:background}
 Live online services increasingly draw on a steady stream of data from other platforms. Any application that depends on real-time updates must ingest public or partner \glspl{API} quickly enough for the information to remain relevant by the time it reaches end-users. In a cloud environment, two key architectural choices largely decide how fresh the data stays: How updates are fetched (ingestion strategy) and where they are stored (storage engine).
 
 %\begin{itemize}[noitemsep,leftmargin=*]
-%  \item[] \textbf{(i) Ingestion strategy:} fixed-interval polling versus event-driven push pipelines
-%  \item[] \textbf{(ii) Storage engine:} general-purpose relational stores, specialised time-series engines, or cloud-native NoSQL.
+% \item[] \textbf{(i) Ingestion strategy:} fixed-interval polling versus event-driven push pipelines
+% \item[] \textbf{(ii) Storage engine:} general-purpose relational stores, specialised time-series engines, or cloud-native NoSQL.
 %\end{itemize}
 
 %COMMENT: Too broad - went more into detail in finished sections
@@ -505,7 +507,7 @@ Industrial control systems show what can go wrong with naïve polling.
 In one \gls{SCADA} migration the master asked each sensor for new values every few seconds, even when nothing had changed; the extra traffic clogged the network. 
 After switching to push-style updates where the sensors send data only when a value changes, both bandwidth use and wait time dropped sharply \cite{Johansson2021SCADAIaaS}. 
 Large data-centre studies show a similar pattern: constant polling wasted about 30\% of CPU, while event notifications halve CPU load and cut the slowest response times by almost 90\% \cite{Lewis2020PowerOfEDA}. 
-Battery-powered IoT devices benefit even more: weekly energy use fell roughly \( \sim3000\times \) when devices slept until an event arrived instead of waking on a timer \cite{Makarovi2022EnergyEfficientIoT}.
+Battery-powered \gls{IoT} devices benefit even more: weekly energy use fell roughly \( \sim3000\times \) when devices slept until an event arrived instead of waking on a timer \cite{Makarovi2022EnergyEfficientIoT}.
 
 Event-driven designs are not free, however. 
 They need message brokers and extra work to decode each event, and small tests have shown that a single, tightly integrated program (a monolith) can still answer faster than a network of event-driven microservices \cite{Trindade2021EDAImpact}. 
@@ -543,18 +545,18 @@ The study has a dual purpose. For Klimra, it aims to guide the choice of ingesti
 The project turns that purpose into four concrete goals:
 
 \begin{enumerate}[label=\textbf{G\arabic*},leftmargin=*]
-  \item \textbf{Prototype} six back-end variants that differ only in \emph{(i)} ingestion style (polling, event-driven) and \emph{(ii)} storage engine (RDS PostgreSQL, Amazon Timestream, DynamoDB).
+ \item \textbf{Prototype} six back-end variants that differ only in \emph{(i)} ingestion style (polling, event-driven) and \emph{(ii)} storage engine (RDS PostgreSQL, Amazon Timestream, DynamoDB).
 
-  \item \textbf{Benchmark} each variant against Trafikverket's live train-position API, measuring update latency, query latency, throughput, CPU, memory, and network I/O.
+ \item \textbf{Benchmark} each variant against Trafikverket's live train-position API, measuring update latency, query latency, throughput, CPU, memory, and network I/O.
 
-  \item \textbf{Analyse} the results using appropriate statistical tests to identify significant differences and resource trade-offs.
+ \item \textbf{Analyse} the results using appropriate statistical tests to identify significant differences and resource trade-offs.
 
-  \item \textbf{Deliverables}:  
-        \begin{itemize}[noitemsep,leftmargin=*]
-          \item a reusable k6/Grafana benchmarking toolkit,  
-          \item a decision matrix that maps workload patterns to the most efficient configuration for Klimra, and  
-          \item a reproducible dataset and report that other researchers can build on.
-        \end{itemize}
+ \item \textbf{Deliverables}: 
+  \begin{itemize}[noitemsep,leftmargin=*]
+   \item a reusable k6/Grafana benchmarking toolkit, 
+   \item a decision matrix that maps workload patterns to the most efficient configuration for Klimra, and 
+   \item a reproducible dataset and report that other researchers can build on.
+  \end{itemize}
 \end{enumerate}
 
 
@@ -573,9 +575,9 @@ The frame states what is varied, what is fixed, and what is measured. A 24-hour 
 Each of the six back-ends will be exercised 15 times, for 30 minutes per run, on freshly launched virtual machines. This repetition rate follows the noisy-neighbour guidance of Hidalgo \textit{et al.} for cloud experiments, where background tenants can distort a single run's latency or throughput \cite{Hidalgo2023StreamProcMicroservices}. The resulting time series are evaluated in three steps:
 
 \begin{enumerate}[label=\arabic*., leftmargin=*]
-  \item \textbf{Shapiro–Wilk test} checks whether each metric is approximately normally distributed.  
-  \item \textbf{One-way ANOVA} (if normal) or \textbf{Kruskal–Wallis} (if non-normal) compares all six back-ends in one go to detect any statistically significant difference.  
-  \item \textbf{Holm–Šidák correction} on post-hoc pairwise tests keeps the overall false-positive rate below $5\,\%$.  
+ \item \textbf{Shapiro–Wilk test} checks whether each metric is approximately normally distributed. 
+ \item \textbf{One-way ANOVA} (if normal) or \textbf{Kruskal–Wallis} (if non-normal) compares all six back-ends in one go to detect any statistically significant difference. 
+ \item \textbf{Holm–Šidák correction} on post-hoc pairwise tests keeps the overall false-positive rate below $5\,\%$. 
 \end{enumerate}
 
 \noindent
@@ -595,19 +597,19 @@ Local emulators and micro-benchmarks were rejected because they mask cloud side 
 This thesis targets the server-side path from Trafikverket's \gls{API} to Klimra's planned dashboard. The work therefore has the following delimitations:
 
 \begin{itemize}[noitemsep,leftmargin=*]
-  \item \textbf{Cloud scope:} Only AWS databases are benchmarked (RDS PostgreSQL, Amazon Timestream, DynamoDB). Other cloud providers or locally hosted databases are not included.
+ \item \textbf{Cloud scope:} Only AWS databases are benchmarked (RDS PostgreSQL, Amazon Timestream, DynamoDB). Other cloud providers or locally hosted databases are not included.
 
-  \item \textbf{Ingestion patterns:} The study compares fixed-interval polling with event-driven SQS/Lambda pipelines. Other mechanisms, such as long polling, gRPC streams, or change-data-capture, are left for future work.
+ \item \textbf{Ingestion patterns:} The study compares fixed-interval polling with event-driven SQS/Lambda pipelines. Other mechanisms, such as long polling, gRPC streams, or change-data-capture, are left for future work.
 
-  \item \textbf{Databases:} One representative engine is chosen per family. Variants such as InfluxDB, TimescaleDB on self-managed Postgres, or document stores beyond DynamoDB are out of scope.
+ \item \textbf{Databases:} One representative engine is chosen per family. Variants such as InfluxDB, TimescaleDB on self-managed Postgres, or document stores beyond DynamoDB are out of scope.
 
-  \item \textbf{Client side:} UI/UX design, mobile apps, and front-end optimisation are not evaluated. The React dashboard is used only as a constant workload generator.
+ \item \textbf{Client side:} UI/UX design, mobile apps, and front-end optimisation are not evaluated. The React dashboard is used only as a constant workload generator.
 
-  \item \textbf{Non-functional aspects:} Security hardening, cost modelling, carbon footprint, and detailed failure-recovery analysis are acknowledged but not measured.
+ \item \textbf{Non-functional aspects:} Security hardening, cost modelling, carbon footprint, and detailed failure-recovery analysis are acknowledged but not measured.
 
-  \item \textbf{Traffic profile:} Experiments replay one 24-hour snapshot at the live request limit. Burst tests above that limit and multi-day retention scenarios are excluded.
+ \item \textbf{Traffic profile:} Experiments replay one 24-hour snapshot at the live request limit. Burst tests above that limit and multi-day retention scenarios are excluded.
 
-  \item \textbf{Geography:} All resources are hosted in a single AWS region; cross-region latency and replication behaviour are not studied.
+ \item \textbf{Geography:} All resources are hosted in a single AWS region; cross-region latency and replication behaviour are not studied.
 \end{itemize}
 
 \noindent
@@ -621,21 +623,21 @@ These boundaries keep the project focused on the interplay between ingestion sty
 
 \begin{description}[leftmargin=0cm]
 
-  \item[Chapter~\ref{ch:introduction}] introduces the study, states the problem, purpose, goals, delimitations, and gives a roadmap for the rest of the thesis.
+ \item[Chapter~\ref{ch:introduction}] introduces the study, states the problem, purpose, goals, delimitations, and gives a roadmap for the rest of the thesis.
 
-  \item[Chapter~\ref{ch:background}] reviews related work on ingestion strategies, database families, and cloud-benchmark practices needed to understand the study.
+ \item[Chapter~\ref{ch:background}] reviews related work on ingestion strategies, database families, and cloud-benchmark practices needed to understand the study.
 
-  \item[Chapter~\ref{ch:methods}] explains the research methodology, experimental frame, sampling strategy, and statistical tests.
+ \item[Chapter~\ref{ch:methods}] explains the research methodology, experimental frame, sampling strategy, and statistical tests.
 
-  \item[Chapter~\ref{ch:whatYouDid}] outlines the implementation of the six AWS back-end variants and the k6/Grafana benchmarking toolkit.
+ \item[Chapter~\ref{ch:whatYouDid}] outlines the implementation of the six AWS back-end variants and the k6/Grafana benchmarking toolkit.
 
-  \item[Chapter~\ref{ch:resultsAndAnalysis}] presents the collected metrics and analyses latency, resource use, and scalability trade-offs.
+ \item[Chapter~\ref{ch:resultsAndAnalysis}] presents the collected metrics and analyses latency, resource use, and scalability trade-offs.
 
-  \item[Chapter~\ref{ch:discussion}] interprets the results, compares them to prior work, and discusses practical implications for cloud architects.
+ \item[Chapter~\ref{ch:discussion}] interprets the results, compares them to prior work, and discusses practical implications for cloud architects.
 
-  \item[Chapter~\ref{ch:conclusionsAndFutureWork}] summarises the main findings, notes limitations, and suggests directions for future research.
+ \item[Chapter~\ref{ch:conclusionsAndFutureWork}] summarises the main findings, notes limitations, and suggests directions for future research.
 
-  \item[Appendices] list acronyms and supply supporting artefacts (Terraform scripts, code snippets, raw data) to ensure reproducibility.
+ \item[Appendices] list acronyms and supply supporting artefacts (Terraform scripts, code snippets, raw data) to ensure reproducibility.
 
 \end{description}
 
@@ -649,50 +651,32 @@ These boundaries keep the project focused on the interplay between ingestion sty
 \chapter{Background}
 \label{ch:background}
 
-This chapter provides the technical foundation and overview of prior work needed to follow and understand the rest of the thesis. First, 
-%Section \ref{sec:prereq} first defines cloud-computing concepts, such as API rate limits, event brokers, and managed databases, on which the study builds.
-Section \ref{sec:ingestion} surveys fixed-interval polling and event-driven pipelines, summarising the latency, throughput, and cost trade-offs reported in recent literature. In a similar way, Section \ref{sec:storage} then reviews the three database families evaluated here (relational, time-series, and NoSQL) and the benchmark results in recent literature. Because earlier studies look at ingestion and storage separately, none test the two together under real-world rate limits. Section \ref{sec:gap} discusses how his thesis fills that gap. Finally, Section \ref{sec:summary} summarises the key points of the chapter.
+This chapter provides the technical foundation and overview of prior work needed to follow and understand the rest of the thesis. First,
+Section \ref{sec:ingestion} surveys fixed-interval polling and event-driven pipelines, summarising the latency, throughput, and cost trade-offs reported in recent literature. Section \ref{sec:storage} then reviews the three database families evaluated here (relational, time-series, and NoSQL) and the benchmark results in recent literature. Because earlier studies look at ingestion and storage separately, none test the two together under real-world rate limits. Finally, Section \ref{sec:gap} discusses how his thesis fills that gap.
 
 
-%\section{Concepts and Prerequisites}
-%\label{sec:prereq}
-% ---------------------------------------------------------------
-%%% >> Keep this section only if the reader needs domain knowledge that a typical CS/SE student would not already have.
-%%% >> Bullet ideas:
-%%%    – What a “rate-limited public API” is
-%%%    – Definitions of latency, throughput, tail latency, etc.
-%%%    – AWS basics (Lambda, SQS, DynamoDB, …) if needed
-%%%    – Any special statistical terms you will use later
-%
-% \subsection{Key Terminology}
-% \subsection{Cloud Building Blocks (AWS quick primer)}
-% \subsection{Performance Metrics Used in This Thesis}
-%---------------------------------------------------------------
 
 \section{Ingestion Strategies}
 \label{sec:ingestion}
 There are two main ways to pull information out of a channel: the application can poll at fixed intervals, or it can let the messaging system notify it as soon as a message arrives \cite[Ch.~10]{Hohpe2003EIP}.
-Most cloud back-ends adopt one of these two patterns when they fetch data from external services.
-
-
-Cloud back-ends usually obtain data in one of two ways: a Polling Consumer repeatedly requests it at a fixed interval, while an Event-Driven Consumer waits for the source to deliver a message \cite[Chap.~10]{Hohpe2003EIP}. This section introduces both patterns and reviews the performance findings reported in earlier studies.
+Most cloud back-ends adopt one of these two patterns when fetching data from external services. This section introduces both patterns and reviews the performance findings reported in earlier studies.
 
 
 \subsection{Fixed-Interval Polling}
 Polling is conceptually simple: a worker thread (or PLC task) issues a request every $\Delta t$, parses the reply, and stores the result.
 Because a Polling Consumer calls receive only when it is ready, the application can precisely throttle how many messages it accepts and will thus keep itself from being overloaded.
-The trade-off is efficiency: when the channel is empty, the polling thread either blocks or wakes up only to find no work, so CPU time is wasted while nothing is processed \cite[pp.~494–497]{Hohpe2003EIP}.
+The trade-off is efficiency: when the channel is empty, the polling thread either blocks or wakes up only to find no work, wasting CPU time while nothing is processed \cite[pp.~494–497]{Hohpe2003EIP}.
 
-Johansson and Larsson migrated a \gls{SCADA} system to AWS and found that fixed‐interval polling flooded the network with repeated sensor messages; they therefore recommended replacing the loops with event notifications \cite{Johansson2021SCADAIaaS}.  
-Likewise, Makarović \textit{et~al.}\ showed that allowing a household IoT toaster to stay idle until an event arrives cuts Wi-Fi energy use by about \(3000\times\) compared with continuous polling \cite{Makarovi2022EnergyEfficientIoT}.
+Johansson and Larsson migrated a \gls{SCADA} system to AWS and found that fixed‐interval polling flooded the network with repeated sensor messages; they therefore recommended replacing the loops with event notifications \cite{Johansson2021SCADAIaaS}. 
+Likewise, Makarović \textit{et~al.}\ showed that allowing a household  \gls{IoT} toaster to stay idle until an event arrives cuts Wi-Fi energy use by about \(3000\times\) compared with continuous polling \cite{Makarovi2022EnergyEfficientIoT}.
 
 
 \subsection{Event-Driven Pipelines}
-In the alternative Event-Driven Consumer pattern, the application hands a callback (listener) object to the messaging middleware; the broker then invokes that listener as soon as a new message arrives \cite[pp.~498–501]{Hohpe2003EIP}.  
-Since the thread sleeps until the broker calls back, the CPU only do work when there is an actual message, and the system reacts right away instead of waiting for the next poll.
-The downside is extra code: the callback has to be thread-safe, the program must handle several listener threads, and it must manage message acknowledgements or retries itself \cite[pp.~498–501]{Hohpe2003EIP}.
+In the alternative Event-Driven Consumer pattern, the application hands a callback (listener) object to the messaging middleware. The broker then invokes that listener as soon as a new message arrives. 
+Since the thread sleeps until the broker calls back, the CPU only does work when there is an actual message, and the system reacts right away instead of waiting for the next poll.
+The downside is the need for extra code: the callback must be thread-safe, the program must handle multiple listener threads, and it must manage message acknowledgments or retries itself \cite[pp.~498–501]{Hohpe2003EIP}.
 
-Switching to events does not, however, automatically make systems faster. In a load-testing study, Berg showed that a quick microservice rewrite answered requests more slowly than the original monolith, even though it used less CPU, so the extra network and serialization overhead can cancel out the gains of an event-driven design if it is not tuned carefully \cite{Berg2022MonolithVsMicroservices}.
+Switching to events, however, does not automatically make systems faster. In a load-testing study, Berg demonstrated that a quick microservice rewrite responded to requests more slowly than the original monolith, even though it used less CPU, indicating that the extra network and serialization overhead can cancel out the benefits of an event-driven design if it is not carefully tuned \cite{Berg2022MonolithVsMicroservices}.
 Later work highlights three common problems: writing idempotent handlers, keeping events in the right order, and absorbing sudden bursts of messages without swamping the database \cite{Trindade2021EDAImpact}.
 
 
@@ -700,18 +684,18 @@ Later work highlights three common problems: writing idempotent handlers, keepin
 %Table \ref{tab:ingestion-lit} sums up some key measurements from prior work.
 
 %\begin{table}[H]
-%  \centering
-%  \caption{Typical impact of moving from polling to event-driven ingestion}
-%  \label{tab:ingestion-lit}
-%  \begin{tabular}{p{3.4cm}p{4.0cm}p{3.7cm}}
-%    \toprule
-%    \textbf{Domain} & \textbf{Observed Change} & \textbf{Key Point} \\ \midrule
-%    Industrial SCADA           & Bandwidth ↓ (duplicates removed)      & Cuts \say{network flood} traffic \\
-%    Data-centre orchestration   & CPU ↓ 35–50 \%; latency ↓ 70 \%        & Less idle spin and better scale \\
-%    Home IoT (Wi-Fi sensor)     & Energy use ↓ $\approx\!3000\times$     & Polling wastes standby power \\
-%    Micro-service refactor      & CPU ↓ but latency ↑                   & Extra hops can hurt response \\ 
-%    \bottomrule
-%  \end{tabular}
+% \centering
+% \caption{Typical impact of moving from polling to event-driven ingestion}
+% \label{tab:ingestion-lit}
+% \begin{tabular}{p{3.4cm}p{4.0cm}p{3.7cm}}
+% \toprule
+% \textbf{Domain} & \textbf{Observed Change} & \textbf{Key Point} \\ \midrule
+% Industrial SCADA   & Bandwidth ↓ (duplicates removed)  & Cuts \say{network flood} traffic \\
+% Data-centre orchestration & CPU ↓ 35–50 \%; latency ↓ 70 \%  & Less idle spin and better scale \\
+% Home  \gls{IoT} (Wi-Fi sensor)  & Energy use ↓ $\approx\!3000\times$  & Polling wastes standby power \\
+% Micro-service refactor  & CPU ↓ but latency ↑     & Extra hops can hurt response \\ 
+% \bottomrule
+% \end{tabular}
 %\end{table}
 
 %\noindent
@@ -719,10 +703,10 @@ Later work highlights three common problems: writing idempotent handlers, keepin
 
 
 
-%%%       – cite Trindade et al., Lewis et al., etc.
-%%%       – summarise pros/cons table-style if helpful
+%%%  – cite Trindade et al., Lewis et al., etc.
+%%%  – summarise pros/cons table-style if helpful
 
-%%%    \subsection{Why a combined benchmark is still missing}
+%%% \subsection{Why a combined benchmark is still missing}
 %
 % (Short quotes, numbers, and citations go here)
 
@@ -733,13 +717,13 @@ Later work highlights three common problems: writing idempotent handlers, keepin
 Among the several storage paradigms available in the cloud, this study concentrates on three that best match real-time ingestion needs:
 
 \begin{itemize}[leftmargin=*]
-  \item \textbf{Relational databases} (e.g.\ PostgreSQL on Amazon RDS) organise data in normalised tables and offer full SQL, strong \gls{ACID} guarantees, and mature indexing.  
-  \item \textbf{Time-series databases} (e.g.\ Amazon Timestream) append readings to time-ordered blocks, optimise range scans over recent windows, and compress repeating timestamps.  
-  \item \textbf{NoSQL key–value stores} (e.g.\ DynamoDB) relax joins and schema in favour of horizontal scaling and single-digit millisecond reads at any load.  
+ \item \textbf{Relational databases} (e.g.\ PostgreSQL on Amazon RDS) organise data in normalised tables and offer full SQL, strong \gls{ACID} guarantees, and mature indexing. 
+ \item \textbf{Time-series databases} (e.g.\ Amazon Timestream) append readings to time-ordered blocks, optimise range scans over recent windows, and compress repeating timestamps. 
+ \item \textbf{NoSQL key–value stores} (e.g.\ DynamoDB) relax joins and schema in favour of horizontal scaling and single-digit millisecond reads at any load. 
 \end{itemize}
 
 \noindent
-Prior work shows that each family excels under a different access pattern. Relational engines are versatile but can slow when millions of inserts arrive every minute \cite{Heldt2021SciTS}. Purpose-built time-series stores answer range queries up to three times faster than Postgres on identical hardware \cite{Grzesik2020EdgeIoTBenchmark}, while NoSQL services match write speed once enough replicas are added, although at higher memory cost \cite{Vergara2021PerformanceTSDB}. No single solution is universally \say{best,} so the rest of this section reviews each option in turn and ends with a literature-based trade-off matrix.
+Prior work shows that each family excels under a different access pattern. Relational engines are versatile but can slow down when millions of inserts arrive every minute \cite{Heldt2021SciTS}. Purpose-built time-series stores answer range queries up to three times faster than Postgres on identical hardware \cite{Grzesik2020EdgeIoTBenchmark}, while NoSQL services match write speed once enough replicas are added, although at higher memory cost \cite{Vergara2021PerformanceTSDB}. No single solution is universally \say{best,} so the rest of this section reviews each option in turn and ends with a literature-based trade-off matrix.
 
 \subsection{Relational Databases (PostgreSQL/RDS)}
 Relational databases store information in tables made of rows and columns, where each table has a fixed schema that defines the names and data types of its columns. Queries are written in SQL, and the database engine guarantees \gls{ACID} properties so that transactions stay consistent even if many users change data at the same time \cite[Chs.~1–2]{Silberschatz2020DB}.
@@ -770,132 +754,118 @@ Features such as global secondary indexes, point-in-time recovery, and at-rest e
 
 \subsection{Trade-Off Matrix from Literature}
 
-Taken together, recent benchmarks show a consistency in results.  
-Relational engines (PostgreSQL/RDS) excel at ad-hoc joins and point look-ups but slow down once sustained insert rates exceed \(\sim\!10^{4}\) rows s\(^{-1}\) on commodity cloud nodes \cite{Heldt2021SciTS}.  
+Taken together, recent benchmarks show a consistency in results. 
+Relational engines (PostgreSQL/RDS) excel at ad-hoc joins and point look-ups but slow down once sustained insert rates exceed \(\sim\!10^{4}\) rows s\(^{-1}\) on commodity cloud nodes \cite{Heldt2021SciTS}. 
 Purpose-built time-series stores keep up with bursty sensor feeds and answer
 range-window queries 2–3× faster than Postgres on the same hardware
-\cite{Grzesik2020EdgeIoTBenchmark,Daqouri2023TimeseriesVsSQL}.  
+\cite{Grzesik2020EdgeIoTBenchmark,Daqouri2023TimeseriesVsSQL}. 
 Key–value services such as DynamoDB scale linearly with partitions and can
 match TSDB write speed, but they consume more memory and require careful key
 design to avoid hot shards \cite{Vergara2021PerformanceTSDB,Zhang2023EdgeTSDB}.
 Table~\ref{tab:storage-matrix} contrasts the most relevant findings.
 
-\begin{table}[H]
-\centering
-\caption{Headline results from storage benchmarks (\(\uparrow\)=higher is
-better, \(\downarrow\)=lower is better).}
-\label{tab:storage-matrix}
-\begin{tabular}{p{2.8cm}p{2.1cm}p{2.1cm}p{5.5cm}}
-\toprule
-\textbf{Study} & \textbf{Best Write Through\-put} & \textbf{Fastest Range Query} & \textbf{Key Observation} \\
-\midrule
-Grzesik \textit{et al.}\ (2020) &
-InfluxDB \(\uparrow\) 1.6 M rows s\(^{-1}\) &
-TimescaleDB \(\downarrow\) 0.35 s (24 h window) &
-TSDBs beat SQLite and Riak-TS on Pi-class hardware \cite{Grzesik2020EdgeIoTBenchmark}. \\[4pt]
-
-Heldt \textit{et al.}\ (2021) &
-TimescaleDB \(\uparrow\) 3× Postgres &
-InfluxDB \(\downarrow\) 60 ms (1 h window) &
-Relational joins handy but cost 2–3× more CPU \cite{Heldt2021SciTS}. \\[4pt]
-
-Vergara \textit{et al.}\ (2021) &
-DynamoDB equals InfluxDB after 3 replicas &
-InfluxDB \(\downarrow\) 55 ms &
-NoSQL pays 1.8× RAM for same latency \cite{Vergara2021PerformanceTSDB}. \\[4pt]
-
-Johansson (2022) &
-S3 data-lake \(\uparrow\) 2× Timestream (bulk scan) &
-DynamoDB fastest for point reads &
-Cloud-managed TSDB not always top; depends on query mix \cite{Johansson2022AWSCloudData}. \\[4pt]
-
-Zhang \textit{et al.}\ (2023) &
-DynamoDB \(\uparrow\) 2 M rows s\(^{-1}\) (edge cluster) &
-TimescaleDB \(\downarrow\) 0.4 s &
-Key-design hot-spotting degrades NoSQL latency if ignored \cite{Zhang2023EdgeTSDB}. \\
-\bottomrule
-\end{tabular}
+\begin{table}[htbp]
+ \centering
+ \begin{threeparttable}
+ \caption{Headline results from recent storage benchmarks
+   (\(\uparrow\!=\) higher is better,\; \(\downarrow\!=\) lower is better)}
+ \label{tab:storage-matrix}
+ %--------------------------------------------------------------
+ % X column stretches, the others have fixed width for numbers
+ \begin{tabularx}{\linewidth}{@{} l c c c @{}}
+ \toprule
+ \textbf{Study} & \textbf{Best write} & \textbf{Fastest range} \\[-2pt]
+     & (rows s\(^{-1}\)) & query (s)    &    \\
+ \midrule
+ Grzesik 20\tnote{a} & InfluxDB ↑1.6 M & TimescaleDB ↓0.35 \\[2pt]
+ Heldt 21\tnote{b} & Timescale ↑3× & InfluxDB ↓0.06 \\[2pt]
+ Vergara 21\tnote{c} & Dynamo = Influx (3 reps) & InfluxDB ↓0.055 \\[2pt]
+ Johansson 22\tnote{d}& S3 lake ↑2× & Dynamo fastest \\[2pt]
+ Zhang 23\tnote{e} & Dynamo ↑2 M  & TimescaleDB ↓0.40 \\
+ \bottomrule
+ \end{tabularx}
+ %--------------------------------------------------------------
+ \begin{tablenotes}[flushleft]\footnotesize
+ \item[a] TSDBs outperform SQLite and Riak-TS on Raspberry Pi hardware \cite{Grzesik2020EdgeIoTBenchmark}.
+ \item[b] Relational joins handy but cost roughly 2–3× more CPU \cite{Heldt2021SciTS}.
+ \item[c] NoSQL matches write speed but uses \(\sim\)1.8× more RAM \cite{Vergara2021PerformanceTSDB}.
+ \item[d] Cloud TSDB not always fastest; depends on query mix \cite{Johansson2022AWSCloudData}.
+ \item[e] Hot-spotting design degrades NoSQL latency if ignored \cite{Zhang2023EdgeTSDB}.
+ \end{tablenotes}
+ \end{threeparttable}
 \end{table}
 
+
 \noindent
-The matrix confirms that no single engine dominates every metric.  
-Relational stores offer flexible querying, \glspl{TSDB} shine on time-window analytics, and NoSQL services win on elastic scaling.  
-Yet every cited paper fixes the ingestion style (usually batch writes or simple polling). No work measures these engines under both polling and event-driven pipelines while obeying a live API rate limit.  
+The matrix confirms that no single engine dominates every metric. 
+Relational stores offer flexible querying, \glspl{TSDB} shine on time-window analytics, and NoSQL services win on elastic scaling. 
+Yet every cited paper fixes the ingestion style (usually batch writes or simple polling). No work measures these engines under both polling and event-driven pipelines while obeying a live API rate limit. 
 
 
 \section{Related Work and Research Gap}
 \label{sec:gap}
-Earlier studies tend to split the backend story in two.
+Earlier studies tend to split the focus of the backend into two.
 Some papers ask only how fresh data is ingested (for example, comparing polling with event-driven updates), while others test where that data is stored (relational, time-series, or NoSQL engines).
 These single-focus results are helpful, but they do not answer the practical question facing a live, API-limited service such as Klimra's delay dashboard: Which mix of ingestion style \textit{and} database keeps updates fast without breaking the request cap? 
 
 The next three subsections review what the literature has taught us about (i) ingestion in isolation, (ii) storage in isolation, and (iii) why their combination under a real-world traffic limit is still missing. That gap sets the stage for the benchmark designed in Chapter~\ref{ch:methods}.
 
-\subsection{Ingestion in isolation}
-Several empirical studies examine only the data-ingestion side of a backend, keeping the database layer fixed.  
-In an industrial‐control study, Johansson and Larsson migrated an EclipseSCADA plant to two Australian IaaS regions and replayed traffic from 800 simulated Modbus sensors \cite{Johansson2021SCADAIaaS}.  
-With polling set to one millisecond, round-trip time for a single register climbed from \SI{11}{\milli\second} (1 sensor) to almost \SI{14}{\second} (800 sensors) because the server spent most of its time issuing and queuing requests instead of processing replies; the authors therefore recommended switching to event notifications to eliminate the \say{network flood.}
-
-For battery-powered devices, Makarović \textit{et al.} let a Wi-Fi \say{smart toaster} sleep until an event arrived.  
-Energy use fell from \SI{10.9}{\kilo\joule} (continuous polling for one week) to just \SI{3.6}{\joule}, roughly a three-thousand-fold drop \cite{Makarovi2022EnergyEfficientIoT}.
-
-Inside data-centre software, Trindade and Batista replaced REST polling scripts with a Kafka-based Event-Driven microservices Architecture.  
-Under the same workload, the event design cut average CPU load by \SI{47}{\percent} and trimmed mean response time by \SI{89}{\percent} \cite{Trindade2021EDAImpact}.
-
-The results are, however, not entirely one-sided.  
-Berg ported a small web shop from a monolith to AWS microservices and measured three load scenarios \cite{Berg2022MonolithVsMicroservices}.  
-Although the new design used less CPU, its mean response time rose from a stable \SI{13}–\SI{15}{\milli\second} to between \SI{16} and \SI{43}{\milli\second}, largely because each request now passed through multiple event queues.
-
-Taken together, these experiments show that event-driven ingestion can save CPU, bandwidth, and battery power, but poorly tuned pipelines may add extra hops and hurt tail latency.  
-All of the above work keeps the storage engine fixed; the next subsection reviews studies that take the opposite approach by varying the database while leaving ingestion unchanged.
-
-
-\subsection{Storage in isolation}
-%add detail about the studies
-Separate benchmarks compare relational, time-series, and NoSQL engines with
-synthetic workloads that write directly to the database.  
-Results agree that PostgreSQL is versatile but slows under very high
-insert rates \cite{Heldt2021SciTS}.  
-Time-series stores such as InfluxDB and TimescaleDB handle range queries
-two to three times faster than relational rows
-\cite{Grzesik2020EdgeIoTBenchmark,Daqouri2023TimeseriesVsSQL}.  
-Key–value services like DynamoDB match those write speeds once extra
-partitions are added, although they use more memory per record
-\cite{Vergara2021PerformanceTSDB,Zhang2023EdgeTSDB}.  
-These tests, however, feed the databases with pre-generated traces and do
-not model the delays of an external API.
-
-\subsection{Missing combination under a live rate limit}
-%add detail about the studies
-To the best of our knowledge, no prior work evaluates \emph{both} ingestion
-style and storage choice together while respecting the hard request limit
-imposed by a real public API.  
-This gap matters for companies such as Klimra, where the back-end must meet
-live traffic caps and still keep data fresh.  
-Inspired by the load-repetition method of Hidalgo \textit{et al.}
-\cite{Hidalgo2023StreamProcMicroservices}, the next chapter designs a test
-loop that replays one day of Trafikverket traffic and measures six AWS
-back-end variants.  The goal is to provide the first side-by-side data on
-how polling versus events interact with relational, time-series, and
-NoSQL storage under realistic limits.
 
 
 
-%\section{Summary}
-%\label{sec:summary}
+\subsection{Ingestion-Centric Studies}
+Ingestion performance has been studied across various domains, including industrial automation, energy-aware \gls{IoT}, and microservice-based cloud platforms. These studies evaluate polling and event-driven patterns in isolation, with a fixed database back-end. Although they differ in setting, each one displays how ingestion style can influence resource use, latency, and efficiency. Together, these studies show that ingestion style affects performance across very different domains.
 
-%%% >> 4–6 lines that:
-%%%    – Recap the most important takeaways
-%%%    – Sign-post how they connect to Chapter 3 (Methods)
-%%%      e.g. “Based on the gaps identified above, the next chapter
-%%%      details how six backend variants were prototyped and
-%%%      benchmarked …”
+\subsubsection{Industrial control}
+In time-critical control systems, meaning systems where sensors and actuators must respond within strict timing limits, delays in sensor updates can result in errors or failures. Here, ingestion style directly impacts how up-to-date the control loop data is.
+Johansson and Larsson explored this in an EclipseSCADA plant migrated to two Australian IaaS regions. They simulated traffic from 800 Modbus sensors and measured performance under one-millisecond polling. As the number of sensors increased, the round-trip time for a single register rose from \SI{11}{\milli\second} to nearly \SI{14}{\second}. The system spent more time issuing requests than processing replies, leading to severe congestion. The authors recommend replacing polling with event notifications to avoid what they described as a \say{network flood} \cite{Johansson2021SCADAIaaS}.
+
+\subsubsection{Battery-powered IoT}
+In small embedded systems, power consumption is often the main constraint. Polling can drain batteries quickly by keeping radios and processors awake even when there is no data to fetch. 
+To test this, Makarović \textit{et al.} implemented a smart toaster with five wireless protocols and measured power draw under polling versus event-driven designs. When polling continuously, the device used \SI{10.9}{\kilo\joule} in one week. Switching to event-driven mode allowed the Wi-Fi module to stay asleep until a message arrived, reducing consumption to just \SI{3.6}{\joule} — a drop of nearly \(3000\times\) \cite{Makarovi2022EnergyEfficientIoT}.
+
+\subsubsection{Cloud orchestration}
+In cloud infrastructure, orchestration tools manage the flow of tasks between services. They need to respond quickly while scaling efficiently under heavy load.
+Trindade and Batista studied how an event-driven approach changes performance in this setting. They rewrote a polling-based orchestration loop to use Kafka and RabbitMQ to deliver events between services, meaning they notified different parts of the system when new data or tasks were available. Under the same workload, CPU usage dropped by \SI{47}{\percent} and mean response time improved by \SI{89}{\percent}, showing that events help eliminate idle spins and improve reactivity when tuned correctly \cite{Trindade2021EDAImpact}.
+
+\subsubsection{Micro-service refactors}
+Not all event-driven designs yield gains by default. When breaking a system into microservices, each new component adds potential overhead. 
+Berg examined this by refactoring a small web shop from a monolith to AWS microservices. Although the new design used less CPU overall, the mean response time increased from \SIrange{13}{15}{\milli\second} to as high as \SI{43}{\milli\second} in the worst scenario. The added queueing layers introduced latency, and only after batching messages did the event-driven setup match the monolith's responsiveness \cite{Berg2022MonolithVsMicroservices}.
 
 
 
+\subsection{Storage-Centric Studies}
+While the previous section focused on how data enters the system, this one looks at where it ends up. Several benchmark studies evaluate relational, time-series, and NoSQL databases in isolation, using synthetic traces to stress-test their performance. These papers do not model real-time API ingestion but help highlight the strengths and weaknesses of the different storage engines under high-throughput loads and common query patterns. Taken together, these results show that each storage engine excels under different access patterns.
+
+\subsubsection{Relational baselines}
+Relational databases, such as PostgreSQL, are widely used because they support full SQL queries, joins, and transactions, making them suitable for complex applications that require structured data.
+However, under very high insert rates, they can become a bottleneck. Heldt \textit{et al.} compared PostgreSQL, which is a general-purpose relational database, with TimescaleDB and InfluxDB, which are time-series databases designed for timestamped data.
+Although PostgreSQL was the most flexible, it consumed two to three times more CPU than the time-series alternatives during sustained writes and range queries \cite{Heldt2021SciTS}.
+
+\subsubsection{Time-series optimisations}
+Time-series databases are designed specifically for workloads where each data point is associated with a timestamp. They append data in time order and compress values that change slowly.
+Grzesik \textit{et al.} benchmarked three popular time-series databases: TimescaleDB, InfluxDB, and Riak-TS, using Raspberry Pi hardware. InfluxDB achieved the highest write throughput at 1.6 million rows per second, while TimescaleDB returned 24-hour range queries three times faster than Riak-TS \cite{Grzesik2020EdgeIoTBenchmark}.
+Similarly, Daqouri compared TimescaleDB with PostgreSQL in an \gls{IoT} analytics scenario and found that TimescaleDB handled large, ordered inserts more efficiently and offered better query performance on time-based filters \cite{Daqouri2023TimeseriesVsSQL}.
+
+\subsubsection{NoSQL scaling trade-offs}
+NoSQL key–value stores scale horizontally and support fast lookups at the cost of limited querying.  
+Vergara \textit{et al.} found that DynamoDB could match InfluxDB in write throughput once three replicas were added, but this came at a cost of 1.8× higher memory usage \cite{Vergara2021PerformanceTSDB}.  
+Zhang \textit{et al.} ran a similar comparison in an edge-computing setup.  
+They measured DynamoDB ingesting up to 2 million rows per second, but found that poorly chosen keys caused “hot spots” that slowed down performance.  
+Meanwhile, TimescaleDB gave consistent range query latency below 0.5 seconds \cite{Zhang2023EdgeTSDB}.
 
 
 
+\subsection{Research Gap in Real-Time, API-Limited Backends}
+While prior work has studied ingestion and storage separately, few studies combine the two in a realistic setting where the back-end must update continuously while obeying a strict external rate limit.
+This combination is common in real-time applications, such as the traffic dashboard being built for Klimra, as well as other monitoring tools that rely on frequent updates from public \glspl{API}.
+
+To the best of our knowledge, no existing benchmark measures both ingestion style and storage engine choice under a live API constraint.
+This leaves open a practical question for systems like Klimra's delay dashboard: which mix of polling or events, and which kind of database, best keeps updates fast while staying within allowed request quotas?
+
+%To answer that, the next chapter presents a prototype test loop inspired by the load-repetition method of Hidalgo \textit{et al.} \cite{Hidalgo2023StreamProcMicroservices}.
+%The test replays one day of Trafikverket traffic and measures six AWS back-end configurations across three database types.
+%The goal is to provide a side-by-side evaluation of ingestion and storage combinations in a rate-limited, real-time update scenario.
 
 
 
@@ -960,7 +930,7 @@ Aktivitetsdiagram från t ex UML-standard}
  
 \begin{figure}[!ht]
  \begin{center}
-  \includegraphics[width=0.5\textwidth]{figures/researchprocess.png}
+ \includegraphics[width=0.5\textwidth]{figures/researchprocess.png}
  \end{center}
  \caption{Research Process}
  \label{fig:researchprocess}
@@ -969,11 +939,11 @@ Aktivitetsdiagram från t ex UML-standard}
 \generalExpl{Example of using customized item labels.}
 Some steps in the process:
 \begin{enumerate}[leftmargin=*, label=\textbf{Step \arabic*}, ref=Step \arabic*] %labelindent=1em for indent
-  \itemsep0em
-  \item \label{x:s1} plan experiment,
-  \item \label{x:s2} conduct experiment,
-  \item \label{x:s3} analyze data from the experiment, and
-  \item \label{x:s4} discuss the results of the analysis.
+ \itemsep0em
+ \item \label{x:s1} plan experiment,
+ \item \label{x:s2} conduct experiment,
+ \item \label{x:s3} analyze data from the experiment, and
+ \item \label{x:s4} discuss the results of the analysis.
 \end{enumerate}
 
 \sweExpl{Forskningsprocessen}
@@ -1098,7 +1068,7 @@ Vad du har gjort? Hur gjorde du det? Vilka designval gjorde du?}
  
 \begin{figure}[!ht]
  \begin{center}
-  \includegraphics[width=0.25\textwidth]{figures/Homepage-icon.png}
+ \includegraphics[width=0.25\textwidth]{figures/Homepage-icon.png}
  \end{center}
  \caption{Homepage icon}
  \label{fig:homepageicon}
@@ -1106,16 +1076,16 @@ Vad du har gjort? Hur gjorde du det? Vilka designval gjorde du?}
 
 \begin{table}[!ht]
  \begin{center}
-  \caption{Configurations tested}
-  \label{tab:configstested}
-  \resizebox{\columnwidth}{!}{%
-  \begin{tabular}{l|c} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+ \caption{Configurations tested}
+ \label{tab:configstested}
+ \resizebox{\columnwidth}{!}{%
+ \begin{tabular}{l|c} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
  \textbf{Configuration} & \textbf{Description} \\
  \hline
  1 & Simple test with one server\\
  2 & Simple test with one server\\
-  \end{tabular}
-  }
+ \end{tabular}
+ }
  \end{center}
 \end{table}
 \sweExpl{Testade konfigurationer}
@@ -1126,10 +1096,10 @@ Vad du har gjort? Hur gjorde du det? Vilka designval gjorde du?}
 
 Two commonly used simulators are:
 \begin{description}[labelwidth =\widthof{\textbf{ns-2 or ns-3 simulator}}, leftmargin = !]
-  \item[\textbf{Mininet}] This simulator uses traffic control (\texttt{tc}) to simulate network devices connected by links with specific bandwidth, packet loss rates, qdisc methods, etc.
-  
-  
-  \item[\textbf{ns-2 or ns-3 simulator}] These simulators are very useful for simulating wireless communication links between moving devices. You can specify the mobility patterns of the nodes.
+ \item[\textbf{Mininet}] This simulator uses traffic control (\texttt{tc}) to simulate network devices connected by links with specific bandwidth, packet loss rates, qdisc methods, etc.
+ 
+ 
+ \item[\textbf{ns-2 or ns-3 simulator}] These simulators are very useful for simulating wireless communication links between moving devices. You can specify the mobility patterns of the nodes.
 \end{description}
 
 \subsection{Some examples of coding}
@@ -1154,26 +1124,26 @@ get a list of all of the programs at KTH. Note that on {\DTMsetdatestyle{iso}\DT
 
 \lstset{extendedchars=true} %% This allows character codes in the range 128-255
 \begin{lstlisting}[language={Python}, caption={Using a python program to
-  access the KTH \gls{API} to get all of the programs at KTH}, label=lst:programmes]
+ access the KTH \gls{API} to get all of the programs at KTH}, label=lst:programmes]
 KOPPSbaseUrl = 'https://www.kth.se'
 
 def v1_get_programmes():
-  global Verbose_Flag
-  #
-  # Use the KOPPS \gls{API} to get the data
-  # note that this returns XML
-  url = "{0}/api/kopps/v1/programme".format(KOPPSbaseUrl)
-  if Verbose_Flag:
-  print("url: " + url)
-  #
-  r = requests.get(url)
-  if Verbose_Flag:
-  print("result of getting v1 programme: {}".format(r.text))
-  #
-  if r.status_code == requests.codes.ok:
-  return r.text  # simply return the XML
-  #
-  return None
+ global Verbose_Flag
+ #
+ # Use the KOPPS \gls{API} to get the data
+ # note that this returns XML
+ url = "{0}/api/kopps/v1/programme".format(KOPPSbaseUrl)
+ if Verbose_Flag:
+ print("url: " + url)
+ #
+ r = requests.get(url)
+ if Verbose_Flag:
+ print("result of getting v1 programme: {}".format(r.text))
+ #
+ if r.status_code == requests.codes.ok:
+ return r.text # simply return the XML
+ #
+ return None
 \end{lstlisting}
 \FloatBarrier
 
@@ -1183,25 +1153,25 @@ In \Cref{lst:exampleUsingMinted}, line \ref{listinline:ExcelWriter} shows the us
 \begin{minted}[linenos,breaklines, escapeinside=||]{python}
 import pandas as pd
 def make_spreadsheet_of_differences(pds):
-  global school
-  publishers=set()
-  writer = pd.ExcelWriter(f'/tmp/{school}_compare_duplicates.xlsx', engine='xlsxwriter') |\label{listinline:ExcelWriter}|
-  print("starting")
-  for idx, p in enumerate(pds):
-  p0=list(p)[0]
-  p1=list(p)[1]
-  print(f"\nfor {p0} and {p1}")
-  comp, publisher1, publisher2=compare_two_records_silent(p0, p1)
-  sheet_name=f'{p0}'.split(':')[1]
-  print(f'Wrote {sheet_name=}')|\label{listinline:UsingToexcel}|
-  comp.to_excel(writer, sheet_name=sheet_name)
-  publishers.add(publisher1)
-  publishers.add(publisher2)
-  
-  # Close the Pandas Excel writer and output the Excel file.
-  writer.close()|\label{listinline:closingWriter}|
-  print(f"{publishers=}")
-  return publishers
+ global school
+ publishers=set()
+ writer = pd.ExcelWriter(f'/tmp/{school}_compare_duplicates.xlsx', engine='xlsxwriter') |\label{listinline:ExcelWriter}|
+ print("starting")
+ for idx, p in enumerate(pds):
+ p0=list(p)[0]
+ p1=list(p)[1]
+ print(f"\nfor {p0} and {p1}")
+ comp, publisher1, publisher2=compare_two_records_silent(p0, p1)
+ sheet_name=f'{p0}'.split(':')[1]
+ print(f'Wrote {sheet_name=}')|\label{listinline:UsingToexcel}|
+ comp.to_excel(writer, sheet_name=sheet_name)
+ publishers.add(publisher1)
+ publishers.add(publisher2)
+ 
+ # Close the Pandas Excel writer and output the Excel file.
+ writer.close()|\label{listinline:closingWriter}|
+ print(f"{publishers=}")
+ return publishers
 \end{minted}
 \caption{Example of using \texttt{minted} with python code}
 \label{lst:exampleUsingMinted}
@@ -1221,8 +1191,8 @@ These figures are just some examples to show that you can draw your own figures 
 \Cref{fig:processAnInvoice} shows the processing of key-value extraction from a PDF document using Azure's Form Recognizer. 
 
 \tikzset{
-  processBox/.style={rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, font=\sffamily, draw=black, fill=red!20},
-  largeBox/.style={rectangle, rounded corners, minimum width=3cm, minimum height=4cm,text centered, draw=black}
+ processBox/.style={rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, font=\sffamily, draw=black, fill=red!20},
+ largeBox/.style={rectangle, rounded corners, minimum width=3cm, minimum height=4cm,text centered, draw=black}
 }
 \begin{figure}[!ht]
 \resizebox{1.1\textwidth}{!}{%
@@ -1252,19 +1222,19 @@ These figures are just some examples to show that you can draw your own figures 
  \Cref{fig:hyperVcontainers} shows how Hyper-V deals with containers.
  
  \tikzset{
-  container/.style={rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, draw=black, fill=blue!20},
-  containerization/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=blue!20},
-  hypervisor/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=red!20},
-  os/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=orange!20},
-  guestos/.style={rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, draw=black, fill=orange!40},
-  infrastructure/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=green!20},
-  hos/.style={rectangle, rounded corners, minimum width=6cm, minimum height=1cm,text centered, draw=black, fill=orange!20},
-  kernel/.style={rectangle, rounded corners, minimum width=6cm, minimum height=1cm,text centered, draw=black, fill=purple!20},
-  services/.style={rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=pink!20]}
+ container/.style={rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, draw=black, fill=blue!20},
+ containerization/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=blue!20},
+ hypervisor/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=red!20},
+ os/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=orange!20},
+ guestos/.style={rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, draw=black, fill=orange!40},
+ infrastructure/.style={rectangle, rounded corners, minimum width=13.25cm, minimum height=1cm,text centered, draw=black, fill=green!20},
+ hos/.style={rectangle, rounded corners, minimum width=6cm, minimum height=1cm,text centered, draw=black, fill=orange!20},
+ kernel/.style={rectangle, rounded corners, minimum width=6cm, minimum height=1cm,text centered, draw=black, fill=purple!20},
+ services/.style={rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=pink!20]}
 }
 
 \begin{figure}[ht!]
-  \centering
+ \centering
 \resizebox{1\textwidth}{!}{%
 \begin{tikzpicture}
 [align=center,node distance=2cm]
@@ -1287,24 +1257,24 @@ These figures are just some examples to show that you can draw your own figures 
 
 \draw[black,thick,dashed] ($(OS2.north west)+(-0.3,3.75)$) rectangle ($(OS2.south east)+(0.5,-0.3)$);
 \node[text width=5cm, text=red, above=0.1cm of ServiceB] 
-  {\textbf{Container}};
+ {\textbf{Container}};
 
 \draw[red,thick,dotted] ($(Kernel2.north west)+(-0.3,1.6)$) rectangle ($(Kernel2.south east)+(0.3,-0.3)$);
 \node[text width=5cm, text=black, above=0.8cm of ServiceB] 
-  {\textbf{VM}};
+ {\textbf{VM}};
 \end{tikzpicture}
 }
-  \caption{Hyper-V with containers}
-  \label{fig:hyperVcontainers}
+ \caption{Hyper-V with containers}
+ \label{fig:hyperVcontainers}
 \end{figure}
 \FloatBarrier
 \subsubsection{\glsfmtshort{VM} versus Containers}
 \Cref{fg:vmsVersusContainers} shows a comparison of virtual machines (VMs) versus containers.
 
 \begin{figure*}[ht!]
-  \centering
-  \begin{subfigure}[t]{0.5\textwidth}
-  \centering
+ \centering
+ \begin{subfigure}[t]{0.5\textwidth}
+ \centering
 \resizebox{1\textwidth}{!}{%
 \begin{tikzpicture}
 [align=left,node distance=2cm]
@@ -1318,9 +1288,9 @@ These figures are just some examples to show that you can draw your own figures 
 \node (GosC) [guestos, right=0.25cm of GosB] {Guest OS};
 
 \draw [decoration={brace,amplitude=0.5em},decorate, ultra thick,gray, transform canvas={xshift = 0.5cm}]
-  (AppC.north -| AppC.east) -- (GosC.south -| AppC.east);
+ (AppC.north -| AppC.east) -- (GosC.south -| AppC.east);
 \node[text width=5cm, right=1cm of GosC.north east] 
-  {\textbf{VMs}};
+ {\textbf{VMs}};
 
 \node (Hypervisor) [hypervisor, anchor=north west, align=left, below=0.25cm of GosA.south west, anchor=north west, text width=13cm, text centered] {Hypervisor};
 
@@ -1331,12 +1301,12 @@ These figures are just some examples to show that you can draw your own figures 
 
 \end{tikzpicture}
 }
-  \caption{VM}
-  \end{subfigure}%
-  ~ 
-  \begin{subfigure}[t]{0.5\textwidth}
-  \centering
-  \resizebox{1\textwidth}{!}{%
+ \caption{VM}
+ \end{subfigure}%
+ ~ 
+ \begin{subfigure}[t]{0.5\textwidth}
+ \centering
+ \resizebox{1\textwidth}{!}{%
 \begin{tikzpicture}
 [align=left,node distance=2cm]
 
@@ -1344,7 +1314,7 @@ These figures are just some examples to show that you can draw your own figures 
 \node (AppB) [container, right=0.25cm of AppA] {App 2};
 \node (AppC) [container, right=0.25cm of AppB] {App 3};
 \node[text width=5cm, right=0.25cm of AppC] 
-  {\textbf{Apps running in Containers}};
+ {\textbf{Apps running in Containers}};
 
 
 \node (Containerization) [containerization, anchor=north west, align=left, below=0.25cm of AppA.south west, anchor=north west, text width=13cm, text centered] {Docker Engine};
@@ -1356,10 +1326,10 @@ These figures are just some examples to show that you can draw your own figures 
 
 \end{tikzpicture}
 }
-  \caption{Containers}
-  \end{subfigure}
-  \caption{Virtual machines (VMs) versus Containers}
-  \label{fg:vmsVersusContainers}
+ \caption{Containers}
+ \end{subfigure}
+ \caption{Virtual machines (VMs) versus Containers}
+ \label{fg:vmsVersusContainers}
 \end{figure*}
 
 \cleardoublepage
@@ -1383,14 +1353,14 @@ The delay has been computed from the time the GET request is received until the 
 
 \begin{table}[!ht]
  \begin{center}
-  \caption{Delay measurement statistics}
-  \label{tab:delayMeasurements}
-  \begin{tabular}{l|S[table-format=4.2]|S[table-format=3.2]} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+ \caption{Delay measurement statistics}
+ \label{tab:delayMeasurements}
+ \begin{tabular}{l|S[table-format=4.2]|S[table-format=3.2]} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
  \textbf{Configuration} & \textbf{Average delay (ns)} & \textbf{Median delay (ns)}\\
  \hline
  1 & 467.35 & 450.10\\
  2 & 1687.5 & 901.23\\
-  \end{tabular}
+ \end{tabular}
  \end{center}
 \end{table}
 
@@ -1512,21 +1482,21 @@ Given these measurements, we can calculate our processing bit rate as the invers
 \Cref{tab:majorMarkupLMDetailedResult} shows another table in which some values have been set in bold (using \textbackslash B) to emphasize them. Note how the \texttt{S} formatting has been modified so that it considers the weight of the characters and this is able to decimal align even these hold-faced numbers with the numbers in the column above them.
 
 \begin{table}[!ht]
-  \centering
-  \caption{Median values of sandwich attributes}
-  \label{tab:majorMarkupLMDetailedResult}
-  \begin{tabular}{l *{2}{S[detect-weight,mode=text,table-format=3.2]}}
-  & \multicolumn{2}{c}{\textbf{sites}}\\
-  \cmidrule{2-3}
-  \textbf{Attribute} & \textbf{A} & \textbf{B} \\
-  \midrule
-  price (in SEK) & 36.5 & 71.3 \\
-  protean (g) & 97.2 & 100.0 \\
-  salt (mg) & 9.7 & 9.3 \\
-  \hline
-  \textbf{Average customer rating in \%} & \B 82.2 & \B 89.9 \\
-  \midrule
-  \end{tabular}
+ \centering
+ \caption{Median values of sandwich attributes}
+ \label{tab:majorMarkupLMDetailedResult}
+ \begin{tabular}{l *{2}{S[detect-weight,mode=text,table-format=3.2]}}
+ & \multicolumn{2}{c}{\textbf{sites}}\\
+ \cmidrule{2-3}
+ \textbf{Attribute} & \textbf{A} & \textbf{B} \\
+ \midrule
+ price (in SEK) & 36.5 & 71.3 \\
+ protean (g) & 97.2 & 100.0 \\
+ salt (mg) & 9.7 & 9.3 \\
+ \hline
+ \textbf{Average customer rating in \%} & \B 82.2 & \B 89.9 \\
+ \midrule
+ \end{tabular}
 \end{table}
 \FloatBarrier
 
@@ -1543,70 +1513,70 @@ rustc 55.01 24.80 11.54 6.16 2.49
 
 
 \pgfkeys{
-  /pgf/number format/.cd,
-  fixed,
-  fixed zerofill,
-  precision=2
+ /pgf/number format/.cd,
+ fixed,
+ fixed zerofill,
+ precision=2
 }
 \begin{figure}[ht!]
-  \centering
-  \scalebox{0.9}{
-  \begin{tikzpicture}
-  \begin{axis}[
-  ybar stacked,
-  %reverse legend,
-  reverse legend=false,
-  %https://tex.stackexchange.com/questions/88892/pgfplots-bar-plot-spacing-inbetween-bars
-  enlarge x limits=0.4,
-	  bar width=45pt,
-  /pgfplots/nodes near coords*/.append style={
-  every node near coord/.style={
-  color=black,
-  font=\small,
-  name=X,
-%  shift={  
-%    (50pt,25pt)
-%    },
-  xshift={50pt},
-    yshift ={
-    ifthenelse((\plotnum == 4), 30pt,20pt)},
-  },
-  scatter/@post marker code/.append code={
-    \node(Y){};
-    \draw(X)--(Y.center);
-  }
-  },
-	  nodes near coords,
-  bar shift=5pt,
-  ymin=0,
-  ymax=115,
-  xtick=data,
-  width=1\textwidth,
-  legend style={draw=none},
-  legend image post style={scale=2.0},
-  legend style={
-  at={(0.5,-0.2)},
-  anchor=north,
-  legend columns=-2,
-  font=\large,
-  %mark size=20pt,
-  },
-  ylabel=Percentage points (\%),
-  xticklabels from table={\testdata}{Label},
-  xticklabel style={rotate=30},
-  ]
-  \addplot table [y=Numbers, meta=Label, x expr=\coordindex] {\testdata};
-  \addlegendentry{Numbers}
-  \addplot table [y=Refs, meta=Label, x expr=\coordindex] {\testdata};
-  \addlegendentry{Refs}
-  \addplot table [y=Struct/Enum, meta=Label, x expr=\coordindex] {\testdata};
-  \addlegendentry{Struct/Enum}
-  \addplot table [y=Heap, meta=Label, x expr=\coordindex] {\testdata};
-  \addlegendentry{Heap}
-  \addplot table [y=Arrays, meta=Label, x expr=\coordindex] {\testdata};
-  \addlegendentry{Arrays}
-  \end{axis}
-  \end{tikzpicture}}
+ \centering
+ \scalebox{0.9}{
+ \begin{tikzpicture}
+ \begin{axis}[
+ ybar stacked,
+ %reverse legend,
+ reverse legend=false,
+ %https://tex.stackexchange.com/questions/88892/pgfplots-bar-plot-spacing-inbetween-bars
+ enlarge x limits=0.4,
+	 bar width=45pt,
+ /pgfplots/nodes near coords*/.append style={
+ every node near coord/.style={
+ color=black,
+ font=\small,
+ name=X,
+% shift={ 
+% (50pt,25pt)
+% },
+ xshift={50pt},
+ yshift ={
+ ifthenelse((\plotnum == 4), 30pt,20pt)},
+ },
+ scatter/@post marker code/.append code={
+ \node(Y){};
+ \draw(X)--(Y.center);
+ }
+ },
+	 nodes near coords,
+ bar shift=5pt,
+ ymin=0,
+ ymax=115,
+ xtick=data,
+ width=1\textwidth,
+ legend style={draw=none},
+ legend image post style={scale=2.0},
+ legend style={
+ at={(0.5,-0.2)},
+ anchor=north,
+ legend columns=-2,
+ font=\large,
+ %mark size=20pt,
+ },
+ ylabel=Percentage points (\%),
+ xticklabels from table={\testdata}{Label},
+ xticklabel style={rotate=30},
+ ]
+ \addplot table [y=Numbers, meta=Label, x expr=\coordindex] {\testdata};
+ \addlegendentry{Numbers}
+ \addplot table [y=Refs, meta=Label, x expr=\coordindex] {\testdata};
+ \addlegendentry{Refs}
+ \addplot table [y=Struct/Enum, meta=Label, x expr=\coordindex] {\testdata};
+ \addlegendentry{Struct/Enum}
+ \addplot table [y=Heap, meta=Label, x expr=\coordindex] {\testdata};
+ \addlegendentry{Heap}
+ \addplot table [y=Arrays, meta=Label, x expr=\coordindex] {\testdata};
+ \addlegendentry{Arrays}
+ \end{axis}
+ \end{tikzpicture}}
 \caption{Rust types distribution for the compiler, crates.io, and lib.rs.
 (percentage) - appears here with the permission of the author - see the thesis at \url{https://urn.kb.se/resolve?urn=urn\%3Anbn\%3Ase\%3Akth\%3Adiva-332124}}
 \label{fig:stackedrust}
@@ -1722,12 +1692,12 @@ xxxx.
 
 
 \ifbiblatex
-  %\typeout{Biblatex current language is \currentlang}
-  \printbibliography[heading=bibintoc]
+ %\typeout{Biblatex current language is \currentlang}
+ \printbibliography[heading=bibintoc]
 \else
-  \phantomsection % make it include a hyperref - see https://tex.stackexchange.com/a/98995
-  \addcontentsline{toc}{chapter}{References}
-  \bibliography{references}
+ \phantomsection % make it include a hyperref - see https://tex.stackexchange.com/a/98995
+ \addcontentsline{toc}{chapter}{References}
+ \bibliography{references}
 \fi
 
 
@@ -1756,7 +1726,7 @@ An argument for including supporting material in the PDF file is that it will be
 
 \begin{figure}[!ht]
  \begin{center}
-  \includegraphics[width=0.50\textwidth]{README_notes/pdf-viewer-attached-files.png}
+ \includegraphics[width=0.50\textwidth]{README_notes/pdf-viewer-attached-files.png}
  \end{center}
  \caption{Adobe Acrobat Reader using the paperclip icon for the attached references.bib file}
  \label{fig:PDFreaderPaperclipExample}
@@ -1765,7 +1735,7 @@ An argument for including supporting material in the PDF file is that it will be
 
 \begin{figure}[!ht]
  \begin{center}
-  \includegraphics[width=0.99\textwidth]{README_notes/Bib-save-embedded-example.png}
+ \includegraphics[width=0.99\textwidth]{README_notes/Bib-save-embedded-example.png}
  \end{center}
  \caption{Adobe Acrobat Reader after right-clicking on the push-pin icon for the attached references.bib file}
  \label{fig:PDFreaderPushpinExample}
@@ -1778,38 +1748,38 @@ An argument for including supporting material in the PDF file is that it will be
 
 \section{Just for testing KTH colors}
 \ifdigitaloutput
-  \textbf{You have selected to optimize for digital output}
+ \textbf{You have selected to optimize for digital output}
 \else
-  \textbf{You have selected to optimize for print output}
+ \textbf{You have selected to optimize for print output}
 \fi
 \begin{itemize}[noitemsep]
-  \item Primary color
-  \begin{itemize}
-  \item \textcolor{kth-blue}{kth-blue \ifdigitaloutput
-  actually Deep sea
-  \fi} {\color{kth-blue} \rule{0.3\linewidth}{1mm} }\\
+ \item Primary color
+ \begin{itemize}
+ \item \textcolor{kth-blue}{kth-blue \ifdigitaloutput
+ actually Deep sea
+ \fi} {\color{kth-blue} \rule{0.3\linewidth}{1mm} }\\
 
-  \item \textcolor{kth-blue80}{kth-blue80} {\color{kth-blue80} \rule{0.3\linewidth}{1mm} }\\
+ \item \textcolor{kth-blue80}{kth-blue80} {\color{kth-blue80} \rule{0.3\linewidth}{1mm} }\\
 \end{itemize}
 
 \item Secondary colors
 \begin{itemize}[noitemsep]
-  \item \textcolor{kth-lightblue}{kth-lightblue \ifdigitaloutput
-  actually Stratosphere
-  \fi} {\color{kth-lightblue} \rule{0.3\linewidth}{1mm} }\\
+ \item \textcolor{kth-lightblue}{kth-lightblue \ifdigitaloutput
+ actually Stratosphere
+ \fi} {\color{kth-lightblue} \rule{0.3\linewidth}{1mm} }\\
 
-  \item \textcolor{kth-lightred}{kth-lightred \ifdigitaloutput
-  actually Fluorescence\fi} {\color{kth-lightred} \rule{0.3\linewidth}{1mm} }\\
+ \item \textcolor{kth-lightred}{kth-lightred \ifdigitaloutput
+ actually Fluorescence\fi} {\color{kth-lightred} \rule{0.3\linewidth}{1mm} }\\
 
-  \item \textcolor{kth-lightred80}{kth-lightred80} {\color{kth-lightred80} \rule{0.3\linewidth}{1mm} }\\
+ \item \textcolor{kth-lightred80}{kth-lightred80} {\color{kth-lightred80} \rule{0.3\linewidth}{1mm} }\\
 
-  \item \textcolor{kth-lightgreen}{kth-lightgreen \ifdigitaloutput
-  actually Front-lawn\fi} {\color{kth-lightgreen} \rule{0.3\linewidth}{1mm} }\\
+ \item \textcolor{kth-lightgreen}{kth-lightgreen \ifdigitaloutput
+ actually Front-lawn\fi} {\color{kth-lightgreen} \rule{0.3\linewidth}{1mm} }\\
 
-  \item \textcolor{kth-coolgray}{kth-coolgray \ifdigitaloutput
-  actually Office\fi} {\color{kth-coolgray} \rule{0.3\linewidth}{1mm} }\\
+ \item \textcolor{kth-coolgray}{kth-coolgray \ifdigitaloutput
+ actually Office\fi} {\color{kth-coolgray} \rule{0.3\linewidth}{1mm} }\\
 
-  \item \textcolor{kth-coolgray80}{kth-coolgray80} {\color{kth-coolgray80} \rule{0.3\linewidth}{1mm} }
+ \item \textcolor{kth-coolgray80}{kth-coolgray80} {\color{kth-coolgray80} \rule{0.3\linewidth}{1mm} }
 \end{itemize}
 \end{itemize}
 
@@ -1817,37 +1787,37 @@ An argument for including supporting material in the PDF file is that it will be
 
 % Include an example of using nomenclature
 \ifnomenclature
-  \cleardoublepage
-  \chapter{Main equations}
-  \label{ch:NomenclatureExamples}
-  This appendix gives some examples of equations that are used throughout this thesis.
-  \section{A simple example}
-  The following example is adapted from Figure 1 of the documentation for the package nomencl (\url{https://ctan.org/pkg/nomencl}).
-  \begin{equation}\label{eq:mainEq}
-  a=\frac{N}{A}
-  \end{equation}
-  \nomenclature{$a$}{The number of angels per unit area\nomrefeq}%  %% include the equation number in the list
-  \nomenclature{$N$}{The number of angels per needle point\nomrefpage}% %% include the page number in the list
-  \nomenclature{$A$}{The area of the needle point}%
-  The equation $\sigma = m a$%
-  \nomenclature{$\sigma$}{The total mass of angels per unit area\nomrefeqpage}%
-  \nomenclature{$m$}{The mass of one angel}
+ \cleardoublepage
+ \chapter{Main equations}
+ \label{ch:NomenclatureExamples}
+ This appendix gives some examples of equations that are used throughout this thesis.
+ \section{A simple example}
+ The following example is adapted from Figure 1 of the documentation for the package nomencl (\url{https://ctan.org/pkg/nomencl}).
+ \begin{equation}\label{eq:mainEq}
+ a=\frac{N}{A}
+ \end{equation}
+ \nomenclature{$a$}{The number of angels per unit area\nomrefeq}% %% include the equation number in the list
+ \nomenclature{$N$}{The number of angels per needle point\nomrefpage}% %% include the page number in the list
+ \nomenclature{$A$}{The area of the needle point}%
+ The equation $\sigma = m a$%
+ \nomenclature{$\sigma$}{The total mass of angels per unit area\nomrefeqpage}%
+ \nomenclature{$m$}{The mass of one angel}
 follows easily from \Cref{eq:mainEq}.
 
-  \section{An even simpler example}
-  The formula for the diameter of a circle is shown in \Cref{eq:secondEq} area of a circle in \cref{eq:thirdEq}.
-  \begin{equation}\label{eq:secondEq}
-  D_{circle}=2\pi r
-  \end{equation}
-  \nomenclature{$D_{circle}$}{The diameter of a circle\nomrefeqpage}%
-  \nomenclature{$r$}{The radius of a circle\nomrefeqpage}%
+ \section{An even simpler example}
+ The formula for the diameter of a circle is shown in \Cref{eq:secondEq} area of a circle in \cref{eq:thirdEq}.
+ \begin{equation}\label{eq:secondEq}
+ D_{circle}=2\pi r
+ \end{equation}
+ \nomenclature{$D_{circle}$}{The diameter of a circle\nomrefeqpage}%
+ \nomenclature{$r$}{The radius of a circle\nomrefeqpage}%
 
-  \begin{equation}\label{eq:thirdEq}
-  A_{circle}=\pi r^2
-  \end{equation}
-  \nomenclature{$A_{circle}$}{The area of a circle\nomrefeqpage}%
+ \begin{equation}\label{eq:thirdEq}
+ A_{circle}=\pi r^2
+ \end{equation}
+ \nomenclature{$A_{circle}$}{The area of a circle\nomrefeqpage}%
 
-  Some more text that refers to \eqref{eq:thirdEq}.
+ Some more text that refers to \eqref{eq:thirdEq}.
 \fi %% end of nomenclature example
 
 \cleardoublepage
