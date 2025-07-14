@@ -41,7 +41,7 @@
 
 
 \usepackage[
- backend=biber,
+ back-end=biber,
  style=ieee,
  citestyle=numeric-comp,
  sorting=none
@@ -120,6 +120,7 @@ morekeywords={begin, todo, textbf, textit, texttt}
 
 \fi
 \usepackage[all]{hypcap}
+\usepackage{float}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{tabularx}
@@ -147,11 +148,11 @@ nopostdot]{glossaries}
 
 \input{custom_configuration}
 
-\title{Evaluating Backend Architectures for Real-Time API-Dependent Applications}
+\title{Evaluating back-end Architectures for Real-Time API-Dependent Applications}
 \subtitle{A Comparative Study}
 
 % give the alternative title - i.e., if the thesis is in English, then give a Swedish title
-\alttitle{Utvärdering av backend-arkitekturer för realtidsapplikationer beroende av externa API:er}
+\alttitle{Utvärdering av back-end-arkitekturer för realtidsapplikationer beroende av externa API:er}
 \altsubtitle{En jämförande studie}
 
 % Enter the English and Swedish keywords here for use in the PDF metadata _and_ for later use
@@ -469,10 +470,10 @@ Database comparisons tell a similar story of trade-offs: relational engines are 
  \centering
  \resizebox{\linewidth}{!}{
  \begin{tikzpicture}[>=latex,
-  box/.style = {draw, thick, rounded corners,
-     minimum width = 3cm, minimum height = 1cm,
-     text width = 2.8cm, align = center}]
- \node[box, fill=blue!10]    (api) {Trafikverket\\REST API};
+ box/.style = {draw, thick, rounded corners,
+ minimum width = 3cm, minimum height = 1cm,
+ text width = 2.8cm, align = center}]
+ \node[box, fill=blue!10] (api) {Trafikverket\\REST API};
  \node[box, fill=orange!10, right=2cm of api] (ingest) {Ingestion layer\\(Polling \emph{or} Events)};
  \node[box, fill=green!10, right=2cm of ingest] (db) {Database\\(SQL / TSDB / NoSQL)};
  \node[box, fill=yellow!15, right=2cm of db] (ui) { Dashboard / Website\\(traveller view)};
@@ -483,7 +484,7 @@ Database comparisons tell a similar story of trade-offs: relational engines are 
 \end{figure}
 
 \noindent
-This thesis benchmarks six AWS-based ingestion–storage combinations to assess their performance under continuous, real-time updates from Trafikverket's API, aiming to provide engineers with a data-driven recipe for choosing the right stack. Figure~\ref{fig:pipeline} above illustrates the end-to-end path that each variant implements and that we benchmark.
+This thesis benchmarks six \gls{AWS}-based ingestion–storage combinations to assess their performance under continuous, real-time updates from Trafikverket's API, aiming to provide engineers with a data-driven recipe for choosing the right stack. Figure~\ref{fig:pipeline} above illustrates the end-to-end path that each variant implements and that we benchmark.
 The remainder of the chapter states the background (Section~\ref{sec:background}), defines the problem (Section~\ref{sec:problem}), describes the purpose and goals (Sections~\ref{sec:purpose}–\ref{sec:goals}), sketches the method (Section~\ref{sec:method}), lists delimitations (Section~\ref{sec:delimitations}), and outlines the structure of the thesis (Section~\ref{sec:structure}).
 
 
@@ -516,7 +517,7 @@ These mixed results set up the first question of this thesis: should a real-time
 \subsection{Storage Engine}
 Three families of databases matter for this study, each with its own strengths and limitations.
 \textbf{Relational systems}, such as vanilla PostgreSQL, organise data in tables and are reliable all-rounders, but can slow down when millions of time-stamped rows arrive every minute.
-\textbf{Time-series databases} (\glspl{TSDB}) like InfluxDB, TimescaleDB, and Amazon Timestream are built for that exact workload: they append new samples in time-order blocks, so inserts remain fast and range queries over recent hours or days run quickly. For example, TimescaleDB and InfluxDB loaded millions of sensor readings on a Raspberry Pi and answered range queries about three times faster than SQLite, a lightweight relational engine \cite{Grzesik2020EdgeIoTBenchmark}. In larger lab tests, InfluxDB led on heavy aggregations, while TimescaleDB was best for single-row look-ups thanks to PostgreSQL's indexing \cite{Daqouri2023TimeseriesVsSQL,Heldt2021SciTS}. Performance, however, is not guaranteed. In the cloud, Amazon Timestream fell behind DynamoDB and even a simple S3 data-lake when full-history scans were required \cite{Johansson2022AWSCloudData}, and MongoDB beat TimescaleDB on highly selective tag queries \cite{Mohamed2024DBMSComparison}.
+\textbf{Time-series databases} (\glspl{TSDB}) like InfluxDB, TimescaleDB, and Amazon Timestream are built for that exact workload: they append new samples in time-order blocks, so inserts remain fast and range queries over recent hours or days run quickly. For example, TimescaleDB and InfluxDB loaded millions of sensor readings on a Raspberry Pi and answered range queries about three times faster than SQLite, a lightweight relational engine \cite{Grzesik2020EdgeIoTBenchmark}. In larger lab tests, InfluxDB led on heavy aggregations, while TimescaleDB was best for single-row look-ups thanks to PostgreSQL's indexing \cite{Daqouri2023TimeseriesVsSQL,Heldt2021SciTS}. Performance, however, is not guaranteed. In the cloud, Amazon Timestream fell behind DynamoDB and even a simple S3 data-lake when full-history scans were required \cite{Johansson2022\gls{AWS}CloudData}, and MongoDB beat TimescaleDB on highly selective tag queries \cite{Mohamed2024DBMSComparison}.
 Finally, \textbf{cloud NoSQL services} such as DynamoDB trade strict schema and complex joins for limitless horizontal scaling; studies show they can match \gls{TSDB} write speed once enough replicas are added, but the extra nodes consume more memory and network bandwidth \cite{Zhang2023EdgeTSDB,Vergara2021PerformanceTSDB}.
 
 These mixed results underline that no single engine is \say{best} in every situation. Relational databases offer familiarity and strong consistency, \glspl{TSDB} excel at broad time-range analytics, and NoSQL stores scale effortlessly for simple key-value access—each at a cost that must be weighed for Klimra's real-time dashboard.
@@ -528,9 +529,9 @@ These mixed results underline that no single engine is \say{best} in every situa
 \section{Problem}
 \label{sec:problem}
 
-Klimra's live-delay dashboard, like any service that relies on shared public \glspl{API}, must deliver fresh data in seconds. Developers must therefore decide both \textit{how} to fetch updates (polling or push) and \textit{where} to store them (relational, time-series, or NoSQL). The literature treats these decisions separately: ingestion studies vary the fetch style but leave the database unchanged \cite{Trindade2021EDAImpact,Lewis2020PowerOfEDA}, while database benchmarks compare storage engines using a single, high-throughput synthetic workload that ignores \gls{API} rate limits and keeps the ingestion method fixed \cite{Heldt2021SciTS,Grzesik2020EdgeIoTBenchmark}. Because no study evaluates both choices together under realistic traffic conditions, engineers lack evidence for selecting a complete backend stack.
+Klimra's live-delay dashboard, like any service that relies on shared public \glspl{API}, must deliver fresh data in seconds. Developers must therefore decide both \textit{how} to fetch updates (polling or push) and \textit{where} to store them (relational, time-series, or NoSQL). The literature treats these decisions separately: ingestion studies vary the fetch style but leave the database unchanged \cite{Trindade2021EDAImpact,Lewis2020PowerOfEDA}, while database benchmarks compare storage engines using a single, high-throughput synthetic workload that ignores \gls{API} rate limits and keeps the ingestion method fixed \cite{Heldt2021SciTS,Grzesik2020EdgeIoTBenchmark}. Because no study evaluates both choices together under realistic traffic conditions, engineers lack evidence for selecting a complete back-end stack.
 
-This thesis aims to close that gap by measuring six AWS configurations: polling versus event-driven ingestion paired with RDS PostgreSQL, Amazon Timestream, or DynamoDB. It records update latency, query speed, and resource use while staying within Trafikverket's live request limit, giving practitioners a clear decision matrix and researchers a reproducible baseline.
+This thesis aims to close that gap by measuring six \gls{AWS} configurations: polling versus event-driven ingestion paired with RDS PostgreSQL, Amazon Timestream, or DynamoDB. It records update latency, query speed, and resource use while staying within Trafikverket's live request limit, giving practitioners a clear decision matrix and researchers a reproducible baseline.
 
 
 
@@ -552,11 +553,11 @@ The project turns that purpose into four concrete goals:
  \item \textbf{Analyse} the results using appropriate statistical tests to identify significant differences and resource trade-offs.
 
  \item \textbf{Deliverables}: 
-  \begin{itemize}[noitemsep,leftmargin=*]
-   \item a reusable k6/Grafana benchmarking toolkit, 
-   \item a decision matrix that maps workload patterns to the most efficient configuration for Klimra, and 
-   \item a reproducible dataset and report that other researchers can build on.
-  \end{itemize}
+ \begin{itemize}[noitemsep,leftmargin=*]
+ \item a reusable k6/Grafana benchmarking toolkit, 
+ \item a decision matrix that maps workload patterns to the most efficient configuration for Klimra, and 
+ \item a reproducible dataset and report that other researchers can build on.
+ \end{itemize}
 \end{enumerate}
 
 
@@ -568,7 +569,7 @@ The project turns that purpose into four concrete goals:
 This study adopts a \textit{design-science case‐study} approach: one React/Node train-tracking application is implemented once and then redeployed with six back-end variants so that only the ingestion style (polling versus event-driven) and the database (PostgreSQL, Amazon Timestream, DynamoDB) differ.
 
 \subsection{Experimental frame}
-The frame states what is varied, what is fixed, and what is measured. A 24-hour recording of Trafikverket's train position feed is replayed at real-time speed with \textsc{k6}, an open-source HTTP load generator scripted in JavaScript. Each back-end is launched by Terraform, which provides an identical virtual machine for every trial. It provides two virtual CPU cores, 4 GiB of RAM, and runs on Amazon's Graviton 3 processor. AWS CloudWatch, the platform's built-in monitoring service, samples once per second five metric groups: update latency, ingestion delay, query latency, CPU + memory load, and network/disk I/O. This multi-metric set mirrors the suites used in recent cloud benchmarks \cite{Heldt2021SciTS,Grzesik2020EdgeIoTBenchmark}.
+The frame states what is varied, what is fixed, and what is measured. A 24-hour recording of Trafikverket's train position feed is replayed at real-time speed with \textsc{k6}, an open-source HTTP load generator scripted in JavaScript. Each back-end is launched by Terraform, which provides an identical virtual machine for every trial. It provides two virtual CPU cores, 4 GiB of RAM, and runs on Amazon's Graviton 3 processor. \gls{AWS} CloudWatch, the platform's built-in monitoring service, samples once per second five metric groups: update latency, ingestion delay, query latency, CPU + memory load, and network/disk I/O. This multi-metric set mirrors the suites used in recent cloud benchmarks \cite{Heldt2021SciTS,Grzesik2020EdgeIoTBenchmark}.
 
 
 \subsection{Sampling and analysis}
@@ -597,7 +598,7 @@ Local emulators and micro-benchmarks were rejected because they mask cloud side 
 This thesis targets the server-side path from Trafikverket's \gls{API} to Klimra's planned dashboard. The work therefore has the following delimitations:
 
 \begin{itemize}[noitemsep,leftmargin=*]
- \item \textbf{Cloud scope:} Only AWS databases are benchmarked (RDS PostgreSQL, Amazon Timestream, DynamoDB). Other cloud providers or locally hosted databases are not included.
+ \item \textbf{Cloud scope:} Only \gls{AWS} databases are benchmarked (RDS PostgreSQL, Amazon Timestream, DynamoDB). Other cloud providers or locally hosted databases are not included.
 
  \item \textbf{Ingestion patterns:} The study compares fixed-interval polling with event-driven SQS/Lambda pipelines. Other mechanisms, such as long polling, gRPC streams, or change-data-capture, are left for future work.
 
@@ -609,7 +610,7 @@ This thesis targets the server-side path from Trafikverket's \gls{API} to Klimra
 
  \item \textbf{Traffic profile:} Experiments replay one 24-hour snapshot at the live request limit. Burst tests above that limit and multi-day retention scenarios are excluded.
 
- \item \textbf{Geography:} All resources are hosted in a single AWS region; cross-region latency and replication behaviour are not studied.
+ \item \textbf{Geography:} All resources are hosted in a single \gls{AWS} region; cross-region latency and replication behaviour are not studied.
 \end{itemize}
 
 \noindent
@@ -629,7 +630,7 @@ These boundaries keep the project focused on the interplay between ingestion sty
 
  \item[Chapter~\ref{ch:methods}] explains the research methodology, experimental frame, sampling strategy, and statistical tests.
 
- \item[Chapter~\ref{ch:whatYouDid}] outlines the implementation of the six AWS back-end variants and the k6/Grafana benchmarking toolkit.
+ \item[Chapter~\ref{ch:whatYouDid}] outlines the implementation of the six \gls{AWS} back-end variants and the k6/Grafana benchmarking toolkit.
 
  \item[Chapter~\ref{ch:resultsAndAnalysis}] presents the collected metrics and analyses latency, resource use, and scalability trade-offs.
 
@@ -667,8 +668,8 @@ Polling is conceptually simple: a worker thread (or PLC task) issues a request e
 Because a Polling Consumer calls receive only when it is ready, the application can precisely throttle how many messages it accepts and will thus keep itself from being overloaded.
 The trade-off is efficiency: when the channel is empty, the polling thread either blocks or wakes up only to find no work, wasting CPU time while nothing is processed \cite[pp.~494–497]{Hohpe2003EIP}.
 
-Johansson and Larsson migrated a \gls{SCADA} system to AWS and found that fixed‐interval polling flooded the network with repeated sensor messages; they therefore recommended replacing the loops with event notifications \cite{Johansson2021SCADAIaaS}. 
-Likewise, Makarović \textit{et~al.}\ showed that allowing a household  \gls{IoT} toaster to stay idle until an event arrives cuts Wi-Fi energy use by about \(3000\times\) compared with continuous polling \cite{Makarovi2022EnergyEfficientIoT}.
+Johansson and Larsson migrated a \gls{SCADA} system to \gls{AWS} and found that fixed‐interval polling flooded the network with repeated sensor messages; they therefore recommended replacing the loops with event notifications \cite{Johansson2021SCADAIaaS}. 
+Likewise, Makarović \textit{et~al.}\ showed that allowing a household \gls{IoT} toaster to stay idle until an event arrives cuts Wi-Fi energy use by about \(3000\times\) compared with continuous polling \cite{Makarovi2022EnergyEfficientIoT}.
 
 
 \subsection{Event-Driven Pipelines}
@@ -690,10 +691,10 @@ Later work highlights three common problems: writing idempotent handlers, keepin
 % \begin{tabular}{p{3.4cm}p{4.0cm}p{3.7cm}}
 % \toprule
 % \textbf{Domain} & \textbf{Observed Change} & \textbf{Key Point} \\ \midrule
-% Industrial SCADA   & Bandwidth ↓ (duplicates removed)  & Cuts \say{network flood} traffic \\
-% Data-centre orchestration & CPU ↓ 35–50 \%; latency ↓ 70 \%  & Less idle spin and better scale \\
-% Home  \gls{IoT} (Wi-Fi sensor)  & Energy use ↓ $\approx\!3000\times$  & Polling wastes standby power \\
-% Micro-service refactor  & CPU ↓ but latency ↑     & Extra hops can hurt response \\ 
+% Industrial SCADA & Bandwidth ↓ (duplicates removed) & Cuts \say{network flood} traffic \\
+% Data-centre orchestration & CPU ↓ 35–50 \%; latency ↓ 70 \% & Less idle spin and better scale \\
+% Home \gls{IoT} (Wi-Fi sensor) & Energy use ↓ $\approx\!3000\times$ & Polling wastes standby power \\
+% Micro-service refactor & CPU ↓ but latency ↑ & Extra hops can hurt response \\ 
 % \bottomrule
 % \end{tabular}
 %\end{table}
@@ -703,8 +704,8 @@ Later work highlights three common problems: writing idempotent handlers, keepin
 
 
 
-%%%  – cite Trindade et al., Lewis et al., etc.
-%%%  – summarise pros/cons table-style if helpful
+%%% – cite Trindade et al., Lewis et al., etc.
+%%% – summarise pros/cons table-style if helpful
 
 %%% \subsection{Why a combined benchmark is still missing}
 %
@@ -728,60 +729,67 @@ Prior work shows that each family excels under a different access pattern. Relat
 \subsection{Relational Databases (PostgreSQL/RDS)}
 Relational databases store information in tables made of rows and columns, where each table has a fixed schema that defines the names and data types of its columns. Queries are written in SQL, and the database engine guarantees \gls{ACID} properties so that transactions stay consistent even if many users change data at the same time \cite[Chs.~1–2]{Silberschatz2020DB}.
 
-PostgreSQL is a popular open-source implementation of the relational model; it adds useful extras such as JSON columns, full-text search, and advanced indexing options \cite[Ch.~27]{Silberschatz2020DB}. On AWS, you can run PostgreSQL as a managed service called Amazon RDS for PostgreSQL. RDS handles routine chores, such as creating automated backups, applying security patches, setting up replication across Availability Zones, and letting you scale storage with a few clicks. It does this so developers can focus on schema design and query tuning instead of server maintenance \cite{AWSRDSPostgreSQL}.
+PostgreSQL is a widespread open-source implementation of the relational model; it adds useful extras such as JSON columns, full-text search, and advanced indexing options \cite[Ch.~27]{Silberschatz2020DB}. On \gls{AWS}, you can run PostgreSQL as a managed service called Amazon RDS for PostgreSQL. RDS handles routine tasks, such as creating automated backups, applying security patches, setting up replication across Availability Zones, and allowing you to scale storage with a few clicks. It does this so developers can focus on schema design and query tuning instead of server maintenance \cite{AWSRDSPostgreSQL}.
 
 
 \subsection{Time-Series Databases (Amazon Timestream)}
 Time-series databases are built for data whose primary key is a timestamp. Instead of normal rows, they keep new samples in time-ordered batches and squeeze space by compressing columns that change slowly. They also let you run window queries, such as averages or rates, directly. Because data is only added and not rewritten, and most queries scan a continuous time range, a good TSDB can accept a high write load and still answer \say{last hour} or \say{last day} questions quickly; these queries ask for all points from the most recent 60 minutes or 24 hours and summarise them \cite[Chs.~3 \& 11]{Kleppmann2017DDIA}.
 
-Amazon Timestream is a managed, serverless \gls{TSDB}. Storage and compute grow automatically as your metric data increases. New data stays in memory for quick queries and is later moved to cheaper disk storage based on a retention rule you choose. Timestream's SQL lets you resample, fill gaps, or delete old records without separate \gls{ETL} jobs, and AWS takes care of backups, replication, and encryption \cite{AWSTimestreamDoc}.
+Amazon Timestream is a managed, serverless \gls{TSDB}. Storage and compute grow automatically as your metric data increases. New data is stored in memory for quick queries and later moved to more cost-effective disk storage based on a retention rule you choose. Timestream's SQL lets you resample, fill gaps, or delete old records without separate \gls{ETL} jobs, and \gls{AWS} takes care of backups, replication, and encryption \cite{\gls{AWS}TimestreamDoc}.
 
 
 \subsection{NoSQL Key–Value Stores (DynamoDB)}
 Key-value databases keep every record as two parts: a unique key and its associated value.
-To read or update a record, the engine hashes the key and goes straight to the right location, so performance stays high even when the dataset grows large.
-Because the value can be any binary or JSON document, the database keeps it exactly as it is and does not enforce a fixed schema.
+To read or update a record, the engine hashes the key and goes straight to the correct location, so performance stays high even when the dataset grows large.
+Because the value can be any binary or JSON document, the database keeps it precisely as it is and does not enforce a fixed schema.
 Applications are free to add or remove fields without a formal migration, and clusters can shard data by key to spread load and add replicas easily \cite[Chs.~2 \& 8]{Sadalage2013NoSQLDistilled}.
 
-Amazon DynamoDB is AWS's managed key-value service.
+Amazon DynamoDB is \gls{AWS}'s managed key-value service.
 It is serverless, meaning that users never have to create or maintain the underlying machines.
-AWS provisions the hardware, applies software updates, and scales capacity up or down as traffic changes.
+\gls{AWS} provisions the hardware, applies software updates, and scales capacity up or down as traffic changes.
 All you supply are two numbers: your desired read and write capacity units. 
 The platform then handles partitioning, replication, and fail-over in the background.
 Each item is synchronously copied to three Availability Zones, backed up automatically, and served with single-digit millisecond latency.
-Features such as global secondary indexes, point-in-time recovery, and at-rest encryption are included, so developers do not have to run or patch their own database clusters \cite{AWSDynamoDBDoc}.
+Features such as global secondary indexes, point-in-time recovery, and at-rest encryption are included, so developers do not have to run or patch their own database clusters \cite{\gls{AWS}DynamoDBDoc}.
 
 
-\subsection{Trade-Off Matrix from Literature}
+\subsection{Trade-Offs Reported in Earlier Benchmarks}
 
-Taken together, recent benchmarks show a consistency in results. 
-Relational engines (PostgreSQL/RDS) excel at ad-hoc joins and point look-ups but slow down once sustained insert rates exceed \(\sim\!10^{4}\) rows s\(^{-1}\) on commodity cloud nodes \cite{Heldt2021SciTS}. 
-Purpose-built time-series stores keep up with bursty sensor feeds and answer
-range-window queries 2–3× faster than Postgres on the same hardware
-\cite{Grzesik2020EdgeIoTBenchmark,Daqouri2023TimeseriesVsSQL}. 
-Key–value services such as DynamoDB scale linearly with partitions and can
-match TSDB write speed, but they consume more memory and require careful key
-design to avoid hot shards \cite{Vergara2021PerformanceTSDB,Zhang2023EdgeTSDB}.
-Table~\ref{tab:storage-matrix} contrasts the most relevant findings.
+\begin{itemize}[leftmargin=*]
 
-\begin{table}[htbp]
+  \item \textbf{Relational databases (PostgreSQL/RDS):}\\
+      Well–suited for flexible \emph{SQL} joins and single-row look-ups, yet benchmarks report a performance drop once sustained insert rates exceed about \(10^{4}\) rows\,s\(^{-1}\) on a standard cloud server \cite{Heldt2021SciTS}.
+
+  \item \textbf{Time-series databases (InfluxDB, TimescaleDB, Amazon~Timestream):}\\
+        Built for timestamped sensor data, they keep up with bursty feeds and answer “last hour/day” range queries about two–three times faster than PostgreSQL running on the same hardware \cite{Grzesik2020EdgeIoTBenchmark,Daqouri2023TimeseriesVsSQL}.
+
+  \item \textbf{Key–value stores (DynamoDB):}\\
+        They scale just by adding more partitions and can reach the same write speed as a time-series store, but they use more memory and need careful key design to avoid hot spots that slow one partition down
+        \cite{Vergara2021PerformanceTSDB,Zhang2023EdgeTSDB}.
+\end{itemize}
+
+\noindent
+Table~\ref{tab:storage-matrix} lists the headline numbers from these studies.
+
+
+\begin{table}[H]
  \centering
  \begin{threeparttable}
  \caption{Headline results from recent storage benchmarks
-   (\(\uparrow\!=\) higher is better,\; \(\downarrow\!=\) lower is better)}
+ (\(\uparrow\!=\) higher is better,\; \(\downarrow\!=\) lower is better)}
  \label{tab:storage-matrix}
  %--------------------------------------------------------------
  % X column stretches, the others have fixed width for numbers
  \begin{tabularx}{\linewidth}{@{} l c c c @{}}
  \toprule
  \textbf{Study} & \textbf{Best write} & \textbf{Fastest range} \\[-2pt]
-     & (rows s\(^{-1}\)) & query (s)    &    \\
+ & (rows s\(^{-1}\)) & query (s) & \\
  \midrule
  Grzesik 20\tnote{a} & InfluxDB ↑1.6 M & TimescaleDB ↓0.35 \\[2pt]
  Heldt 21\tnote{b} & Timescale ↑3× & InfluxDB ↓0.06 \\[2pt]
  Vergara 21\tnote{c} & Dynamo = Influx (3 reps) & InfluxDB ↓0.055 \\[2pt]
  Johansson 22\tnote{d}& S3 lake ↑2× & Dynamo fastest \\[2pt]
- Zhang 23\tnote{e} & Dynamo ↑2 M  & TimescaleDB ↓0.40 \\
+ Zhang 23\tnote{e} & Dynamo ↑2 M & TimescaleDB ↓0.40 \\
  \bottomrule
  \end{tabularx}
  %--------------------------------------------------------------
@@ -789,7 +797,7 @@ Table~\ref{tab:storage-matrix} contrasts the most relevant findings.
  \item[a] TSDBs outperform SQLite and Riak-TS on Raspberry Pi hardware \cite{Grzesik2020EdgeIoTBenchmark}.
  \item[b] Relational joins handy but cost roughly 2–3× more CPU \cite{Heldt2021SciTS}.
  \item[c] NoSQL matches write speed but uses \(\sim\)1.8× more RAM \cite{Vergara2021PerformanceTSDB}.
- \item[d] Cloud TSDB not always fastest; depends on query mix \cite{Johansson2022AWSCloudData}.
+ \item[d] Cloud TSDB not always fastest; depends on query mix \cite{Johansson2022\gls{AWS}CloudData}.
  \item[e] Hot-spotting design degrades NoSQL latency if ignored \cite{Zhang2023EdgeTSDB}.
  \end{tablenotes}
  \end{threeparttable}
@@ -804,7 +812,7 @@ Yet every cited paper fixes the ingestion style (usually batch writes or simple 
 
 \section{Related Work and Research Gap}
 \label{sec:gap}
-Earlier studies tend to split the focus of the backend into two.
+Earlier studies tend to split the focus of the back-end into two.
 Some papers ask only how fresh data is ingested (for example, comparing polling with event-driven updates), while others test where that data is stored (relational, time-series, or NoSQL engines).
 These single-focus results are helpful, but they do not answer the practical question facing a live, API-limited service such as Klimra's delay dashboard: Which mix of ingestion style \textit{and} database keeps updates fast without breaking the request cap? 
 
@@ -830,7 +838,7 @@ Trindade and Batista studied how an event-driven approach changes performance in
 
 \subsubsection{Micro-service refactors}
 Not all event-driven designs yield gains by default. When breaking a system into microservices, each new component adds potential overhead. 
-Berg examined this by refactoring a small web shop from a monolith to AWS microservices. Although the new design used less CPU overall, the mean response time increased from \SIrange{13}{15}{\milli\second} to as high as \SI{43}{\milli\second} in the worst scenario. The added queueing layers introduced latency, and only after batching messages did the event-driven setup match the monolith's responsiveness \cite{Berg2022MonolithVsMicroservices}.
+Berg examined this by refactoring a small web shop from a monolith to \gls{AWS} microservices. Although the new design used less CPU overall, the mean response time increased from \SIrange{13}{15}{\milli\second} to as high as \SI{43}{\milli\second} in the worst scenario. The added queueing layers introduced latency, and only after batching messages did the event-driven setup match the monolith's responsiveness \cite{Berg2022MonolithVsMicroservices}.
 
 
 
@@ -848,15 +856,15 @@ Grzesik \textit{et al.} benchmarked three popular time-series databases: Timesca
 Similarly, Daqouri compared TimescaleDB with PostgreSQL in an \gls{IoT} analytics scenario and found that TimescaleDB handled large, ordered inserts more efficiently and offered better query performance on time-based filters \cite{Daqouri2023TimeseriesVsSQL}.
 
 \subsubsection{NoSQL scaling trade-offs}
-NoSQL key–value stores scale horizontally and support fast lookups at the cost of limited querying.  
-Vergara \textit{et al.} found that DynamoDB could match InfluxDB in write throughput once three replicas were added, but this came at a cost of 1.8× higher memory usage \cite{Vergara2021PerformanceTSDB}.  
-Zhang \textit{et al.} ran a similar comparison in an edge-computing setup.  
-They measured DynamoDB ingesting up to 2 million rows per second, but found that poorly chosen keys caused “hot spots” that slowed down performance.  
+NoSQL key–value stores scale horizontally and support fast lookups at the cost of limited querying. 
+Vergara \textit{et al.} found that DynamoDB could match InfluxDB in write throughput once three replicas were added, but this came at a cost of 1.8× higher memory usage \cite{Vergara2021PerformanceTSDB}. 
+Zhang \textit{et al.} ran a similar comparison in an edge-computing setup. 
+They measured DynamoDB ingesting up to 2 million rows per second, but found that poorly chosen keys caused “hot spots” that slowed down performance. 
 Meanwhile, TimescaleDB gave consistent range query latency below 0.5 seconds \cite{Zhang2023EdgeTSDB}.
 
 
 
-\subsection{Research Gap in Real-Time, API-Limited Backends}
+\subsection{Research Gap in Real-Time, API-Limited back-ends}
 While prior work has studied ingestion and storage separately, few studies combine the two in a realistic setting where the back-end must update continuously while obeying a strict external rate limit.
 This combination is common in real-time applications, such as the traffic dashboard being built for Klimra, as well as other monitoring tools that rely on frequent updates from public \glspl{API}.
 
@@ -864,7 +872,7 @@ To the best of our knowledge, no existing benchmark measures both ingestion styl
 This leaves open a practical question for systems like Klimra's delay dashboard: which mix of polling or events, and which kind of database, best keeps updates fast while staying within allowed request quotas?
 
 %To answer that, the next chapter presents a prototype test loop inspired by the load-repetition method of Hidalgo \textit{et al.} \cite{Hidalgo2023StreamProcMicroservices}.
-%The test replays one day of Trafikverket traffic and measures six AWS back-end configurations across three database types.
+%The test replays one day of Trafikverket traffic and measures six \gls{AWS} back-end configurations across three database types.
 %The goal is to provide a side-by-side evaluation of ingestion and storage combinations in a rate-limited, real-time update scenario.
 
 
@@ -873,179 +881,225 @@ This leaves open a practical question for systems like Klimra's delay dashboard:
 \cleardoublepage
 \chapter{Method}
 \label{ch:methods}
-This chapter outlines the method used to evaluate how ingestion style and storage technology affect performance in real-time backends constrained by external data sources. The goal is to design repeatable experiments that isolate the impact of each backend component while reflecting a realistic use case.
 
-Section~\ref{sec:researchProcess} introduces the overall research approach, while Section~\ref{sec:researchParadigm} explains the methodological motivation and prior work that inspired this design. Section~\ref{sec:dataCollection} discusses the metrics and data sources used, and Section~\ref{sec:experimentalDesign} describes the prototype platform and test loop. These sections together explain how the benchmarking setup was constructed to answer the research questions posed in this thesis.
+This chapter outlines the method used to evaluate how ingestion style and storage technology affect performance in real-time back-end systems. These systems rely on external \glspl{API}, where update frequency is controlled by the provider and excessive or repeated requests are discouraged. The goal is to design repeatable experiments that isolate the impact of each back-end component while reflecting a realistic use case.
 
-\section{Research Approach}
+Section~\ref{sec:researchProcess} sketches the research and development process.  
+Section~\ref{sec:researchParadigm} positions the work in the design-science tradition and lists the specific method concepts reused from prior papers.  
+Section~\ref{sec:testbed} describes the \gls{AWS} testbed.  
+Section~\ref{sec:dataCollection} lists the metrics and sampling plan.  
+Section~\ref{sec:analysis} outlines the statistical tests.  
+Section~\ref{sec:validity} addresses validity and reliability, and Section~\ref{sec:systemDocumentation} lists the source code, scripts, and data used in this study to support reproducibility.
+
+
+
+\section{Research and Development Process}
 \label{sec:researchProcess}
 
-This study uses an engineering-focused experimental method to isolate how different backend design choices affect the performance of real-time applications. The system under test is a traffic dashboard that fetches and displays live train delay data from Trafikverket’s public API. While the API does not enforce a strict numeric quota, it is shared among many users and not intended for excessive automated polling. This makes it a useful stand-in for the kind of externally constrained APIs often encountered in production systems.
+This study follows the six-step workflow below.
 
-To evaluate backend performance in this setting, I build a single application and deploy it with six different configurations. Each setup combines one of two ingestion strategies (fixed-interval polling or event-driven updates) with one of three storage options: a relational database (PostgreSQL), a time-series database (Amazon Timestream), or a NoSQL key–value store (DynamoDB).
-
-The application logic stays identical across all versions, allowing each test to isolate the performance impact of ingestion and storage choices. This follows a controlled-experimentation model common in systems research, where the same input is fed into multiple variants under repeatable conditions. The result is a side-by-side comparison of how different backend strategies perform under realistic traffic and update constraints.
-
-\section{Motivation and Prior Work}
-\label{sec:researchParadigm}
-
-Earlier studies typically isolate a single backend concern: either how data is ingested or how it is stored. As reviewed in Chapter~\ref{ch:background}, this leaves open the question of how ingestion and storage interact under live conditions. This thesis addresses that gap by testing combinations of ingestion style and storage engine within a working system that must keep up with external data.
-
-The design draws inspiration from Hidalgo \textit{et al.}~\cite{Hidalgo2023StreamProcMicroservices}, who replay one day of real traffic to evaluate stream processing pipelines. I adopt a similar method here: a test loop replays one day of train data in compressed form, issues requests to Trafikverket’s API, and logs performance metrics under different backend setups.
-
-\section{Method Rationale}
-\label{sec:dataCollection}
-
-I considered using synthetic benchmarks, emulators, or isolated microbenchmarks, but these lack the timing characteristics and usage constraints of real data sources. Instead, I opted for a full prototype fed by real data and deployed on AWS. This ensures that the findings reflect realistic challenges for companies like Klimra, which depend on real-time public APIs.
-
-The evaluation focuses on backend metrics that matter in practice:
-\begin{itemize}
-  \item \textbf{Ingestion delay:} Time from data availability to ingestion.
-  \item \textbf{End-to-end latency:} Time to deliver updated results to the UI.
-  \item \textbf{System load:} CPU and memory use under each configuration.
-  \item \textbf{Query performance:} Response time for common queries.
-\end{itemize}
-
-\section{Prototype and Test Loop}
-\label{sec:experimentalDesign}
-
-The test application is deployed to AWS using infrastructure-as-code. Each variant uses the same ingestion logic and UI, differing only in backend architecture. Logs record all ingest, store, and query actions. Where available, AWS CloudWatch metrics supplement these logs to track system behavior.
-
-Each test runs for a fixed period and uses the same replayed input. To reduce random variation, each experiment is repeated multiple times and averaged. These tests are not designed for extreme scalability, but to highlight how ingestion and storage decisions influence responsiveness and resource use in a real-time, API-aware environment.
-
-% Later sections: planned data analysis, reliability, validity, etc.
-
-
-
-
-\section{Research Process}
-\label{sec:researchProcess}
-
-\sweExpl{Undersökningsrocess och utvecklingsprocess}
-
-Figure~\ref{fig:researchprocess} shows the steps conducted to carry out this research. 
-
-\sweExpl{Figur~\ref{fig:researchprocess} visar de steg som utförs för att genomföra\\
-Beskriv, gärna med ett aktivitetsdiagram (UML?), din undersökningsprocess och utvecklingsprocess. Du måste koppla ihop det akademiska intresset (undersökningsprocess) med ursprungsproblemet (utvecklingsprocess)
-denna forskning.\\
-Aktivitetsdiagram från t ex UML-standard}
-
-
- 
-\begin{figure}[!ht]
- \begin{center}
- \includegraphics[width=0.5\textwidth]{figures/researchprocess.png}
- \end{center}
- \caption{Research Process}
- \label{fig:researchprocess}
-\end{figure}
-
-\generalExpl{Example of using customized item labels.}
-Some steps in the process:
-\begin{enumerate}[leftmargin=*, label=\textbf{Step \arabic*}, ref=Step \arabic*] %labelindent=1em for indent
- \itemsep0em
- \item \label{x:s1} plan experiment,
- \item \label{x:s2} conduct experiment,
- \item \label{x:s3} analyze data from the experiment, and
- \item \label{x:s4} discuss the results of the analysis.
+\begin{enumerate}[label=\textbf{Step \arabic*}, leftmargin=*]
+  \item Define evaluation scope and back-end design factors.
+  \item Implement a prototype dashboard and Terraform scripts.
+  \item Deploy six back-end configurations (2 ingestion $\times$ 3 storage).
+  \item Replay one day of recorded train traffic into each variant.
+  \item Collect ingestion, query, and resource metrics.
+  \item Apply statistical analysis and interpret trade-offs.
 \end{enumerate}
 
-\sweExpl{Forskningsprocessen}
+%Figure~\ref{fig:researchprocess} visualises the process flow.
+(AUTHOR'S NOTE: Add some kind of figure to visualise the process flow)
 
 
-\section{Research Paradigm}
+\section{Research Paradigm and Prior Work}
 \label{sec:researchParadigm}
-\sweExpl{Undersökningsparadigm\\
-Exempelvis\\
-Positivistisk (vad/hur fungerar det?) kvalitativ fallstudie med en deduktivt (förbestämd) vald ansats och ett induktivt(efterhand uppstår dataområden och data) insamlade av data och erfarenheter.}
+
+The work is a design-science case study: one functional application is held constant while two back-end factors—ingestion strategy and storage engine—are varied under an identical load. Earlier benchmarks tend to vary only one factor at a time; the present study combines them.
+
+\subsection{Method concepts reused from the literature}
+This study borrows several proven ideas from earlier benchmark papers.  
+Each concept is first named and then explained.
+
+\begin{enumerate}[label=\textbf{C\arabic*}, leftmargin=*]
+
+  \item \textbf{Trace-driven load generation:} 
+        Hidalgo \textit{et al.}\ replay a full day of real traffic to drive their tests \cite{Hidalgo2023StreamProcMicroservices}.
+        
+        \emph{Meaning:} instead of inventing fake requests, the benchmark feeds the system with a recording of what happened in production.
+
+  \item \textbf{Pattern catalogue for REST calls:} 
+        Grambow \textit{et al.}\ store their API calls in a small text file that links a \emph{generic action} (for example, \say{list all trains}) to the real URL of that action \cite{Grambow2021PatternBenchmark}.
+        
+        \emph{Meaning:} One file specifies which HTTP path corresponds to each action, allowing you to change or add endpoints without modifying the test code.
+
+  \item \textbf{Repetition to tame cloud noise:} 
+        Eismann \textit{et al.}\ show that many short runs are better than one long run because virtual machines vary from one launch to the next \cite{Eismann2020MicroserviceBenchmark}.
+        
+        \emph{Meaning:} the same test is run several times and the results are averaged to smooth out random slowdowns.
+
+  \item \textbf{Fixed resource limits:} 
+        Henning and Hasselbring’s \emph{Theodolite} benchmark allocates the same CPU and memory budget to every container \cite{Henning2021Theodolite}.
+        
+        \emph{Meaning:} each back-end gets, for example, two vCPUs and 4 GiB RAM so that a faster result comes from better code, not from extra hardware.
+
+  \item \textbf{Core quality-of-service (QoS) metrics:} 
+        Aslanpour \textit{et al.}\ recommend four simple numbers: how long it takes to ingest data, how fast the user sees new data, how much CPU/memory is used, and how quickly typical queries return results \cite{PerformanceEvaluationMetrics}.
+        
+        \emph{Meaning:} These four metrics will be recorded for every back-end, making the results easy to compare.
+\end{enumerate}
+
+\subsection{Local adaptations and rationale} 
+The ideas above are kept, but adjusted to fit the specific scenario of this thesis; a train-delay workload running on \gls{AWS}:
+
+\begin{itemize}[leftmargin=*]
+
+  \item \emph{Replay of real traces:} 
+        One full day of recorded Trafikverket messages is sent to the system with \texttt{k6}, an open-source load tool written in JavaScript. 
+        Using the same recording means every back-end sees the exact same traffic spikes.
+
+  \item \emph{Pattern catalogue:} 
+        A short \texttt{.yaml} text file lists the three basic API steps — \texttt{list}, then \texttt{read}, then \texttt{delete} — and the real URL for each step. 
+        Changing from polling to events now means editing that file instead of touching any code.
+
+  \item \emph{Number of repetitions:} 
+        Based on trial runs that show where the results stabilize, a set number of runs will be used in the study.
+
+  \item \emph{Equal resource caps:} 
+        Each ingestion service and database is given the same slice of hardware: 2 virtual CPUs and 4 GiB of RAM. 
+        If a back-end reaches this limit, the slowdown is easily noticeable.
+
+  \item \emph{Metric suite:} 
+        The four quality-of-service numbers listed in Section~\ref{sec:dataCollection} (ingestion delay, user-visible latency, CPU/memory use, and query time) follow the checklist from Aslanpour \textit{et al.} and use the same basic statistics.
+\end{itemize}
+
+\noindent
+These choices align the experiment with published benchmarks while adapting it to meet the needs of this thesis.
 
 
-\section{Data Collection}
+\section{Benchmark Testbed and Deployment}
+\label{sec:testbed}
+This section describes how the test environment is set up and why each tool is used.
+
+\subsection{Prototype application}
+A single train-tracking web app is written in Node.js (back-end) and React (front-end). The code remains unchanged between tests, so any performance difference must originate from the ingestion style or the database. In total, there will be six back-end variants.
+
+All experiments run in the same AWS region, which is a geographic cluster of Amazon data centers (for example, eu-north-1 in Stockholm).
+
+\begin{itemize}[leftmargin=*]
+  \item[] \textbf{Ingestion Method}
+  \begin{itemize}[leftmargin=*]
+      \item \textbf{Ingestion layer:} either fixed-interval polling or an event-driven pipeline.
+      \item \textbf{Storage engine:} PostgreSQL (relational), Amazon Timestream (time-series), or DynamoDB (key–value).
+  \end{itemize}
+  \item[] \textbf{Cloud platform}
+  \begin{itemize}[leftmargin=*]
+      \item \textbf{Terraform} creates the servers, databases, and queues from text files, ensuring every run starts with identical resources.
+      \item \textbf{Docker} packages the application and its dependencies into portable images, so the software stack is the same on every virtual machine.
+      \item \textbf{CloudWatch} is \gls{AWS} front-end's built-in monitoring service. It records CPU, memory, network traffic, and custom timers that the app logs during each test \cite{AWSCloudWatch2025}.
+      \item \textbf{k6} is an open-source load generator written in JavaScript. It replays one day of recorded train-delay messages at real-time speed, giving each back-end the same input \cite{k6Docs2025}.
+  \end{itemize}
+\end{itemize}
+
+\subsection{Run procedure}
+\begin{enumerate}[leftmargin=*]
+  \item Terraform spins up a clean set of virtual machines and databases.
+  \item Docker containers with either polling or event logic are deployed.
+  \item k6 starts replaying the 24-hour trace.
+  \item CloudWatch and application logs capture latency, throughput, and resource use until the trace finishes.
+  \item After each experiment, the whole test environment is deleted and rebuilt so that nothing from the previous run can affect the next one.
+\end{enumerate}
+
+\noindent
+Using an automatic setup, as well as the same recorded data, maintains consistency across all six configurations and ensures reproducibility of the results.
+
+
+
+\section{Data Collection and Metrics}
 \label{sec:dataCollection}
-\sweExpl{Datainsamling\\
-(Detta bör också visa att du är medveten om de sociala och etiska frågor som
-kan vara relevanta för dina data insamlingsmetod.)}
-\generalExpl{This should also show that you are aware of the social and ethical concerns that might be relevant to your data collection method.}
+
+The evaluation focuses on four back-end metrics that matter for a
+real-time dashboard:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Ingestion delay:} the time from when new data appears at the API until it reaches the database.
+  \item \textbf{End-to-end latency:} the time from ingestion until the updated value is visible in the user interface.
+  \item \textbf{System load:} average CPU, memory, and network use on the ingestion service and the database.
+  \item \textbf{Query performance:} the time needed to answer the dashboard's most common read requests.
+\end{itemize}
+
+\noindent
+To smooth out random cloud noise, every back-end setup will be run several times on freshly created virtual machines and for a fixed duration. All runs utilize the same recorded traffic and identical test scripts, ensuring that results are directly comparable.
 
 
 
-\subsection{Sampling}
-\sweExpl{Stickprovsundersökning}
+\section{Data Analysis Method}
+\label{sec:analysis}
 
-\subsection{Sample Size}
-\sweExpl{Provstorleken}
+This section explains how the collected numbers will be
+checked and compared.
 
-\subsection{Target Population}
-\sweExpl{Målgruppen}
+\begin{enumerate}[label=\arabic*., leftmargin=*]
+  \item \textbf{Normality check}
+        First, the \emph{Shapiro–Wilk test} will be run.
+        It indicates whether the metric values resemble a standard curve.
 
-\section[Experimental design/Planned Measurements]{Experimental design and\\Planned Measurements}
-\label{sec:experimentalDesign}
-\sweExpl{Experimentdesign/Mätuppställning}
+  \item \textbf{Group comparison}
+        \begin{itemize}[leftmargin=*]
+          \item If the values are normal, we use a \emph{one-way ANOVA}
+                to see whether any of the six back-end setups is faster or slower than the others.
+          \item If the values are not normal, we use the
+                \emph{Kruskal–Wallis test}, which works on the rank order of the data instead of the raw numbers.
+        \end{itemize}
 
-\subsection{Test environment/test bed/model}
-\engExpl{Describe everything that someone else would need to reproduce your test environment/test bed/model/… .}
-\sweExpl{Testmiljö/testbädd/modell\\
-Beskriv allt att någon annan skulle behöva återskapa din testmiljö / testbädd / modell / …}
+  \item \textbf{Follow-up tests.}
+        When the primary test says \say{there is a difference,} we run pair-by-pair checks to find out \emph{which} setups differ.
+        We apply the \emph{Holm–Šidák adjustment} so that the chance of a false alarm stays below five percent for the whole set of comparisons.
+\end{enumerate}
 
-\subsection{Hardware/Software to be used}
-\sweExpl{Hårdvara / programvara som ska användas}
-
-
-\section{Assessing reliability and validity of the data collected}
-\label{sec:assessingReliability}
-\sweExpl{Bedömning av validitet och reliabilitet hos använda metoder och insamlade data }
-
-
-\subsection{Validity of method}
-\label{sec:validtyOfMethod}
-\sweExpl{Giltigheten av metoder\\
- Har dina metoder gett dig de rätta svaren och lösningarna? Var metoderna korrekta?}
-
-\engExpl{How will you know if your results are valid?}
-\engExpl{Remember that validity is about the \textit{accuracy} of a measurement while reliability is about the \textit{consistency} of the measurement values under the same conditions (\ie repeatability).}
-
-\subsection{Reliability of method}
-\label{sec:reliabilityOfMethod}
-\sweExpl{Tillförlitlighet av för metoder\\
-Hur bra är dina metoder, finns det bättre metoder? Hur kan du förbättra dem?}
-\engExpl{How will you know if your results are reliable?}
-
-\subsection{Data validity}
-\label{sec:dataValidity}
-\sweExpl{Giltigheten av uppgifter\\
-Hur vet du om dina resultat är giltiga? Är ditt resultat rättvisande?}
-
-\subsection{Reliability of data}
-\label{sec:reliabilityOfData}
-\sweExpl{Tillförlitlighet av data\\
-Hur vet du om dina resultat är tillförlitliga? Hur bra är dina resultat?}
+\noindent
+Alongside every significant difference, we also report an \emph{effect size}
+($\eta^{2}$ for ANOVA or $\varepsilon^{2}$ for Kruskal–Wallis). 
+The effect size indicates the magnitude of the gap, not just its existence.
 
 
-\section{Planned Data Analysis}
-\label{sec:plannedDataAnalysis}
-\sweExpl{Metod för analys av data}
+
+\section{Validity and Reliability}
+\label{sec:validity}
+
+This section outlines the basic checks that ensure the results are valid (they accurately measure what they should) and reliable (they are repeatable).
+
+\subsection{Validity of Method}
+The benchmark reflects a real use case by replaying recorded Trafikverket traffic against real AWS services.
+Because all six back-end variants share the same front-end and ingestion code, any performance gap must come from the chosen ingestion style or database.
+
+\subsection{Reliability of Method}
+Each back-end configuration will be executed multiple times (at least ten, following the guidance in \cite{Eismann2020MicroserviceBenchmark}) on identical \texttt{c6g.large} virtual machines.
+To make sure every repetition starts from exactly the same cloud environment, the entire test bed is rebuilt automatically before each run:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Terraform}
+        Terraform is an \emph{infrastructure-as-code} tool. Instead of clicking in the \gls{AWS} console, you write a text file that lists the resources you need (VMs, Lambdas, SQS queues, databases). Terraform then creates or deletes those resources in one command. Reapplying the same file ensures that every run receives the same hardware and network layout.
+  \item \textbf{Shell scripts} 
+        Small Bash scripts wrap the Terraform commands and start the load generator. They also assign a unique ID to each run and collect the resulting log files. Automating these steps eliminates human error and ensures the procedure remains consistent across repetitions.
+\end{itemize}
+
+\subsection{Data Validity and Reliability}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Real trace} Using recorded traffic avoids guessing a fake workload, meaning the tests reflect the real timing and burst patterns seen in practice.
+  \item \textbf{Same input} Every back-end sees the exact same, time-aligned data. 
+  \item \textbf{Averaging} Results are averaged over many runs to smooth random spikes. 
+\end{itemize}
 
 
-\subsection{Data Analysis Technique}
-\label{sec:dataAnalysisTechnique}
-\sweExpl{Dataanalysteknik}
-
-\subsection{Software Tools}
-\label{sec:softwareTools}
-\sweExpl{Mjukvaruverktyg}
-
-
-\section{Evaluation framework}
-\label{sec:evaluationFramework}
-\sweExpl{Utvärdering och ramverk\\
-Metod för utvärdering, jämförelse mm. Kopplar till kapitel~\ref{ch:resultsAndAnalysis}.}
-
-\section{System documentation}
+\section{System Documentation}
 \label{sec:systemDocumentation}
-\sweExpl{Systemdokumentation\\
-Med vilka dokument och hur skall en konstruerad prototyp dokumenteras? Detta blir ofta bilagor till rapporten och det som problemägaren till det ursprungliga problemet (industrin) ofta vill ha.\\
-Bland dessa bilagor återfinns ofta, och enligt någon angiven standard, kravdokument, arkitekturdokument, designdokumnet, implementationsdokument, driftsdokument, testprotokoll mm.}
-\generalExpl{If this is going to be a complete document consider putting it in as an appendix, then just put the highlights here.}
+
+All artefacts needed to replicate this study will be made available in an open repository.
+
+
+
+
+
 
 
 \cleardoublepage
@@ -1062,10 +1116,7 @@ Hur kom det du hjälpte dig att uppnå dina mål?}
 \section[Hardware/Software design …/Model/Simulation model \&\texorpdfstring{\\}{ p} parameters/…]{Hardware/Software design …/Model/Simulation model \& parameters/…}
 \sweExpl{Hårdvara / Mjukvarudesign ... / modell / Simuleringsmodell och parametrar / …}
 
-Figure~\ref{fig:homepageicon} shows a simple icon for a home page. The time
-to access this page when served will be quantified in a series of
-experiments. The configurations that have been tested in the test bed are
-listed in Table~\ref{tab:configstested}. In \SI{7.0}{\percent} of cases, there was an error indicating xxxxx.
+Figure~\ref{fig:homepageicon} shows a simple icon for a home page. The time to access this page when served will be quantified in a series of experiments. The configurations that have been tested in the test bed are listed in Table~\ref{tab:configstested}. In \SI{7.0}{\percent} of cases, there was an error indicating xxxxx.
 
 \sweExpl{Figur~\ref{fig:homepageicon} visar en enkel ikon för en hemsida. Tiden för att få tillgång till den här sidan när den laddas kommer att kvantifieras i en serie experiment. De konfigurationer som har testats i provbänk listas ini tabell~\ref{tab:configstested}.\\
 Vad du har gjort? Hur gjorde du det? Vilka designval gjorde du?}
